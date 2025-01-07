@@ -8,19 +8,19 @@ const { width } = Dimensions.get('window');
 // Component for rendering individual tab icons and labels
 const TabIcon = ({ icon, color, name, focused }) => {
     return (
-        <View className="flex items-center justify-center gap-2">
+        <View className="flex items-center justify-center gap-2 top-4" style={{ minWidth: 100 }} >
             <Image
                 source={icon} // Icon source
                 resizeMode="contain" // Keep aspect ratio
                 tintColor={color} // Set icon color based on active/inactive state
                 className="w-6 h-6"
-                style={{ marginTop: 10 }} // Adjust icon alignment
+                style={{ marginTop: 20 }} // Adjust icon alignment
             />
             <Text
-                className={`${focused ? 'font-psemibold' : 'font-pregular'} text-xs`}
+                className={`${focused ? 'font-psemibold' : 'font-pregular'} text-xm`}
                 style={{
                     color: color, // Text color matches the icon color
-                    fontSize: width > 500 ? 12 : 8.5 // Responsive font size
+                    fontSize: width > 500 ? 12 : 9,// Responsive font size
                 }}
                 numberOfLines={1} // Prevent text from wrapping
             >
@@ -44,7 +44,7 @@ const TabsLayout = () => {
                         borderTopWidth: 1, // Top border width
                         borderTopColor: '#232533', // Top border color
                         height: 84, // Set the height of the tab bar
-                    }
+                    },
                 }}
             >
                 <Tabs.Screen
