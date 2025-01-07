@@ -32,85 +32,85 @@ const TabIcon = ({ icon, color, name, focused }) => {
 
 // Main layout for the tab navigation
 const TabsLayout = () => {
-  return (
-      <>
-          <Tabs
-              screenOptions={{
-                  tabBarShowLabel: false, // Hide default tab labels
-                  tabBarActiveTintColor: '#FFA001', // Color for active tab
-                  tabBarInactiveTintColor: '#CDCDE0', // Color for inactive tabs
-                  tabBarStyle: {
-                      backgroundColor: '#161622', // Tab bar background color
-                      borderTopWidth: 1, // Top border width
-                      borderTopColor: '#232533', // Top border color
-                      height: 84, // Set the height of the tab bar
-                  }
-              }}
-          >
-              {/* Each screen represents a tab */}
-              <Tabs.Screen
-                  name="bookmark"
-                  options={{
-                      title: 'Bookmark', // Title for the tab
-                      headerShown: false, // Hide the screen header
-                      tabBarIcon: ({ color, focused }) => (
-                          <TabIcon
-                              icon={icons.bookmark} // Icon for the Bookmark tab
-                              color={color}
-                              name="Bookmark"
-                              focused={focused} // Highlight based on active state
-                          />
-                      )
-                  }}
-              />
-              <Tabs.Screen
-                  name="create"
-                  options={{
-                      title: 'Create',
-                      headerShown: false,
-                      tabBarIcon: ({ color, focused }) => (
-                          <TabIcon
-                              icon={icons.plus} // Icon for the Create tab
-                              color={color}
-                              name="Create"
-                              focused={focused}
-                          />
-                      )
-                  }}
-              />
-              <Tabs.Screen
-                  name="profile"
-                  options={{
-                      title: 'Profile',
-                      headerShown: false,
-                      tabBarIcon: ({ color, focused }) => (
-                          <TabIcon
-                              icon={icons.profile} // Icon for the Profile tab
-                              color={color}
-                              name="Profile"
-                              focused={focused}
-                          />
-                      )
-                  }}
-              />
-              <Tabs.Screen
-                  name="home"
-                  options={{
-                      title: 'Home',
-                      headerShown: false,
-                      tabBarIcon: ({ color, focused }) => (
-                          <TabIcon
-                              icon={icons.home} // Icon for the Home tab
-                              color={color}
-                              name="Home"
-                              focused={focused}
-                          />
-                      )
-                  }}
-              />
-          </Tabs>
-    </>
-  )
+    return (
+        <>
+            <Tabs
+                screenOptions={{
+                    tabBarShowLabel: false, // Hide default tab labels
+                    tabBarActiveTintColor: '#FFA001', // Color for active tab
+                    tabBarInactiveTintColor: '#CDCDE0', // Color for inactive tabs
+                    tabBarStyle: {
+                        backgroundColor: '#161622', // Tab bar background color
+                        borderTopWidth: 1, // Top border width
+                        borderTopColor: '#232533', // Top border color
+                        height: 84, // Set the height of the tab bar
+                    }
+                }}
+            >
+                <Tabs.Screen
+                    name="home"
+                    options={{
+                        title: 'Home',
+                        headerShown: false,
+                        tabBarIcon: ({ color, focused }) => (
+                            <TabIcon
+                                icon={icons.home} // Icon for the Home tab
+                                color={color}
+                                name="Home"
+                                focused={focused}
+                            />
+                        )
+                    }}
+                />
+                {/* Each screen represents a tab */}
+                <Tabs.Screen
+                    name="bookmark"
+                    options={{
+                        title: 'Bookmark', // Title for the tab
+                        headerShown: false, // Hide the screen header
+                        tabBarIcon: ({ color, focused }) => (
+                            <TabIcon
+                                icon={icons.bookmark} // Icon for the Bookmark tab
+                                color={color}
+                                name="Bookmark"
+                                focused={focused} // Highlight based on active state
+                            />
+                        )
+                    }}
+                />
+                <Tabs.Screen
+                    name="create"
+                    options={{
+                        title: 'Create',
+                        headerShown: false,
+                        tabBarIcon: ({ color, focused }) => (
+                            <TabIcon
+                                icon={icons.plus} // Icon for the Create tab
+                                color={color}
+                                name="Create"
+                                focused={focused}
+                            />
+                        )
+                    }}
+                />
+                <Tabs.Screen
+                    name="profile"
+                    options={{
+                        title: 'Profile',
+                        headerShown: false,
+                        tabBarIcon: ({ color, focused }) => (
+                            <TabIcon
+                                icon={icons.profile} // Icon for the Profile tab
+                                color={color}
+                                name="Profile"
+                                focused={focused}
+                            />
+                        )
+                    }}
+                />
+            </Tabs>
+        </>
+    )
 }
 
 export default TabsLayout

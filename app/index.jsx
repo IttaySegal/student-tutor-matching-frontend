@@ -52,6 +52,11 @@ export default function App() {
                         handlePress={() => router.push('/sign-in')} // Navigation to sign-in page on press
                         containerStyles="w-full mt-7" // Styling for button container
                     />
+                    <CustomButton
+                        title="TabsForCheck" // Button text
+                        handlePress={() => router.push('/home')} // Navigation to sign-in page on press
+                        containerStyles="w-full mt-7" // Styling for button container
+                    />
                 </View>
             </ScrollView>
             {/* Status bar with custom background and light style */}
