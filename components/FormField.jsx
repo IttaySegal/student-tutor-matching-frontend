@@ -1,8 +1,6 @@
 // Import necessary components from React Native
 import { useState } from "react"; // useState hook for managing the visibility of the password field
 import { View, Text, TextInput, TouchableOpacity, Image } from "react-native"; // Basic components to build the form field UI
-
-// Import icons from the constants directory
 import { icons } from "../constants"; // Icons used for the password visibility toggle
 
 // Define the FormField component
@@ -11,6 +9,7 @@ const FormField = ({
   value, // The current value of the input field
   placeholder, // Placeholder text to show when the field is empty
   handleChangeText, // Function to handle changes in the input field
+  error, // Validation error message to display (if any)
   otherStyles, // Additional custom styles for the input container
   ...props // Spread any other props to be passed to the TextInput component
 }) => {
@@ -23,7 +22,11 @@ const FormField = ({
       <Text className="text-base text-gray-100 font-pmedium">{title}</Text>
 
       {/* Input container with styling */}
-      <View className="w-full h-16 px-4 bg-black-100 rounded-2xl border-2 border-black-200 focus:border-secondary flex flex-row items-center">
+      {/* <View className="w-full h-16 px-4 bg-black-100 rounded-2xl border-2 border-black-200 focus:border-secondary flex flex-row items-center"> */}
+      <View
+        className={`w-full h-16 px-4 bg-black-100 rounded-2xl border-2 ${error ? "border-red-500" : "border-black-200"
+          } flex flex-row items-center`}
+      >
         {/* TextInput component for user input */}
         <TextInput
           className="flex-1 text-white font-psemibold text-base" // Input field styling
@@ -47,6 +50,10 @@ const FormField = ({
           </TouchableOpacity>
         )}
       </View>
+      {/* Error Message */}
+      {error && (
+        <Text className="text-red-500 text-sm mt-1">{error}</Text>
+      )}
     </View>
   );
 };

@@ -1,11 +1,12 @@
 // Import necessary modules and components
-import { View, Text, ScrollView, Image } from 'react-native'; // Core components for layout and display
+import { View, Text, ScrollView, Image, Alert } from 'react-native'; // Core components for layout and display
 import React, { useState } from 'react'; // React and useState for managing component state
 import { SafeAreaView } from 'react-native-safe-area-context'; // Ensures content is within safe area boundaries
 import { images } from '../../constants'; // Import image assets from constants
 import FormField from '../../components/FormField'; // Custom input field component
 import CustomButton from '../../components/CustomButton'; // Custom reusable button component
-import { Link } from 'expo-router'; // Navigation link for routing
+import { Link, router } from 'expo-router'; // Navigation link for routing
+import isEmail from 'validator/lib/isEmail';
 
 // Define the SignIn component
 const SignIn = () => {
@@ -15,12 +16,49 @@ const SignIn = () => {
         password: '' // Password input
     });
 
+    // States for validation errors
+    const [emailError, setEmailError] = useState('');
+
     // State to manage submission status
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+
+
     // Function to handle form submission (currently empty)
-    const submit = () => {
-        // Logic for form submission can be added here
+    const submit = async () => {
+        if (form.email === "" || form.password === "") {
+            Alert.alert("Error", "Please fill in all fields");
+        }
+
+        if (emailError) {
+            Alert.alert("Error", "Please fix the errors before submitting");
+            return;
+        }
+
+        setIsSubmitting(true);
+        try {
+            await signIn(form.email, form.password);
+            const result = await getCurrentUser();
+            // setUser(result);
+            // setIsLogged(true);
+
+            // Alert.alert("Success", "User signed in successfully");
+            router.replace("/home");
+        } catch (error) {
+            Alert.alert("Error", error.message);
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    // Handle email change and validate
+    const handleEmailChange = (value) => {
+        setForm({ ...form, email: value });
+        if (!isEmail(value)) {
+            setEmailError("Please enter a valid email address");
+        } else {
+            setEmailError('');
+        }
     };
 
     return (
@@ -43,7 +81,9 @@ const SignIn = () => {
                     <FormField
                         title="Email" // Label for the input field
                         value={form.email} // Current email value from state
-                        handleChangeText={(e) => setForm({ ...form, email: e })} // Updates email in state
+                        // handleChangeText={(e) => setForm({ ...form, email: e })} // Updates email in state
+                        handleChangeText={handleEmailChange} // Updates the email in state with validation
+                        error={emailError}
                         otherStyles="mt-7" // Additional margin styling
                         keyboardType="email-address" // Ensures appropriate keyboard type for email input
                     />

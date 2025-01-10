@@ -4,6 +4,7 @@ import React from 'react'; // React library for building user interfaces
 import { Stack } from 'expo-router'; // Stack navigator from Expo Router for managing screen navigation
 import { StatusBar } from 'expo-status-bar'; // Provides a customizable status bar for the app
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 // Define the AuthLayout component
 const AuthLayout = () => {
     return (
