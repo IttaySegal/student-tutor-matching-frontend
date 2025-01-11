@@ -7,6 +7,9 @@ import FormField from '../../components/FormField'; // Custom input field compon
 import CustomButton from '../../components/CustomButton'; // Custom reusable button component
 import { Link, router } from 'expo-router'; // Navigation link for routing
 import isEmail from 'validator/lib/isEmail';
+import { signIn } from '../../services/authService'; // Import sign-in function from auth service
+
+
 
 // Define the SignIn component
 const SignIn = () => {
@@ -37,7 +40,17 @@ const SignIn = () => {
 
         setIsSubmitting(true);
         try {
-            await signIn(form.email, form.password);
+            
+            // await signIn(form.email, form.password); //replaced with the following
+            
+            // uses axios function from services/authService.js
+            const response = await signIn(form.email, form.password);
+
+            if (response.success) {
+                router.replace("/home");
+            } else {
+                Alert.alert("Error", response.message || "Sign-in failed");
+            }
             const result = await getCurrentUser();
             // setUser(result);
             // setIsLogged(true);
