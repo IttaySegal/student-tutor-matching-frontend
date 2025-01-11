@@ -90,11 +90,11 @@ const SignUp = () => {
             // const result = await createUser(form.firstName, form.lastName, form.email, form.password); // dummy for validation
             //   setUser(result);
             //   setIsLogged(true);
-            // router.push('/sign-in'); check later if works better than replace
-            router.replace("/home");
+            router.push('/sign-in'); // check later if works better than replace
+            // router.replace("/sign-in");
         } catch (error) {
           console.error('Registration Failed:', error.response?.data || error.message);
-          alert(error.response?.data?.message || 'An unexpected error occurred. Please try again.');
+          Alert.alert(error.response?.data?.message || 'An unexpected error occurred. Please try again.');
         } finally {
           setIsSubmitting(false);
         }

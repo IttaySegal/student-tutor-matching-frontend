@@ -31,6 +31,7 @@ const SignIn = () => {
     const submit = async () => {
         if (form.email === "" || form.password === "") {
             Alert.alert("Error", "Please fill in all fields");
+            return;
         }
 
         if (emailError) {
@@ -40,23 +41,26 @@ const SignIn = () => {
 
         setIsSubmitting(true);
         try {
-            
-            // await signIn(form.email, form.password); //replaced with the following
-            
+          
+            // await signIn(form.email, form.password); //replaced with the following line + 1
             // uses axios function from services/authService.js
-            const response = await signIn(form.email, form.password);
+            const response = await signIn({ email: form.email, password: form.password });
+            console.log("Sign-in Response:", response);  // ✅ Debug the response
 
-            if (response.success) {
+            if (response.success ) {
                 router.replace("/home");
             } else {
                 Alert.alert("Error", response.message || "Sign-in failed");
             }
-            const result = await getCurrentUser();
+            
+            // global provider function?
+            // const result = await getCurrentUser();
             // setUser(result);
             // setIsLogged(true);
 
-            // Alert.alert("Success", "User signed in successfully");
-            router.replace("/home");
+            Alert.alert("Success", "User signed in successfully");
+            // router.replace("/home");
+
         } catch (error) {
             Alert.alert("Error", error.message);
         } finally {
