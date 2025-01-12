@@ -69,13 +69,14 @@ const SignIn = () => {
                 <View className="w-full justify-center min-h-[83vh] px-4 my-6">
                     {/* Display the logo */}
                     <Image
-                        source={images.logo} // Logo image source
+                        source={images.newLogoBig} // Logo image source
                         resizeMode='contain' // Ensures the image fits within the container
-                        className="w-[115px] h=[35px]" // Styling for image size
+                        // className="w-[115px] h=[35px]" // Styling for image size
+                        className="w-[136px] h-[80px]" // Styling for image size
                     />
                     {/* Title for the login screen */}
                     <Text className="text-2xl font-semibold text-white mt-10 font-psemibold">
-                        Log in to Aora
+                        Log in to Tutor
                     </Text>
                     {/* Email input field */}
                     <FormField

@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'; // Ensures conten
 import { images } from '../../constants'; // Import image assets from a centralized constants file
 import FormField from '../../components/FormField'; // Custom input field component for reusable forms
 import CustomButton from '../../components/CustomButton'; // Custom button component for actions
-import { Link, router,useRouter } from 'expo-router'; // Navigation component for routing between screens
+import { Link, useRouter } from 'expo-router'; // Navigation component for routing between screens
 import isEmail from 'validator/lib/isEmail';
 import isStrongPassword from 'validator/lib/isStrongPassword';
 import { registerUser } from '../../services/authService';
@@ -26,7 +26,7 @@ const validateName = (name) => {
 
 // Define the SignUp component
 const SignUp = () => {
-  // State to manage form inputs
+    // State to manage form inputs
     const router = useRouter();
     const [form, setForm] = useState({
         // username: '', // Stores the username entered by the user
@@ -76,27 +76,27 @@ const SignUp = () => {
 
         setIsSubmitting(true);
         try {
-          // setIsSubmitting(true); // check if works in or out of the try
-          const data = await registerUser({
-            // username: form.username,
-            firstName: form.firstName,
-            lastName: form.lastName,
-            email: form.email,
-            // country: form.country,
-            password: form.password,
-          });
-          alert('Registration successful!');
-          console.log('Server Response:', data);
+            // setIsSubmitting(true); // check if works in or out of the try
+            const data = await registerUser({
+                // username: form.username,
+                firstName: form.firstName,
+                lastName: form.lastName,
+                email: form.email,
+                // country: form.country,
+                password: form.password,
+            });
+            alert('Registration successful!');
+            console.log('Server Response:', data);
             // const result = await createUser(form.firstName, form.lastName, form.email, form.password); // dummy for validation
             //   setUser(result);
             //   setIsLogged(true);
             // router.push('/sign-in'); check later if works better than replace
             router.replace("/home");
         } catch (error) {
-          console.error('Registration Failed:', error.response?.data || error.message);
-          alert(error.response?.data?.message || 'An unexpected error occurred. Please try again.');
+            console.error('Registration Failed:', error.response?.data || error.message);
+            alert(error.response?.data?.message || 'An unexpected error occurred. Please try again.');
         } finally {
-          setIsSubmitting(false);
+            setIsSubmitting(false);
         }
     };
 
@@ -142,13 +142,13 @@ const SignUp = () => {
                 <View className="w-full justify-center min-h-[83vh] px-4 my-6">
                     {/* Display the app's logo */}
                     <Image
-                        source={images.logo} // Logo image source from the constants file
+                        source={images.newLogoBig} // Logo image source from the constants file
                         resizeMode='contain' // Ensures the image fits properly within its container
-                        className="w-[115px] h=[35px]" // Styling for the image dimensions
+                        className="w-[136px] h-[80px]" // Styling for the image dimensions
                     />
                     {/* Title for the sign-up screen */}
                     <Text className="text-2xl font-semibold text-white mt-10 font-psemibold">
-                        Sign up to Aora
+                        Sign up to Tutor
                     </Text>
 
 
