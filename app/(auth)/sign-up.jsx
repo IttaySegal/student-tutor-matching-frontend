@@ -79,8 +79,8 @@ const SignUp = () => {
             // setIsSubmitting(true); // check if works in or out of the try
             const data = await registerUser({
                 // username: form.username,
-                firstName: form.firstName,
-                lastName: form.lastName,
+                first_name: form.firstName,
+                last_name: form.lastName,
                 email: form.email,
                 // country: form.country,
                 password: form.password,
