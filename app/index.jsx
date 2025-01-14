@@ -17,13 +17,13 @@ export default function App() {
                 <View className="w-full justify-center items-center min-h-[85vh] px-4">
                     {/* Logo image */}
                     <Image
-                        source={images.logo} // Path to logo image
-                        className="w-[130px] h-[84px]" // Styling for image dimensions
+                        source={images.newLogoBig} // Path to logo image
+                        className="w-[136px] h-[80px]" // Styling for image dimensions
                         resizeMode="contain" // Ensures the image fits within its container
                     />
                     {/* Main cards image */}
                     <Image
-                        source={images.cards} // Path to cards image
+                        source={images.newCards} // Path to cards image
                         className="max-w--[380px] w-full h-[300px]" // Styling for responsive width and fixed height
                         resizeMode='contain' // Ensures image maintains aspect ratio
                     />
@@ -32,7 +32,7 @@ export default function App() {
                         <Text className="text-3xl text-white font-bold text-center">
                             Discover Endless{"\n"}
                             Possibilities with{" "}
-                            <Text className="text-secondary-200">Aora</Text>
+                            <Text className="text-secondary-200">Tutor</Text>
                         </Text>
                         {/* Decorative path image */}
                         <Image
@@ -43,8 +43,7 @@ export default function App() {
                     </View>
                     {/* Subtitle text */}
                     <Text className="text-sm font-pregular text-gray-100 mt-7 text-center">
-                        Where Creativity Meets Innovation: Embark on a Journey of Limitless
-                        Exploration with Aora
+                        Empower Your Learning Journey: Where Knowledge Meets Guidance and Innovation for Personalized Learning and Academic Excellence with Tutor
                     </Text>
                     {/* Button for navigation */}
                     <CustomButton
