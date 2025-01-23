@@ -24,12 +24,10 @@ const handleError = (error) => {
  * @returns {Promise<Object>} API response data
  */
 export async function signIn(credentials) {
-  // const API_URL = `${REACT_APP_SERVER_DOMAIN}/users`; // dummy
   const API_URL = `${REACT_APP_SERVER_DOMAIN}/auth/login`; // ✅ Corrected endpoint
   try {
     const response = await axios.post(API_URL, credentials);
     return response;
-
   } catch (error) {
     handleError(error); // ✅ Consistent error handling
   }
@@ -41,9 +39,7 @@ export async function signIn(credentials) {
  * @returns {Promise<Object>} API response data
  */
 export async function registerUser(userData) {
-  // const API_URL = `${REACT_APP_SERVER_DOMAIN}/posts`; // dummy
   const API_URL = `${REACT_APP_SERVER_DOMAIN}/auth/register`; // ✅ Corrected endpoint
-
   try {
     console.log(API_URL);
     const response = await axios.post(API_URL, userData);
