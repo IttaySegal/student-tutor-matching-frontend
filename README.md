@@ -121,15 +121,15 @@ student-tutor-matching-frontend/
 
 ### Main Page:
 
-
+![image](https://github.com/user-attachments/assets/5fbac9cb-41af-47e7-a1b3-9baf8816e03e)
 
 ### Sign-Up Page:
 
-
+![image](https://github.com/user-attachments/assets/9c558a17-7436-481c-90ef-2a6de013c24a)
 
 ### Login Page:
 
-
+![image](https://github.com/user-attachments/assets/25e46a3b-ff8b-411e-9e24-8fb22957163a)
 
 ---
 
