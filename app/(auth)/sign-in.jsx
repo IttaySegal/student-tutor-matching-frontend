@@ -40,21 +40,10 @@ const SignIn = () => {
             // await signIn(form.email, form.password); //replaced with the following line + 1
             // uses axios function from services/authService.js
             const response = await signIn({ email: form.email, password: form.password });
-            console.log("Sign-in Response:", response);  // ✅ Debug the response
-
-            if (response.success) {
-                router.replace("/home");
-            } else {
-                Alert.alert("Error", response.message || "Sign-in failed");
-            }
-
-            // global provider function?
-            // const result = await getCurrentUser();
-            // setUser(result);
-            // setIsLogged(true);
+            // console.log("Sign-in Response:", response);  // ✅ Debug the response
 
             Alert.alert("Success", "User signed in successfully");
-            // router.replace("/home");
+            router.replace("/home");
 
         } catch (error) {
             Alert.alert("Error", error.message);

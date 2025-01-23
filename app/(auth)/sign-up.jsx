@@ -79,22 +79,18 @@ const SignUp = () => {
             // setIsSubmitting(true); // check if works in or out of the try
             const data = await registerUser({
                 // username: form.username,
-                firstName: form.firstName,
-                lastName: form.lastName,
+                first_name: form.firstName,
+                last_name: form.lastName,
                 email: form.email,
                 // country: form.country,
                 password: form.password,
             });
-            alert('Registration successful!');
-            console.log('Server Response:', data);
-            // const result = await createUser(form.firstName, form.lastName, form.email, form.password); // dummy for validation
-            //   setUser(result);
-            //   setIsLogged(true);
-            router.push('/sign-in'); // check later if works better than replace
-            // router.replace("/sign-in");
+            Alert.alert('Registration successful!'); // TODO modify this to be not hard coded ? 
+            router.replace('/sign-in');
+            // console.log('Server Response:', data); // ✅ Debug the response
+
         } catch (error) {
-          console.error('Registration Failed:', error.response?.data || error.message);
-          Alert.alert(error.response?.data?.message || 'An unexpected error occurred. Please try again.');
+            Alert.alert("Error", error.message);
         } finally {
             setIsSubmitting(false);
         }
