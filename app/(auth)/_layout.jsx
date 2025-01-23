@@ -26,6 +26,13 @@ const AuthLayout = () => {
                             headerShown: false // Disables the header for this screen
                         }}
                     />
+                    {/* Stack screen for the Reset Password page */}
+                    <Stack.Screen
+                        name="reset-password" // Route name for the reset password screen
+                        options={{
+                            headerShown: false // Disables the header for this screen
+                        }}
+                    />
                 </Stack>
 
                 {/* Status bar styling for the layout */}

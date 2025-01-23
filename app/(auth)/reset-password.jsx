@@ -2,31 +2,28 @@
 import { View, Text, ScrollView, Image, Alert } from 'react-native'; // Core components for layout and display
 import React, { useState } from 'react'; // React and useState for managing component state
 import { SafeAreaView } from 'react-native-safe-area-context'; // Ensures content is within safe area boundaries
-import { images } from '../../constants'; // Import image assets from constants
 import FormField from '../../components/FormField'; // Custom input field component
 import CustomButton from '../../components/CustomButton'; // Custom reusable button component
 import { Link, router } from 'expo-router'; // Navigation link for routing
 import isEmail from 'validator/lib/isEmail';
-import { signIn } from '../../services/authService'; // Import sign-in function from auth service
+import { resetPassword } from '../../services/authService'; // Import reset password function from auth service
+import { images } from '../../constants'; // Import image assets from constants
 
-// Define the SignIn component
-const SignIn = () => {
-    // State to manage form inputs
-    const [form, setForm] = useState({
-        email: '', // Email input
-        password: '' // Password input
-    });
+// Define the ResetPassword component
+const ResetPassword = () => {
+    // State to manage email input
+    const [email, setEmail] = useState('');
 
-    // States for validation errors
+    // State for validation error
     const [emailError, setEmailError] = useState('');
 
     // State to manage submission status
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Function to handle form submission (currently empty)
-    const submit = async () => {
-        if (form.email === "" || form.password === "") {
-            Alert.alert("Error", "Please fill in all fields");
+    // Function to handle form submission
+    const handleResetPassword = async () => {
+        if (email === "") {
+            Alert.alert("Error", "Please enter your email address");
             return;
         }
 
@@ -37,25 +34,15 @@ const SignIn = () => {
 
         setIsSubmitting(true);
         try {
-            // await signIn(form.email, form.password); //replaced with the following line + 1
-            // uses axios function from services/authService.js
-            const response = await signIn({ email: form.email, password: form.password });
-            console.log("Sign-in Response:", response);  // ✅ Debug the response
+            const response = await resetPassword(email); // Calls reset password service
+            console.log("Reset Password Response:", response); // ✅ Debug the response
 
             if (response.success) {
-                router.replace("/home");
+                Alert.alert("Success", "Password reset email sent successfully");
+                router.replace("/sign-in"); // Navigate back to the sign-in page
             } else {
-                Alert.alert("Error", response.message || "Sign-in failed");
+                Alert.alert("Error", response.message || "Failed to send reset password email");
             }
-
-            // global provider function?
-            // const result = await getCurrentUser();
-            // setUser(result);
-            // setIsLogged(true);
-
-            Alert.alert("Success", "User signed in successfully");
-            // router.replace("/home");
-
         } catch (error) {
             Alert.alert("Error", error.message);
         } finally {
@@ -65,7 +52,7 @@ const SignIn = () => {
 
     // Handle email change and validate
     const handleEmailChange = (value) => {
-        setForm({ ...form, email: value });
+        setEmail(value);
         if (!isEmail(value)) {
             setEmailError("Please enter a valid email address");
         } else {
@@ -79,63 +66,42 @@ const SignIn = () => {
             {/* ScrollView to handle content that may exceed the screen height */}
             <ScrollView>
                 <View className="w-full justify-center min-h-[83vh] px-4 my-6">
-                    {/* Display the logo */}
                     <Image
                         source={images.newLogoBig} // Logo image source
                         resizeMode='contain' // Ensures the image fits within the container
                         // className="w-[115px] h=[35px]" // Styling for image size
                         className="w-[136px] h-[80px]" // Styling for image size
                     />
-                    {/* Title for the login screen */}
+                    {/* Title for the reset password screen */}
                     <Text className="text-2xl font-semibold text-white mt-10 font-psemibold">
-                        Log in to Tutor
+                        Reset Your Password
                     </Text>
                     {/* Email input field */}
                     <FormField
                         title="Email" // Label for the input field
-                        value={form.email} // Current email value from state
-                        // handleChangeText={(e) => setForm({ ...form, email: e })} // Updates email in state
+                        value={email} // Current email value from state
                         handleChangeText={handleEmailChange} // Updates the email in state with validation
                         error={emailError}
                         otherStyles="mt-7" // Additional margin styling
                         keyboardType="email-address" // Ensures appropriate keyboard type for email input
                     />
-                    {/* Password input field */}
-                    <FormField
-                        title="Password" // Label for the input field
-                        value={form.password} // Current password value from state
-                        handleChangeText={(e) => setForm({ ...form, password: e })} // Updates password in state
-                        otherStyles="mt-7" // Additional margin styling
-                    />
-                    {/* Submit button */}
+                    {/* Reset Password button */}
                     <CustomButton
-                        title="Sign In" // Button text
-                        handlePress={submit} // Calls the submit function on press
+                        title="Reset Password" // Button text
+                        handlePress={handleResetPassword} // Calls the reset password function on press
                         containerStyles="mt-7" // Styling for button container
                         isLoading={isSubmitting} // Shows a loading indicator if the form is submitting
                     />
-                    {/* Navigation link to sign-up screen */}
+                    {/* Navigation link back to sign-in screen */}
                     <View className="flex justify-center pt-5 flex-row gap-2">
                         <Text className="text-lg text-gray-100 font-pregular">
-                            Don't have an account?
+                            Remember your password?
                         </Text>
                         <Link
-                            href="/sign-up" // Navigates to the sign-up screen
+                            href="/sign-in" // Navigates to the sign-in screen
                             className="text-lg font-psemibold text-secondary"
                         >
-                            Sign Up
-                        </Link>
-                    </View>
-                    {/* Navigation link to forget password screen */}
-                    <View className="flex justify-center pt-3 flex-row gap-2">
-                        <Text className="text-lg text-gray-100 font-pregular">
-                            Forgot your password?
-                        </Text>
-                        <Link
-                            href="/reset-password" // Navigates to the reset password screen
-                            className="text-lg font-psemibold text-secondary"
-                        >
-                            Reset Password
+                            Sign In
                         </Link>
                     </View>
                 </View>
@@ -144,4 +110,4 @@ const SignIn = () => {
     );
 };
 
-export default SignIn;
+export default ResetPassword;
