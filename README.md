@@ -107,11 +107,12 @@ Main Page:
 
 Sign Up Page:
 
-![WhatsApp Image 2025-01-14 at 09 25 36_418e27b3](https://github.com/user-attachments/assets/91fbd139-74d7-4088-93f3-fb7871a95c06)
+![image](https://github.com/user-attachments/assets/112c4af0-ce47-41e7-a257-b85671d78b23)
 
 Login Page:
 
-![WhatsApp Image 2025-01-14 at 09 25 36_f13dccc4](https://github.com/user-attachments/assets/ede7b288-1ed0-48cc-be18-cfda42cb6c78)
+![image](https://github.com/user-attachments/assets/b228a3d9-2c08-4394-bd70-b7fb7d823923)
+
 
 ### License
 MIT License
