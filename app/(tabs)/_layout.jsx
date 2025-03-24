@@ -1,6 +1,9 @@
 import { View, Text, Image, Dimensions } from 'react-native'
 import { Tabs, Redirect } from 'expo-router'
 import { icons } from '../../constants';
+import { useAuth } from '../../context/AuthContext'; // adjust if needed
+import { useEffect } from 'react';
+import { router } from 'expo-router';
 
 // Get the screen width for responsive styling
 const { width } = Dimensions.get('window');
@@ -32,6 +35,16 @@ const TabIcon = ({ icon, color, name, focused }) => {
 
 // Main layout for the tab navigation
 const TabsLayout = () => {
+    const { isAuthenticated, loading } = useAuth();
+
+    useEffect(() => {
+        if (!loading && !isAuthenticated) {
+            router.replace('/sign-in');
+        }
+    }, [loading, isAuthenticated]);
+
+    if (loading || !isAuthenticated) return null;
+
     return (
         <>
             <Tabs

@@ -4,6 +4,7 @@ import { useFonts } from "expo-font"; // Custom hook for loading fonts from asse
 import { SplashScreen, Stack } from "expo-router"; // SplashScreen for initial screen and Stack for navigation
 import "../global.css"; // Global styles (CSS) for the application
 import { SafeAreaView } from "react-native-safe-area-context";
+import { AuthProvider } from '../context/AuthContext';
 
 // Prevents the splash screen from auto-hiding until fonts are loaded
 SplashScreen.preventAutoHideAsync();
@@ -45,14 +46,16 @@ const RootLayout = () => {
 
   // Render the Stack navigator for app's layout
   return (
-    <SafeAreaView className="flex-1 bg-primary">
-      <Stack>
-        {/* Define the root screen (index) with no header */}
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        {/* Define the authentication screens (auth) with no header */}
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-      </Stack>
-    </SafeAreaView>
+    <AuthProvider>
+      <SafeAreaView className="flex-1 bg-primary">
+        <Stack>
+          {/* Define the root screen (index) with no header */}
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          {/* Define the authentication screens (auth) with no header */}
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        </Stack>
+      </SafeAreaView>
+    </AuthProvider>
   );
 };
 

@@ -1,129 +1,136 @@
-// Import necessary modules and components
-import { View, Text, ScrollView, Image, Alert } from 'react-native'; // Core components for layout and display
-import React, { useState } from 'react'; // React and useState for managing component state
-import { SafeAreaView } from 'react-native-safe-area-context'; // Ensures content is within safe area boundaries
-import { images } from '../../constants'; // Import image assets from constants
-import FormField from '../../components/FormField'; // Custom input field component
-import CustomButton from '../../components/CustomButton'; // Custom reusable button component
-import { Link, router } from 'expo-router'; // Navigation link for routing
-import isEmail from 'validator/lib/isEmail';
-import { signIn } from '../../services/authService'; // Import sign-in function from auth service
+// Import necessary modules and components from React Native and external libraries
+import { View, Text, ScrollView, Image, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context'; // Ensures UI doesn't overlap with notches/status bars
+import { images } from '../../constants'; // App images (e.g., logo)
+import FormField from '../../components/FormField'; // Reusable input field component
+import CustomButton from '../../components/CustomButton'; // Reusable button with loading support
+import { Link, router } from 'expo-router'; // For navigation
+import isEmail from 'validator/lib/isEmail'; // Email validation
+import { useAuth } from '../../context/AuthContext'; // 🔐 Auth context to access login function
 
-// Define the SignIn component
+// SignIn component: the login screen
 const SignIn = () => {
-    // State to manage form inputs
-    const [form, setForm] = useState({
-        email: '', // Email input
-        password: '' // Password input
-    });
+    // State for the form fields
+    const [form, setForm] = useState({ email: '', password: '' });
 
-    // States for validation errors
+    // State for email validation error
     const [emailError, setEmailError] = useState('');
 
-    // State to manage submission status
+    // State to show loading spinner during form submission
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Function to handle form submission (currently empty)
+    // Get login function from auth context
+    const { login } = useAuth();
+
+    /**
+     * Handles the form submission when the user presses "Sign In"
+     */
     const submit = async () => {
-        if (form.email === "" || form.password === "") {
-            Alert.alert("Error", "Please fill in all fields");
+        // Check for empty fields
+        if (form.email === '' || form.password === '') {
+            Alert.alert('Error', 'Please fill in all fields');
             return;
         }
 
+        // Check for email validation error
         if (emailError) {
-            Alert.alert("Error", "Please fix the errors before submitting");
+            Alert.alert('Error', 'Please fix the errors before submitting');
             return;
         }
 
+        // Begin form submission
         setIsSubmitting(true);
         try {
-            // await signIn(form.email, form.password); //replaced with the following line + 1
-            // uses axios function from services/authService.js
-            const response = await signIn({ email: form.email, password: form.password });
-            // console.log("Sign-in Response:", response);  // ✅ Debug the response
+            // Attempt to login using AuthContext
+            await login({ email: form.email, password: form.password });
 
-            Alert.alert("Success", "User signed in successfully");
-            router.replace("/home");
-
+            // If successful, navigate to the home screen
+            router.replace('/home');
         } catch (error) {
-            Alert.alert("Error", error.message);
+            // Show alert on login failure
+            Alert.alert('Error', error.message || 'Login failed');
         } finally {
+            // End loading spinner regardless of success/failure
             setIsSubmitting(false);
         }
     };
 
-    // Handle email change and validate
+    /**
+     * Validates and updates email field in form state
+     * @param {string} value - user's input in the email field
+     */
     const handleEmailChange = (value) => {
         setForm({ ...form, email: value });
+
+        // Validate email format and show error if invalid
         if (!isEmail(value)) {
-            setEmailError("Please enter a valid email address");
+            setEmailError('Please enter a valid email address');
         } else {
             setEmailError('');
         }
     };
 
+    // Return the screen UI
     return (
-        // Ensures content remains within safe boundaries and styles the background
         <SafeAreaView className="bg-primary h-full">
-            {/* ScrollView to handle content that may exceed the screen height */}
             <ScrollView>
                 <View className="w-full justify-center min-h-[83vh] px-4 my-6">
-                    {/* Display the logo */}
+
+                    {/* Logo */}
                     <Image
-                        source={images.newLogoBig} // Logo image source
-                        resizeMode='contain' // Ensures the image fits within the container
-                        // className="w-[115px] h=[35px]" // Styling for image size
-                        className="w-[136px] h-[80px]" // Styling for image size
+                        source={images.newLogoBig}
+                        resizeMode="contain"
+                        className="w-[136px] h-[80px]"
                     />
-                    {/* Title for the login screen */}
+
+                    {/* Screen Title */}
                     <Text className="text-2xl font-semibold text-white mt-10 font-psemibold">
                         Log in to Tutor
                     </Text>
-                    {/* Email input field */}
+
+                    {/* Email Input Field */}
                     <FormField
-                        title="Email" // Label for the input field
-                        value={form.email} // Current email value from state
-                        // handleChangeText={(e) => setForm({ ...form, email: e })} // Updates email in state
-                        handleChangeText={handleEmailChange} // Updates the email in state with validation
-                        error={emailError}
-                        otherStyles="mt-7" // Additional margin styling
-                        keyboardType="email-address" // Ensures appropriate keyboard type for email input
+                        title="Email"
+                        value={form.email}
+                        handleChangeText={handleEmailChange} // Live validation on change
+                        error={emailError} // Show email error message
+                        otherStyles="mt-7"
+                        keyboardType="email-address"
                     />
-                    {/* Password input field */}
+
+                    {/* Password Input Field */}
                     <FormField
-                        title="Password" // Label for the input field
-                        value={form.password} // Current password value from state
-                        handleChangeText={(e) => setForm({ ...form, password: e })} // Updates password in state
-                        otherStyles="mt-7" // Additional margin styling
+                        title="Password"
+                        value={form.password}
+                        handleChangeText={(e) => setForm({ ...form, password: e })}
+                        otherStyles="mt-7"
                     />
-                    {/* Submit button */}
+
+                    {/* Sign In Button with loading spinner */}
                     <CustomButton
-                        title="Sign In" // Button text
-                        handlePress={submit} // Calls the submit function on press
-                        containerStyles="mt-7" // Styling for button container
-                        isLoading={isSubmitting} // Shows a loading indicator if the form is submitting
+                        title="Sign In"
+                        handlePress={submit}
+                        containerStyles="mt-7"
+                        isLoading={isSubmitting}
                     />
-                    {/* Navigation link to sign-up screen */}
+
+                    {/* Link to Sign Up screen */}
                     <View className="flex justify-center pt-5 flex-row gap-2">
                         <Text className="text-lg text-gray-100 font-pregular">
                             Don't have an account?
                         </Text>
-                        <Link
-                            href="/sign-up" // Navigates to the sign-up screen
-                            className="text-lg font-psemibold text-secondary"
-                        >
+                        <Link href="/sign-up" className="text-lg font-psemibold text-secondary">
                             Sign Up
                         </Link>
                     </View>
-                    {/* Navigation link to forget password screen */}
+
+                    {/* Link to Password Reset screen */}
                     <View className="flex justify-center pt-3 flex-row gap-2">
                         <Text className="text-lg text-gray-100 font-pregular">
                             Forgot your password?
                         </Text>
-                        <Link
-                            href="/reset-password" // Navigates to the reset password screen
-                            className="text-lg font-psemibold text-secondary"
-                        >
+                        <Link href="/reset-password" className="text-lg font-psemibold text-secondary">
                             Reset Password
                         </Link>
                     </View>

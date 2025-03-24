@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { REACT_APP_SERVER_DOMAIN } from '@env';
 
+const BASE_URL = `${REACT_APP_SERVER_DOMAIN}/auth`;
+
 /**
  * Handles errors from Axios requests
  * @param {Object} error - The error object from Axios
@@ -21,13 +23,14 @@ const handleError = (error) => {
 /**
  * User Sign In
  * @param {Object} credentials - { email, password }
- * @returns {Promise<Object>} API response data
+ * @returns {Promise<Object>} { user, accessToken, refreshToken }
  */
 export async function signIn(credentials) {
   const API_URL = `${REACT_APP_SERVER_DOMAIN}/auth/login`; // ✅ Corrected endpoint
   try {
     const response = await axios.post(API_URL, credentials);
-    return response;
+    console.log(API_URL)
+    return response.data;
   } catch (error) {
     handleError(error); // ✅ Consistent error handling
   }
@@ -36,14 +39,14 @@ export async function signIn(credentials) {
 /**
  * User Registration
  * @param {Object} userData - { firstName, lastName, email, password }
- * @returns {Promise<Object>} API response data
+ * @returns {Promise<Object>} { user, accessToken, refreshToken }
  */
 export async function registerUser(userData) {
-  const API_URL = `${REACT_APP_SERVER_DOMAIN}/auth/register`; // ✅ Corrected endpoint
+  const API_URL = `${BASE_URL}/auth/register`; // ✅ Corrected endpoint
   try {
-    console.log(API_URL);
+    // console.log(API_URL);
     const response = await axios.post(API_URL, userData);
-    return response;
+    return response.data;
   } catch (error) {
     handleError(error); // Consistent error handling
   }

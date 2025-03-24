@@ -6,60 +6,73 @@ import { Redirect, router } from 'expo-router'; // Router utilities for navigati
 import { SafeAreaView } from 'react-native-safe-area-context'; // Ensures content stays within safe area boundaries
 import { images } from '../constants'; // Imports images from a central constants file
 import CustomButton from '../components/CustomButton'; // Custom reusable button component
+import { AuthProvider } from '../context/AuthContext'; // adjust path
+import { useAuth } from '../context/AuthContext'; // adjust path if needed
+
+
 
 // Main App component definition
 export default function App() {
+    const { isAuthenticated, loading } = useAuth();
+
+    // Auto-redirect logged-in user to /home
+    if (!loading && isAuthenticated) {
+        return <Redirect href="/home" />;
+    }
     return (
-        // Wrapper ensuring content is within safe area and styled with a primary background color
-        <SafeAreaView className="bg-primary h-full">
-            {/* ScrollView to enable scrolling if content overflows, with full height styling */}
-            <ScrollView contentContainerStyle={{ height: '100%' }}>
-                <View className="w-full justify-center items-center min-h-[85vh] px-4">
-                    {/* Logo image */}
-                    <Image
-                        source={images.newLogoBig} // Path to logo image
-                        className="w-[136px] h-[80px]" // Styling for image dimensions
-                        resizeMode="contain" // Ensures the image fits within its container
-                    />
-                    {/* Main cards image */}
-                    <Image
-                        source={images.newCards} // Path to cards image
-                        className="max-w--[380px] w-full h-[300px]" // Styling for responsive width and fixed height
-                        resizeMode='contain' // Ensures image maintains aspect ratio
-                    />
-                    {/* Text section with a decorative image */}
-                    <View className="relative mt-5">
-                        <Text className="text-3xl text-white font-bold text-center">
-                            Discover Endless{"\n"}
-                            Possibilities with{" "}
-                            <Text className="text-secondary-200">Tutor</Text>
-                        </Text>
-                        {/* Decorative path image */}
+        <AuthProvider>
+            {/* // Wrapper ensuring content is within safe area and styled with a primary background color */}
+            <SafeAreaView className="bg-primary h-full">
+                {/* ScrollView to enable scrolling if content overflows, with full height styling */}
+                <ScrollView contentContainerStyle={{ height: '100%' }}>
+                    <View className="w-full justify-center items-center min-h-[85vh] px-4">
+                        {/* Logo image */}
                         <Image
-                            source={images.path} // Path to the decorative image
-                            className="w-[136px] h-[15px] absolute -bottom-2 -right-8" // Styling for positioning and dimensions
-                            resizeMode="contain" // Ensures image fits within defined dimensions
+                            source={images.newLogoBig} // Path to logo image
+                            className="w-[136px] h-[80px]" // Styling for image dimensions
+                            resizeMode="contain" // Ensures the image fits within its container
+                        />
+                        {/* Main cards image */}
+                        <Image
+                            source={images.newCards} // Path to cards image
+                            className="max-w--[380px] w-full h-[300px]" // Styling for responsive width and fixed height
+                            resizeMode='contain' // Ensures image maintains aspect ratio
+                        />
+                        {/* Text section with a decorative image */}
+                        <View className="relative mt-5">
+                            <Text className="text-3xl text-white font-bold text-center">
+                                Discover Endless{"\n"}
+                                Possibilities with{" "}
+                                <Text className="text-secondary-200">Tutor</Text>
+                            </Text>
+                            {/* Decorative path image */}
+                            <Image
+                                source={images.path} // Path to the decorative image
+                                className="w-[136px] h-[15px] absolute -bottom-2 -right-8" // Styling for positioning and dimensions
+                                resizeMode="contain" // Ensures image fits within defined dimensions
+                            />
+                        </View>
+                        {/* Subtitle text */}
+                        <Text className="text-sm font-pregular text-gray-100 mt-7 text-center">
+                            Empower Your Learning Journey: Where Knowledge Meets Guidance and Innovation for Personalized Learning and Academic Excellence with Tutor
+                        </Text>
+                        {/* Button for navigation */}
+                        <CustomButton
+                            title="Continue with Email" // Button text
+                            handlePress={() => router.push('/sign-in')} // Navigation to sign-in page on press
+                            containerStyles="w-full mt-7" // Styling for button container
+                        />
+                        <CustomButton
+                            title="TabsForCheck" // Button text
+                            handlePress={() => router.push('/home')} // Navigation to sign-in page on press
+                            containerStyles="w-full mt-7" // Styling for button container
                         />
                     </View>
-                    {/* Subtitle text */}
-                    <Text className="text-sm font-pregular text-gray-100 mt-7 text-center">
-                        Empower Your Learning Journey: Where Knowledge Meets Guidance and Innovation for Personalized Learning and Academic Excellence with Tutor
-                    </Text>
-                    {/* Button for navigation */}
-                    <CustomButton
-                        title="Continue with Email" // Button text
-                        handlePress={() => router.push('/sign-in')} // Navigation to sign-in page on press
-                        containerStyles="w-full mt-7" // Styling for button container
-                    />
-                    <CustomButton
-                        title="TabsForCheck" // Button text
-                        handlePress={() => router.push('/home')} // Navigation to sign-in page on press
-                        containerStyles="w-full mt-7" // Styling for button container
-                    />
-                </View>
-            </ScrollView>
-            {/* Status bar with custom background and light style */}
-            <StatusBar backgroundColor='#161622' style='light' />
-        </SafeAreaView>
+                </ScrollView>
+                {/* Status bar with custom background and light style */}
+                <StatusBar backgroundColor='#161622' style='light' />
+            </SafeAreaView>
+        </AuthProvider>
+
     );
 }
