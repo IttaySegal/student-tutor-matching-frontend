@@ -26,7 +26,7 @@ const handleError = (error) => {
  * @returns {Promise<Object>} { user, accessToken, refreshToken }
  */
 export async function signIn(credentials) {
-  const API_URL = `${REACT_APP_SERVER_DOMAIN}/auth/login`; // ✅ Corrected endpoint
+  const API_URL = `${BASE_URL}/login`; // ✅ Corrected endpoint
   try {
     const response = await axios.post(API_URL, credentials);
     console.log(API_URL)
@@ -42,7 +42,7 @@ export async function signIn(credentials) {
  * @returns {Promise<Object>} { user, accessToken, refreshToken }
  */
 export async function registerUser(userData) {
-  const API_URL = `${BASE_URL}/auth/register`; // ✅ Corrected endpoint
+  const API_URL = `${BASE_URL}/register`; // ✅ Corrected endpoint
   try {
     // console.log(API_URL);
     const response = await axios.post(API_URL, userData);
