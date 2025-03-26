@@ -4,7 +4,6 @@ import React from 'react'; // React library for building user interfaces
 import { Stack } from 'expo-router'; // Stack navigator from Expo Router for managing screen navigation
 import { StatusBar } from 'expo-status-bar'; // Provides a customizable status bar for the app
 import { SafeAreaView } from 'react-native-safe-area-context';
-
 // Define the AuthLayout component
 const AuthLayout = () => {
     return (
@@ -32,6 +31,14 @@ const AuthLayout = () => {
                         options={{
                             headerShown: false // Disables the header for this screen
                         }}
+                    />
+                    <Stack.Screen
+                        name="verify-reset-code"
+                        options={{ headerShown: false }} // 👈 ADD THIS
+                    />
+                    <Stack.Screen
+                        name="change-password"
+                        options={{ headerShown: false }} // 👈 AND THIS
                     />
                 </Stack>
 
