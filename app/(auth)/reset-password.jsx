@@ -24,7 +24,7 @@ const ResetPassword = () => {
       console.log("Reset Password Response:", response);
       if (response.success) {
         Alert.alert("Success", "Password reset email sent successfully");
-        router.push({ pathname: "/verify-reset-code", params: { email } }); // 👈 GO TO NEXT STEP
+        router.replace({ pathname: "/verify-reset-code", params: { email } }); // 👈 GO TO NEXT STEP
       } else {
         Alert.alert("Error", response.message || "Failed to send reset password email");
       }

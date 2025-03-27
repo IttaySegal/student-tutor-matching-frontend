@@ -35,6 +35,7 @@ const ChangePassword = () => {
     setPasswordError(error);
   };
 
+  // Function to handle password update @TODO add red flag when the password don't match
   const handleUpdatePassword = async () => {
     if (!newPassword || !confirmPassword) {
       return Alert.alert('Error', 'All fields are required');
@@ -60,7 +61,7 @@ const ChangePassword = () => {
         Alert.alert('Error', response.message || 'Failed to update password');
       }
     } catch (error) {
-      Alert.alert('Error', error.message || 'Something went wrong');
+      Alert.alert('Error', error.message || 'Something went wrong in the server');
     } finally {
       setIsSubmitting(false);
     }

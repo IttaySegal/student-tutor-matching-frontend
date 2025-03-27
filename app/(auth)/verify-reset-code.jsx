@@ -24,7 +24,7 @@ const VerifyResetCode = () => {
     try {
       const response = await verifyResetCode(email, resetCode);
       if (response.success) {
-        router.push({ pathname: '/change-password', params: { tempToken: response.tempToken } });
+        router.replace({ pathname: '/change-password', params: { tempToken: response.tempToken } });
       } else {
         Alert.alert("Error", response.message || "Failed to verify reset code");
       }
