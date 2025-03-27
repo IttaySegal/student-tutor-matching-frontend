@@ -108,9 +108,9 @@ const RootLayout = () => {
     <AuthProvider>
       <SafeAreaView className="flex-1 bg-primary" onLayout={onLayoutRootView}>
         <Stack>
-          <Stack.Screen name="index" options={{ headerShown: true }} />
-          <Stack.Screen name="(auth)" options={{ headerShown: true }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: true }} />
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         </Stack>
       </SafeAreaView>
     </AuthProvider>

@@ -1,35 +1,42 @@
 import { View, Text, ScrollView, Image, Alert } from 'react-native';
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import FormField from '../../components/FormField';
-import CustomButton from '../../components/CustomButton';
 import { useLocalSearchParams, router } from 'expo-router';
 import { verifyResetCode } from '../../services/authService';
 import { images } from '../../constants';
+import CustomButton from '../../components/CustomButton';
 
+import { CodeField, Cursor, useBlurOnFulfill, useClearByFocusCell } from 'react-native-confirmation-code-field';
 
-  
+const CELL_COUNT = 6;
+
 const VerifyResetCode = () => {
   const { email } = useLocalSearchParams();
   const [resetCode, setResetCode] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const ref = useBlurOnFulfill({ value: resetCode, cellCount: CELL_COUNT });
+  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+    value: resetCode,
+    setValue: setResetCode,
+  });
+
   const handleVerifyCode = async () => {
-    if (!resetCode) {
-      Alert.alert("Error", "Please enter the reset code");
+    if (!resetCode || resetCode.length !== 6) {
+      Alert.alert("Error", "Please enter the 6-digit reset code");
       return;
     }
 
     setIsSubmitting(true);
     try {
-      const response = await verifyResetCode(email, resetCode);
+      const response = await verifyResetCode(email, resetCode.trim());
       if (response.success) {
         router.replace({ pathname: '/change-password', params: { tempToken: response.tempToken } });
       } else {
         Alert.alert("Error", response.message || "Failed to verify reset code");
       }
     } catch (error) {
-      Alert.alert("Error", error.message || "Something went wrong");
+      Alert.alert("Error", error.message || "Something went wrong in the server");
     } finally {
       setIsSubmitting(false);
     }
@@ -47,17 +54,43 @@ const VerifyResetCode = () => {
           <Text className="text-2xl font-semibold text-white mt-10 font-psemibold">
             Enter Your Reset Code
           </Text>
-          <FormField
-            title="Reset Code"
+
+          <CodeField
+            ref={ref}
+            {...props}
             value={resetCode}
-            handleChangeText={setResetCode}
-            keyboardType="numeric"
-            otherStyles="mt-7"
+            onChangeText={setResetCode}
+            cellCount={CELL_COUNT}
+            rootStyle={{ marginTop: 30 }}
+            keyboardType="number-pad"
+            textContentType="oneTimeCode"
+            renderCell={({ index, symbol, isFocused }) => (
+              <View
+                key={index}
+                style={{
+                  width: 40,
+                  height: 50,
+                  lineHeight: 38,
+                  marginHorizontal: 6,
+                  borderWidth: 2,
+                  borderColor: isFocused ? '#fff' : '#ccc',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 8,
+                }}
+                onLayout={getCellOnLayoutHandler(index)}
+              >
+                <Text style={{ color: '#fff', fontSize: 24 }}>
+                  {symbol || (isFocused ? <Cursor /> : null)}
+                </Text>
+              </View>
+            )}
           />
+
           <CustomButton
             title="Verify Code"
             handlePress={handleVerifyCode}
-            containerStyles="mt-7"
+            containerStyles="mt-10"
             isLoading={isSubmitting}
           />
         </View>
@@ -67,8 +100,3 @@ const VerifyResetCode = () => {
 };
 
 export default VerifyResetCode;
-
-VerifyResetCode.options = {
-    headerShown: false,
-  };
-  

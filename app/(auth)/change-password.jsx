@@ -14,6 +14,7 @@ const ChangePassword = () => {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validatePassword = (password) => {
@@ -31,11 +32,29 @@ const ChangePassword = () => {
 
   const handleNewPasswordChange = (value) => {
     setNewPassword(value);
+
+    // Validate password strength
     const error = validatePassword(value);
     setPasswordError(error);
+
+    // If confirmPassword already has a value, re-validate match
+    if (confirmPassword && value !== confirmPassword) {
+      setConfirmPasswordError("Passwords do not match");
+    } else {
+      setConfirmPasswordError('');
+    }
   };
 
-  // Function to handle password update @TODO add red flag when the password don't match
+  const handleConfirmPasswordChange = (value) => {
+    setConfirmPassword(value);
+
+    if (value !== newPassword) {
+      setConfirmPasswordError("Passwords do not match");
+    } else {
+      setConfirmPasswordError('');
+    }
+  };
+
   const handleUpdatePassword = async () => {
     if (!newPassword || !confirmPassword) {
       return Alert.alert('Error', 'All fields are required');
@@ -48,7 +67,8 @@ const ChangePassword = () => {
     }
 
     if (newPassword !== confirmPassword) {
-      return Alert.alert('Error', 'Passwords do not match');
+      setConfirmPasswordError("Passwords do not match");
+      return;
     }
 
     setIsSubmitting(true);
@@ -79,6 +99,8 @@ const ChangePassword = () => {
           <Text className="text-2xl font-semibold text-white mt-10 font-psemibold">
             Set New Password
           </Text>
+
+          {/* New password */}
           <FormField
             title="New Password"
             value={newPassword}
@@ -87,13 +109,17 @@ const ChangePassword = () => {
             secureTextEntry
             error={passwordError}
           />
+
+          {/* Confirm password with red error if it doesn’t match */}
           <FormField
             title="Confirm Password"
             value={confirmPassword}
-            handleChangeText={setConfirmPassword}
+            handleChangeText={handleConfirmPasswordChange}
             otherStyles="mt-5"
             secureTextEntry
+            error={confirmPasswordError}
           />
+
           <CustomButton
             title="Update Password"
             handlePress={handleUpdatePassword}
