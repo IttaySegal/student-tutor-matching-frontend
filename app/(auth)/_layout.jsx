@@ -4,9 +4,20 @@ import React from 'react'; // React library for building user interfaces
 import { Stack } from 'expo-router'; // Stack navigator from Expo Router for managing screen navigation
 import { StatusBar } from 'expo-status-bar'; // Provides a customizable status bar for the app
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useAuth } from '../../context/AuthContext'; // adjust if needed
+import { useEffect } from 'react';
+import { router } from 'expo-router';
 
 // Define the AuthLayout component
 const AuthLayout = () => {
+
+    const { isAuthenticated, loading } = useAuth();
+    useEffect(() => {
+        if (!loading && isAuthenticated) {
+            router.replace('/(tabs)/home');
+        }
+    }, [loading, isAuthenticated]);
+
     return (
         <>
             <SafeAreaView className="flex-1 bg-primary">

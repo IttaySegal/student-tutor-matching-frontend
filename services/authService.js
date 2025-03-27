@@ -29,7 +29,7 @@ export async function signIn(credentials) {
   const API_URL = `${BASE_URL}/login`; // ✅ Corrected endpoint
   try {
     const response = await axios.post(API_URL, credentials);
-    console.log(API_URL)
+    // console.log(API_URL)
     return response.data;
   } catch (error) {
     handleError(error); // ✅ Consistent error handling
@@ -49,5 +49,21 @@ export async function registerUser(userData) {
     return response.data;
   } catch (error) {
     handleError(error); // Consistent error handling
+  }
+}
+
+/**
+ * User Sign Out
+ * @param {string} userId - ID of the user to log out
+ * @returns {Promise<Object>} API response
+ */
+export async function signOut(userId) {
+  const API_URL = `${BASE_URL}/logout`; // Adjust endpoint if needed
+  console.log(API_URL)
+  try {
+    const response = await axios.post(API_URL, { user_id: userId });
+    return response;
+  } catch (error) {
+    handleError(error);
   }
 }

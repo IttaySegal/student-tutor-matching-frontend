@@ -1,13 +1,17 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { signIn, refreshAccessToken } from '../services/authService'; // Auth service functions to log in and refresh token
+import { signIn, signOut, refreshAccessToken } from '../services/authService'; // Auth service functions to log in and refresh token
 
 
 // TODO REFRESH ACCESS TOKEN - NNEDS TO BE IMPLEMENTED IN AUTH SERVICE ??
 
 // Create the AuthContext so we can provide and consume auth state throughout the app
 const AuthContext = createContext();
-
+/**
+ * useAuth: Custom hook to allow easy access to the auth context from any component
+ * Usage: const { user, login, logout, refresh, isAuthenticated } = useAuth();
+ */
+export const useAuth = () => useContext(AuthContext);
 /**
  * AuthProvider: This component wraps around your app (or part of it)
  * and provides authentication-related data and functions to its children.
@@ -25,8 +29,9 @@ export const AuthProvider = ({ children }) => {
         const loadAuthState = async () => {
             try {
                 const storedUser = await AsyncStorage.getItem('user');
+                console.log("1 sotredUser: ", storedUser)
                 const storedToken = await AsyncStorage.getItem('accessToken');
-
+                console.log("2 sotredToken: ", storedToken)
                 // If we have both user and token, restore them to state
                 if (storedUser && storedToken) {
                     setUser(JSON.parse(storedUser));
@@ -69,10 +74,18 @@ export const AuthProvider = ({ children }) => {
      * This can be triggered manually or automatically if something goes wrong (e.g., token expired).
      */
     const logout = async () => {
+        try {
+            if (user?.id) {
+                await signOut(user.id); // ✅ Notify the backend
+            }
+        } catch (error) {
+            console.warn('Failed to notify backend on logout:', error.message);
+            // Optional: Still log out locally even if the request fails
+        }
+
+        // Clear client-side state and storage
         setUser(null);
         setAccessToken(null);
-
-        // Remove all auth-related items from storage
         await AsyncStorage.multiRemove(['user', 'accessToken', 'refreshToken']);
     };
 
@@ -115,9 +128,3 @@ export const AuthProvider = ({ children }) => {
     // Provide the value to all children components
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
-
-/**
- * useAuth: Custom hook to allow easy access to the auth context from any component
- * Usage: const { user, login, logout, refresh, isAuthenticated } = useAuth();
- */
-export const useAuth = () => useContext(AuthContext);

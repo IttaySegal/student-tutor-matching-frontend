@@ -10,6 +10,16 @@ const { width } = Dimensions.get('window');
 
 // Component for rendering individual tab icons and labels
 const TabIcon = ({ icon, color, name, focused }) => {
+
+    const { isAuthenticated, loading } = useAuth();
+
+    useEffect(() => {
+        if (!loading && !isAuthenticated) {
+            router.replace('/');
+        }
+    }, [loading, isAuthenticated]);
+
+
     return (
         <View className="flex items-center justify-center gap-2 top-4" style={{ minWidth: 100 }} >
             <Image
@@ -35,15 +45,16 @@ const TabIcon = ({ icon, color, name, focused }) => {
 
 // Main layout for the tab navigation
 const TabsLayout = () => {
-    const { isAuthenticated, loading } = useAuth();
+    // console.log("Inside TabsLayout before: useAuth")
+    // const { isAuthenticated, loading } = useAuth();
+    // console.log("Inside TabsLayout after: useAuth")
+    // useEffect(() => {
+    //     if (!loading && !isAuthenticated) {
+    //         router.replace('/(auth)/sign-in');
+    //     }
+    // }, [loading, isAuthenticated]);
 
-    useEffect(() => {
-        if (!loading && !isAuthenticated) {
-            router.replace('/sign-in');
-        }
-    }, [loading, isAuthenticated]);
-
-    if (loading || !isAuthenticated) return null;
+    // if (loading || !isAuthenticated) return null;
 
     return (
         <>

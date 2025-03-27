@@ -8,6 +8,8 @@ import CustomButton from '../../components/CustomButton'; // Reusable button wit
 import { Link, router } from 'expo-router'; // For navigation
 import isEmail from 'validator/lib/isEmail'; // Email validation
 import { useAuth } from '../../context/AuthContext'; // 🔐 Auth context to access login function
+import { CommonActions, useNavigation } from '@react-navigation/native';
+
 
 // SignIn component: the login screen
 const SignIn = () => {
@@ -22,6 +24,8 @@ const SignIn = () => {
 
     // Get login function from auth context
     const { login } = useAuth();
+
+    const navigation = useNavigation();
 
     /**
      * Handles the form submission when the user presses "Sign In"
@@ -45,8 +49,19 @@ const SignIn = () => {
             // Attempt to login using AuthContext
             await login({ email: form.email, password: form.password });
 
+            // router.replace('/(tabs)/home'); // This clears the previous group stack
+
             // If successful, navigate to the home screen
-            router.replace('/home');
+            // router.replace("/home")
+            router.back();
+
+            // navigation.dispatch(
+            //     CommonActions.reset({
+            //         index: 0,
+            //         routes: [{ name: '/(tabs)/home' }],
+            //     })
+            // );
+
         } catch (error) {
             // Show alert on login failure
             Alert.alert('Error', error.message || 'Login failed');
