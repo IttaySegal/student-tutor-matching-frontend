@@ -7,7 +7,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '../../context/AuthContext'; // adjust if needed
 import { useEffect } from 'react';
 import { router } from 'expo-router';
-
 // Define the AuthLayout component
 const AuthLayout = () => {
 
@@ -43,6 +42,14 @@ const AuthLayout = () => {
                         options={{
                             headerShown: false // Disables the header for this screen
                         }}
+                    />
+                    <Stack.Screen
+                        name="verify-reset-code"
+                        options={{ headerShown: false }} // 👈 ADD THIS
+                    />
+                    <Stack.Screen
+                        name="change-password"
+                        options={{ headerShown: false }} // 👈 AND THIS
                     />
                 </Stack>
 
