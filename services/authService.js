@@ -104,57 +104,6 @@ export async function updatePassword(tempToken, newPassword, confirmPassword) {
 }
 
 /**
- * Request a password reset code to be sent to the user's email.
- * @param {string} email
- * @returns {Promise<Object>} { message }
- */
-export async function resetPassword(email) {
-  const API_URL = `${BASE_URL}/forgot-password`;
-  try {
-    const response = await axios.post(API_URL, { email });
-    return {
-      success: true,
-      message: response.data.message
-    };
-  } catch (error) {
-    handleError(error);
-    return {
-      success: false,
-      message: error.message || "Something went wrong"
-    };
-  }
-}
-
-export async function verifyResetCode(email, resetCode) {
-  const API_URL = `${BASE_URL}/verify-reset-code`;
-  try {
-    const response = await axios.post(API_URL, { email, resetCode });
-    return {
-      success: true,
-      tempToken: response.data.tempToken,
-      message: response.data.message,
-    };
-  } catch (error) {
-    handleError(error);
-    return { success: false, message: error.message || 'Failed to verify reset code' };
-  }
-
-}
-export async function updatePassword(tempToken, newPassword, confirmPassword) {
-  const API_URL = `${BASE_URL}/update-password`;
-  try {
-    const response = await axios.patch(API_URL, { tempToken, newPassword, confirmPassword });
-    return {
-      success: true,
-      message: response.data.message,
-    };
-  } catch (error) {
-    handleError(error);
-    return { success: false, message: error.message || 'Failed to update password' };
-  }
-}
-
-/**
  * User Sign Out
  * @param {string} userId - ID of the user to log out
  * @returns {Promise<Object>} API response
