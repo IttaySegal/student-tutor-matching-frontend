@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.23.1",
+    "@react-native-community/datetimepicker": "8.2.0",
     "autoprefixer": "^10.4.20",
     "axios": "^1.7.9",
     "expo": "~52.0.38",
@@ -22,6 +23,7 @@
     "postcss": "^8.4.49",
     "react": "18.3.1",
     "react-native": "^0.76.7",
+    "react-native-calendars": "^1.1310.0",
     "react-native-confirmation-code-field": "^7.4.0",
     "react-native-dotenv": "^3.4.11",
     "react-native-dropdown-select-list": "^2.0.5",

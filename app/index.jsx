@@ -115,8 +115,23 @@
 
 //----------------------------------------------------/
 
-import SearchLessonsScreen from "./SearchLessonsScreen";
+// import SearchLessonsScreen from "./SearchLessonsScreen";
+
+// export default function Index() {
+//   return <SearchLessonsScreen />;
+// }
+//----------------------------------------------------/
+
+import React, { useState } from "react";
+import { View, Text } from "react-native";
+import DateSelector from "../components/DateSelector"; // שים לב לנתיב הנכון
 
 export default function Index() {
-  return <SearchLessonsScreen />;
+  const [date, setDate] = useState(new Date()); // אם צריך, תעדכן את הסטייט של התאריך
+  return (
+    <View>
+      <DateSelector date={date} setDate={setDate} />
+    </View>
+  );
 }
+//----------------------------------------------------/
