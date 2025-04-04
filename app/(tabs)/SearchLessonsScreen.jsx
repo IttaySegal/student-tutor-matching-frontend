@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, FlatList } from "react-native";
-import SearchBar from "../components/SearchBar";
-import LessonCard from "../components/LessonCard";
+import SearchBar from "../../components/SearchBar";
+import LessonCard from "../../components/LessonCard";
 
 const SearchLessonsScreen = () => {
   const [results, setResults] = useState([]);

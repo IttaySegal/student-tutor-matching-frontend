@@ -171,17 +171,47 @@
 //   );
 // }
 //----------------------------------------------------/
+// import React from "react";
+// import { SafeAreaView, StatusBar } from "react-native";
+// import CreateLesson from "./(tabs)/CreateLesson";
+
+// export default function Index() {
+//   return (
+//     <SafeAreaView style={{ flex: 1 }}>
+//       <StatusBar barStyle="dark-content" />
+//       <CreateLesson /> {/* הצגת דף TestPage */}
+//     </SafeAreaView>
+//   );
+// }
+
+//----------------------------------------------------/
+// import React from "react";
+// import { SafeAreaView, StatusBar } from "react-native";
+// import MyLessonsScreen from "./(tabs)/MyLessonsScreen";
+
+// export default function Index() {
+//   return (
+//     <SafeAreaView style={{ flex: 1 }}>
+//       <StatusBar barStyle="dark-content" />
+//       <MyLessonsScreen /> {/* הצגת דף TestPage */}
+//     </SafeAreaView>
+//   );
+// }
+//----------------------------------------------------/
+
 import React from "react";
 import { SafeAreaView, StatusBar } from "react-native";
-import CreateLesson from "./(tabs)/CreateLesson";
+import HomePage from "./(tabs)/HomePage";
+
+// עבור בדיקה, אתה יכול להגדיר את הערכים של המשתמש כאן
+const userRole = "student"; // לדוגמה, חניך
+const userName = "יוסי"; // שם פרטי של המשתמש
 
 export default function Index() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar barStyle="dark-content" />
-      <CreateLesson /> {/* הצגת דף TestPage */}
+      <HomePage userRole={userRole} userName={userName} />
     </SafeAreaView>
   );
 }
-
-//----------------------------------------------------/
