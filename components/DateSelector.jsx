@@ -24,5 +24,4 @@ const DateSelector = ({ date, setDate }) => {
     </View>
   );
 };
-
 export default DateSelector;

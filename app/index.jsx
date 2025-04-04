@@ -122,16 +122,66 @@
 // }
 //----------------------------------------------------/
 
-import React, { useState } from "react";
-import { View, Text } from "react-native";
-import DateSelector from "../components/DateSelector"; // שים לב לנתיב הנכון
+// import React, { useState } from "react";
+// import { View, Text } from "react-native";
+// import DateSelector from "../components/DateSelector"; // שים לב לנתיב הנכון
+
+// export default function Index() {
+//   const [date, setDate] = useState(new Date()); // אם צריך, תעדכן את הסטייט של התאריך
+//   return (
+//     <View>
+//       <DateSelector date={date} setDate={setDate} />
+//     </View>
+//   );
+// }
+//----------------------------------------------------/
+// import React, { useState } from "react";
+// import { View, Text } from "react-native";
+// import TimeSelector from "../components/TimeSelector"; // נתיב לקומפוננטה
+
+// export default function Index() {
+//   const [time, setTime] = useState(new Date()); // הסטייט שמחזיק את הזמן שנבחר
+
+//   return (
+//     <View style={{ padding: 20 }}>
+//       <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 10 }}>
+//         בחר שעה (בין 8:00 ל־18:00):
+//       </Text>
+//       <TimeSelector time={time} setTime={setTime} /> {/* השימוש בקומפוננטה */}
+//       {/* הצגת הזמן שנבחר */}
+//       {time && (
+//         <Text style={{ marginTop: 20 }}>
+//           השעה הנבחרת: {time.getHours()}:
+//           {time.getMinutes() < 10 ? "0" + time.getMinutes() : time.getMinutes()}
+//         </Text>
+//       )}
+//     </View>
+//   );
+// }
+//----------------------------------------------------/
+// import React from "react";
+// import { View } from "react-native";
+// import CreateLesson from "./(tabs)/CreateLesson"; // נתיב לקומפוננטת יצירת שיעור
+
+// export default function Index() {
+//   return (
+//     <View style={{ flex: 1 }}>
+//       <CreateLesson /> {/* הצגת הקומפוננטה של יצירת שיעור */}
+//     </View>
+//   );
+// }
+//----------------------------------------------------/
+import React from "react";
+import { SafeAreaView, StatusBar } from "react-native";
+import CreateLesson from "./(tabs)/CreateLesson";
 
 export default function Index() {
-  const [date, setDate] = useState(new Date()); // אם צריך, תעדכן את הסטייט של התאריך
   return (
-    <View>
-      <DateSelector date={date} setDate={setDate} />
-    </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <StatusBar barStyle="dark-content" />
+      <CreateLesson /> {/* הצגת דף TestPage */}
+    </SafeAreaView>
   );
 }
+
 //----------------------------------------------------/
