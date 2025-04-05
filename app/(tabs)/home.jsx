@@ -1,41 +1,38 @@
-import { View, Text } from 'react-native';
-import React, { useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
-import { Redirect, router } from 'expo-router';
-import CustomButton from '../../components/CustomButton'; // ✅ Import the custom button
+import React from 'react';
+import { ActivityIndicator, View } from 'react-native';
+import { useAuth } from '@/context/AuthContext';
 
-const Home = () => {
-  const { isAuthenticated, loading, logout } = useAuth();
+import MentorHome from "../home/MentorHome";
+import StudentHome from "../home/StudentHome";
+import AdminHome from "../home/AdminHome";
 
 
-  // if (!loading && !isAuthenticated) return <Redirect href="/" />;
-  // useEffect(() => {
-  //   if (!loading && !isAuthenticated) {
-  //     router.replace('/');
-  //   }
-  // }, [loading, isAuthenticated]);
+export default function HomeRouter() {
+  const { user, loading } = useAuth();
 
-  const handleLogout = async () => {
-    await logout();              // ✅ Clear auth state + AsyncStorage
-    // console.log("logOut1")
-    // router.replace("/index");         // ✅ Navigate to main page (index.jsx)
-    // console.log("logOut2")
 
-  };
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#ffffff" />
+      </View>
+    );
+  }
 
-  // if (loading || !isAuthenticated) return null;
+  if (!user || !user.role) return null;
 
-  return (
-    <View className="flex-1 justify-center items-center bg-primary px-4">
-      <Text className="text-white text-2xl mb-6">Welcome to Home!</Text>
-
-      <CustomButton
-        title="Log Out"
-        handlePress={handleLogout}
-        containerStyles="w-full mt-4"
-      />
-    </View>
-  );
-};
-
-export default Home;
+  switch (user.role) {
+    case 'mentor':
+      return <MentorHome />;
+    case 'student':
+      return <StudentHome />;
+    case 'admin':
+      return <AdminHome />;
+    default:
+      return (
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text>רול לא מזוהה</Text>
+        </View>
+      );
+  }
+}

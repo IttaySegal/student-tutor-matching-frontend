@@ -201,7 +201,7 @@
 
 import React from "react";
 import { SafeAreaView, StatusBar } from "react-native";
-import HomePage from "./(tabs)/HomePage";
+import HomePage from "./(tabs)/home";
 
 // עבור בדיקה, אתה יכול להגדיר את הערכים של המשתמש כאן
 const userRole = "student"; // לדוגמה, חניך

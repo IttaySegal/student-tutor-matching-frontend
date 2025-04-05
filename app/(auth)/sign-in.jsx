@@ -1,5 +1,5 @@
 // Import necessary modules and components from React Native and external libraries
-import { View, Text, ScrollView, Image, Alert } from 'react-native';
+import { View, Text, ScrollView, Image, Alert, I18nManager  } from 'react-native';
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context'; // Ensures UI doesn't overlap with notches/status bars
 import { images } from '../../constants'; // App images (e.g., logo)
@@ -25,7 +25,7 @@ const SignIn = () => {
     // Get login function from auth context
     const { login } = useAuth();
 
-    const navigation = useNavigation();
+    //const navigation = useNavigation();
 
     /**
      * Handles the form submission when the user presses "Sign In"
@@ -33,13 +33,13 @@ const SignIn = () => {
     const submit = async () => {
         // Check for empty fields
         if (form.email === '' || form.password === '') {
-            Alert.alert('Error', 'Please fill in all fields');
+            Alert.alert('שגיאה, אנא מלא את כל השדות');
             return;
         }
 
         // Check for email validation error
         if (emailError) {
-            Alert.alert('Error', 'Please fix the errors before submitting');
+            Alert.alert('שגיאה, אנא ספק כתובת אימייל תקינה');
             return;
         }
 
@@ -53,7 +53,9 @@ const SignIn = () => {
 
             // If successful, navigate to the home screen
             // router.replace("/home")
-            router.back();
+            //router.back();
+            router.replace('/(tabs)/HomePage'); 
+
 
             // navigation.dispatch(
             //     CommonActions.reset({
@@ -63,8 +65,9 @@ const SignIn = () => {
             // );
 
         } catch (error) {
+            console.error("שגיאת התחברות:", error);
             // Show alert on login failure
-            Alert.alert('Error', error.message || 'Login failed');
+            Alert.alert('שגיאה', error.message || 'התחברות נכשלה');
         } finally {
             // End loading spinner regardless of success/failure
             setIsSubmitting(false);
@@ -80,7 +83,7 @@ const SignIn = () => {
 
         // Validate email format and show error if invalid
         if (!isEmail(value)) {
-            setEmailError('Please enter a valid email address');
+            setEmailError('יש להזין כתובת מייל תקינה');
         } else {
             setEmailError('');
         }
@@ -101,12 +104,12 @@ const SignIn = () => {
 
                     {/* Screen Title */}
                     <Text className="text-2xl font-semibold text-white mt-10 font-psemibold">
-                        Log in to Tutor
+                        התחבר למערכת
                     </Text>
 
                     {/* Email Input Field */}
                     <FormField
-                        title="Email"
+                        title="אימייל"
                         value={form.email}
                         handleChangeText={handleEmailChange} // Live validation on change
                         error={emailError} // Show email error message
@@ -116,15 +119,17 @@ const SignIn = () => {
 
                     {/* Password Input Field */}
                     <FormField
-                        title="Password"
+                        title="סיסמה"
                         value={form.password}
-                        handleChangeText={(e) => setForm({ ...form, password: e })}
+                        handleChangeText={(e) => setForm(prev => ({ ...prev, password: e }))}
                         otherStyles="mt-7"
+                        secureTextEntry 
+
                     />
 
                     {/* Sign In Button with loading spinner */}
                     <CustomButton
-                        title="Sign In"
+                        title="התחבר"
                         handlePress={submit}
                         containerStyles="mt-7"
                         isLoading={isSubmitting}
@@ -133,20 +138,20 @@ const SignIn = () => {
                     {/* Link to Sign Up screen */}
                     <View className="flex justify-center pt-5 flex-row gap-2">
                         <Text className="text-lg text-gray-100 font-pregular">
-                            Don't have an account?
+                            ?אין לך חשבון
                         </Text>
                         <Link href="/sign-up" className="text-lg font-psemibold text-secondary">
-                            Sign Up
+                           הירשם עכשיו
                         </Link>
                     </View>
 
                     {/* Link to Password Reset screen */}
                     <View className="flex justify-center pt-3 flex-row gap-2">
                         <Text className="text-lg text-gray-100 font-pregular">
-                            Forgot your password?
+                            שכחת את הסיסמה?
                         </Text>
                         <Link href="/reset-password" className="text-lg font-psemibold text-secondary">
-                            Reset Password
+                            איפוס סיסמא
                         </Link>
                     </View>
                 </View>

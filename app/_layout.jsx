@@ -69,7 +69,8 @@ import * as SplashScreen from "expo-splash-screen";
 import { Stack } from "expo-router";
 import "../global.css";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { AuthProvider } from "../context/AuthContext";
+//import { AuthProvider } from "../context/AuthContext";
+import GlobalProvider from "../context/GlobalProvider";
 
 // Keep splash screen visible until ready
 SplashScreen.preventAutoHideAsync();
@@ -105,7 +106,7 @@ const RootLayout = () => {
   }
 
   return (
-    <AuthProvider>
+    <GlobalProvider>
       <SafeAreaView className="flex-1 bg-primary" onLayout={onLayoutRootView}>
         <Stack>
           <Stack.Screen name="index" options={{ headerShown: false }} />
@@ -114,7 +115,7 @@ const RootLayout = () => {
           <Stack.Screen name="(profile)" options={{ headerShown: false }} />
         </Stack>
       </SafeAreaView>
-    </AuthProvider>
+    </GlobalProvider>
   );
 };
 

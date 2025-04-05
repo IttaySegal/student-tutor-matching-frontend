@@ -18,6 +18,14 @@ module.exports = function (api) {
           verbose: false, // Enable verbose logging if needed
         },
       ],
+      [
+        "module-resolver",
+        {
+          alias: {
+            "@": "./", // ⬅️ הוספנו את זה
+          },
+        },
+      ],
     ],
   };
 };
