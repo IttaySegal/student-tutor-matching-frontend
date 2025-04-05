@@ -8,35 +8,7 @@ import TextInputField from "../../components/TextInputField";
 import RTLText from "../../components/RTLText";
 import RadioButtonGroup from "../../components/RadioButtonGroup";
 import IconButton from "../../components/IconButton";
-
-// מקצועות עם הקבצות
-const subjectsWithGroups = {
-  מתמטיקה: ["1", "2", "3"],
-  אנגלית: ["א", "ב"],
-  פיזיקה: ["מתקדמים", "בסיסי"],
-};
-
-// כל המקצועות
-const subjects = [
-  { label: "מתמטיקה", value: "מתמטיקה" },
-  { label: "אנגלית", value: "אנגלית" },
-  { label: "פיזיקה", value: "פיזיקה" },
-  { label: "אזרחות", value: "אזרחות" },
-  { label: "היסטוריה", value: "היסטוריה" },
-  { label: "ספרות", value: "ספרות" },
-];
-
-// כיתות
-const grades = [
-  { label: "כיתה ז׳", value: "כיתה ז׳" },
-  { label: "כיתה ח׳", value: "כיתה ח׳" },
-  { label: "כיתה ט׳", value: "כיתה ט׳" },
-];
-
-const lessonTypes = [
-  { label: "פרונטלי בבית ספר", value: "פרונטלי" },
-  { label: "מקוון בזום", value: "מקוון" },
-];
+import { subjects, grades, subjectsWithGroups, lessonTypes } from "../../constants/lessonOptions";
 
 export default function TestPage() {
   const [subject, setSubject] = useState(""); // סטייט לשמירת מקצוע

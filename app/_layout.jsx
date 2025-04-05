@@ -67,6 +67,7 @@ import { useCallback } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { Stack } from "expo-router";
+import { Slot } from "expo-router"; // ✅ חובה בשביל ניווט דינמי
 import "../global.css";
 import { SafeAreaView } from "react-native-safe-area-context";
 //import { AuthProvider } from "../context/AuthContext";

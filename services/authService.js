@@ -1,8 +1,9 @@
 import axios from "axios";
-import { REACT_APP_SERVER_DOMAIN } from "@env";
+// import { REACT_APP_SERVER_DOMAIN } from "@env";
+import { EXPO_PUBLIC_SERVER_URL } from "@env";
 
-//const BASE_URL = `${REACT_APP_SERVER_DOMAIN}/auth`;
-const BASE_URL = `${REACT_APP_SERVER_DOMAIN}/auth`;
+const BASE_URL = `${EXPO_PUBLIC_SERVER_URL}/auth`;
+// const BASE_URL = `${REACT_APP_SERVER_DOMAIN}/auth`;
 
 /**
  * Handles errors from Axios requests

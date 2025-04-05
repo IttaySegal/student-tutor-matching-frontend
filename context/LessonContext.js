@@ -8,8 +8,11 @@ export const LessonProvider = ({ children }) => {
   const [lessonStats, setLessonStats] = useState(null);
 
   const fetchLessonStats = async (accessToken) => {
+    console.log("📥 START fetchLessonStats");
+
     try {
       const data = await getAggregateHomeData(accessToken);
+      console.log(data)
       setLessonStats(data);
     } catch (error) {
       console.error("Failed to fetch lesson stats", error);

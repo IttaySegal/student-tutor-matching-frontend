@@ -3,30 +3,7 @@ import { useState } from "react";
 import { SelectList } from "react-native-dropdown-select-list";
 import CustomButton from "./CustomButton";
 import Ionicons from "react-native-vector-icons/Ionicons"; // ✅ ייבוא אייקונים
-
-// מקצועות עם הקבצות
-const subjectsWithGroups = {
-  מתמטיקה: ["1", "2", "3"],
-  אנגלית: ["א", "ב"],
-  פיזיקה: ["מתקדמים", "בסיסי"],
-};
-
-// כל המקצועות
-const subjects = [
-  { key: "מתמטיקה", value: "מתמטיקה" },
-  { key: "אנגלית", value: "אנגלית" },
-  { key: "פיזיקה", value: "פיזיקה" },
-  { key: "אזרחות", value: "אזרחות" },
-  { key: "היסטוריה", value: "היסטוריה" },
-  { key: "ספרות", value: "ספרות" },
-];
-
-// כיתות
-const grades = [
-  { key: "ז", value: "כיתה ז׳" },
-  { key: "ח", value: "כיתה ח׳" },
-  { key: "ט", value: "כיתה ט׳" },
-];
+import { subjectsWithGroups, subjects, grades } from "../constants/searchlessonFilters";
 
 const SearchBar = ({ onSearch }) => {
   const [selectedSubject, setSelectedSubject] = useState("");

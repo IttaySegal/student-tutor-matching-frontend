@@ -1,69 +1,78 @@
-import React from "react";
-import { View, ScrollView, StyleSheet } from "react-native";
-import LessonCard from "../../components/LessonCard"; // נוודא שהנתיב נכון
-import RTLText from "../../components/RTLText"; // לוודא שיש לך את RTLText כמו קודם
+import React, { useEffect } from "react";
+import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useLesson } from "../../context/LessonContext";
+import LessonCard from "../../components/LessonCard";
+import RTLText from "../../components/RTLText";
+import { getGreeting } from "./utils/timeUtils"; 
 
-const StudentHome = ({ userName }) => {
-  const getGreeting = () => {
-    const currentHour = new Date().getHours();
-    if (currentHour < 12) return "בוקר טוב";
-    if (currentHour < 17) return "צהריים טובים";
-    if (currentHour < 20) return "ערב טוב";
-    return "לילה טוב";
-  };
+const StudentHome = () => {
+  const { lessonStats, fetchLessonStats } = useLesson();
 
-  // דוגמת נתונים לשיעור אחרון ושיעור הבא
+  useEffect(() => {
+    const loadData = async () => {
+      if (!lessonStats) {
+        const token = await AsyncStorage.getItem("accessToken");
+        if (token) await fetchLessonStats(token);
+      }
+    };
+    loadData();
+  }, []);
+
+  if (!lessonStats) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#000" />
+        <RTLText style={{ marginTop: 10 }}>טוען מידע...</RTLText>
+      </View>
+    );
+  }
+
+  const userName = lessonStats?.userName || "חניך";
+
   const lastLesson = {
-    subject: "מתמטיקה",
-    grade: "ח",
-    date: "2.4.2025",
-    day: "רביעי",
-    startTime: "14:00",
-    endTime: "15:00",
-    mentor: "יוסי כהן",
-    description: "פתרון מבחן בנושא חזקות ושורשים",
-    students: ["דניאל", "נועם", "שירה"],
+    subject: lessonStats.lastLesson.subject,
+    grade: lessonStats.lastLesson.grade || "לא ידוע",
+    date: lessonStats.lastLesson.date,
+    day: lessonStats.lastLesson.day || "לא ידוע",
+    startTime: lessonStats.lastLesson.time || "לא ידוע",
+    endTime: lessonStats.lastLesson.endTime || "לא ידוע",
+    mentor: lessonStats.lastLesson.mentor,
+    description: "שיעור קודם",
+    students: [],
     isMentor: false,
   };
 
-  const nextLesson = {
-    subject: "אנגלית",
-    grade: "ח",
-    date: "3.4.2025",
-    day: "חמישי",
-    startTime: "15:00",
-    endTime: "16:00",
-    mentor: "נועה ברק",
-    description: "חזרה על נושאים לבגרות",
-    students: ["תמר", "רועי"],
+  const upcomingLesson = {
+    subject: lessonStats.upcomingLesson.subject,
+    grade: lessonStats.upcomingLesson.grade || "לא ידוע",
+    date: lessonStats.upcomingLesson.date,
+    day: lessonStats.upcomingLesson.day || "לא ידוע",
+    startTime: lessonStats.upcomingLesson.time || "לא ידוע",
+    endTime: lessonStats.upcomingLesson.endTime || "לא ידוע",
+    mentor: lessonStats.upcomingLesson.mentor,
+    description: "שיעור קרוב",
+    students: [],
     isMentor: false,
   };
 
   return (
     <View style={styles.container}>
-      {/* כותרת עם ברכת שלום */}
       <RTLText style={styles.title}>
         {getGreeting()}, {userName}
       </RTLText>
 
-      {/* תיאור נוסף */}
       <RTLText style={styles.description}>
-        כאן תוכל למצוא את כל השיעורים המתאימים לך ולהירשם אליהם.
+        הנה סקירה של השיעורים האחרונים והקרובים שלך.
       </RTLText>
 
-      <ScrollView style={styles.lessonContainer}>
-        {/* כרטיס שיעור אחרון */}
-        <View style={styles.lessonCardContainer}>
-          <RTLText style={styles.lessonTitle}>שיעור אחרון:</RTLText>
-          <LessonCard {...lastLesson} />
-        </View>
+      {/* שיעור אחרון */}
+      <RTLText style={styles.section}>🕘 השיעור האחרון שלך:</RTLText>
+      <LessonCard {...lastLesson} />
 
-        {/* כרטיס שיעור הבא */}
-        <View style={styles.lessonCardContainer}>
-          <RTLText style={styles.lessonTitle}>שיעור הבא:</RTLText>
-          <LessonCard {...nextLesson} />
-        </View>
-      </ScrollView>
+      {/* שיעור קרוב */}
+      <RTLText style={styles.section}>🕒 השיעור הקרוב שלך:</RTLText>
+      <LessonCard {...upcomingLesson} />
     </View>
   );
 };
@@ -72,28 +81,29 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: "#fff",
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    textAlign: "right", // RTL text alignment
+    textAlign: "right",
   },
   description: {
     fontSize: 18,
-    marginTop: 20,
-    textAlign: "right", // RTL text alignment
+    marginTop: 10,
+    textAlign: "right",
   },
-  lessonContainer: {
-    marginTop: 40,
-  },
-  lessonCardContainer: {
-    marginBottom: 20,
-  },
-  lessonTitle: {
+  section: {
     fontSize: 18,
+    marginTop: 30,
+    textAlign: "right",
     fontWeight: "bold",
-    textAlign: "right", // RTL text alignment
-    marginBottom: 10,
   },
 });
 

@@ -27,6 +27,11 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const loadAuthState = async () => {
       try {
+        ///////////////////////
+          // 🧹 הוספתי ↓↓↓↓
+        await AsyncStorage.clear(); // 🧹 נוקה לצורך בדיקה
+        console.log("🧹 AsyncStorage נוקה מתוך AuthContext");
+      /////////////////////////////////////////////
         const storedUser = await AsyncStorage.getItem("user");
         console.log("1 sotredUser: ", storedUser);
         const storedToken = await AsyncStorage.getItem("accessToken");
