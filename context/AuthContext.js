@@ -28,10 +28,10 @@ export const AuthProvider = ({ children }) => {
     const loadAuthState = async () => {
       try {
         ///////////////////////
-          // 🧹 הוספתי ↓↓↓↓
+        // 🧹 הוספתי ↓↓↓↓
         await AsyncStorage.clear(); // 🧹 נוקה לצורך בדיקה
         console.log("🧹 AsyncStorage נוקה מתוך AuthContext");
-      /////////////////////////////////////////////
+        /////////////////////////////////////////////
         const storedUser = await AsyncStorage.getItem("user");
         console.log("1 sotredUser: ", storedUser);
         const storedToken = await AsyncStorage.getItem("accessToken");
@@ -79,12 +79,9 @@ export const AuthProvider = ({ children }) => {
    */
   const logout = async () => {
     try {
-      if (user?.id) {
-        await signOut(user.id); // ✅ Notify the backend
+      if (user?._id) {
+        await signOut(user._id);
       }
-      // if (user?._id) {
-      //   await signOut(user._id); // ✅ זה מה שצריך
-      // }
     } catch (error) {
       console.warn("Failed to notify backend on logout:", error.message);
       // Optional: Still log out locally even if the request fails
