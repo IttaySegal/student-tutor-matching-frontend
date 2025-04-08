@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import { View, Text, FlatList } from "react-native";
 import SearchBar from "../../components/SearchBar";
 import LessonCard from "../../components/LessonCard";
-import mockLessons from "../mocks/mockLessons";
-import { searchLessons } from "../../services/lessonService"; 
+import { mockSearchResults } from "../mocks/mockLessons";
+import { searchLessons } from "../../services/lessonService";
 
 const RegisterLesson = () => {
   const [results, setResults] = useState([]);
   //const [loading, setLoading] = useState(false);
-
 
   const normalizeGrade = (grade) => {
     if (!grade) return "";
@@ -17,7 +16,7 @@ const RegisterLesson = () => {
 
   const handleSearch = ({ subject, grade, group }) => {
     const normalizedGrade = normalizeGrade(grade);
-    const filtered = mockLessons.filter((lesson) => {
+    const filtered = mockSearchResults.filter((lesson) => {
       const matchSubject = !subject || lesson.subject === subject;
       const matchGrade = !grade || lesson.grade === normalizedGrade;
       const matchGroup =
@@ -66,4 +65,4 @@ const RegisterLesson = () => {
   );
 };
 
-export default RegisterLesson ;
+export default RegisterLesson;

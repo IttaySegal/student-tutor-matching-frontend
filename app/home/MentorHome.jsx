@@ -4,9 +4,11 @@ import RTLText from "../../components/RTLText";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useLesson } from "../../context/LessonContext";
 import LessonCard from "../../components/LessonCard";
-import { getGreeting } from "./utils/timeUtils"; 
+import { getGreeting } from "./utils/timeUtils";
+import { useAuth } from "../../context/AuthContext";
 
 const MentorHome = () => {
+  const { user } = useAuth();
   const { lessonStats, fetchLessonStats } = useLesson();
   //render agian to validate data
   useEffect(() => {
@@ -29,7 +31,7 @@ const MentorHome = () => {
     );
   }
 
-  const userName = lessonStats?.userName || "מנטור";
+  const userName = `${user.first_name} ${user.last_name}`; // יצירת השם המלא
 
   const nextLesson = {
     subject: lessonStats.nextLesson.subject,
@@ -44,7 +46,6 @@ const MentorHome = () => {
     isMentor: true,
   };
 
-  
   return (
     <View style={styles.container}>
       {/* כותרת שלום */}

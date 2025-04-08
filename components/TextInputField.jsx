@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, TextInput } from "react-native";
 import RTLText from "./RTLText";
+
 // קומפוננטה גנרית לשדה טקסט חופשי
 const TextInputField = ({
   label,
@@ -10,9 +11,15 @@ const TextInputField = ({
   multiline = false,
 }) => {
   return (
-    <View style={{ marginBottom: 20 }}>
+    <View style={{ marginBottom: 20, width: "100%" }}>
       {/* טקסט לתיאור השדה */}
-      <RTLText style={{ textAlign: "right", marginBottom: 10 }}>
+      <RTLText
+        style={{
+          marginBottom: 5,
+          textAlign: "left", // וודא שהטקסט מיושר לימין
+          fontSize: 16,
+        }}
+      >
         {label}
       </RTLText>
 
@@ -24,6 +31,8 @@ const TextInputField = ({
           borderWidth: 1,
           borderRadius: 8,
           textAlign: "right",
+          writingDirection: "rtl", // הגדרת כיוון כתיבה מימין לשמאל
+          direction: "rtl", // הוספתי את זה כאן
           padding: 10,
         }}
         multiline={multiline} // אם מדובר בשדה מרובה שורות

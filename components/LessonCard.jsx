@@ -13,7 +13,8 @@ export default function LessonCard({
   mentor,
   description,
   students,
-  isMentor,
+  lessonLocation, // הוספנו את lessonLocation כאן
+  ...props
 }) {
   const [visible, setVisible] = useState(false);
 
@@ -33,25 +34,14 @@ export default function LessonCard({
           <RTLText>
             משעה {startTime} עד {endTime}
           </RTLText>
-          <RTLText>
-            החונכ{isMentor ? "ת" : ""}: {mentor}
-          </RTLText>
+          <RTLText>החונך: {mentor}</RTLText>
         </View>
       </TouchableOpacity>
 
       <LessonDetailsModal
         visible={visible}
         onClose={() => setVisible(false)}
-        subject={subject}
-        grade={grade}
-        date={date}
-        day={day}
-        startTime={startTime}
-        endTime={endTime}
-        mentor={mentor}
-        description={description}
-        students={students}
-        isMentor={isMentor}
+        {...props}
       />
     </>
   );

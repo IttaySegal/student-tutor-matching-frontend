@@ -3,7 +3,10 @@ import { Text } from "react-native";
 const RTLText = ({ children, style, ...props }) => {
   return (
     <Text
-      style={[{ textAlign: "right", writingDirection: "rtl" }, style]}
+      style={[
+        { textAlign: "right", writingDirection: "rtl", direction: "rtl" },
+        style,
+      ]}
       {...props}
     >
       {children}

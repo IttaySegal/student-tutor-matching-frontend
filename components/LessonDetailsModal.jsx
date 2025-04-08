@@ -1,6 +1,9 @@
 import { View, Modal } from "react-native";
 import RTLText from "./RTLText";
 import CustomButton from "./CustomButton";
+import { useAuth } from "../context/AuthContext";
+import { useState } from "react";
+import LessonEditModal from "./LessonEditModal"; // ייבוא ה-Modal של עריכת שיעור
 
 export default function LessonDetailsModal({
   visible,
@@ -14,8 +17,22 @@ export default function LessonDetailsModal({
   mentor,
   description,
   students = [],
-  isMentor,
+  lessonLocation,
 }) {
+  const { user } = useAuth();
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false); // שומר אם ה-Edit Modal פתוח
+  // קודם כל נוודא אם המשתמש הוא חניך
+  const isStudent = user?.role === "student"; // אם הוא חניך
+  const isMentor = user?.role === "mentor"; // אם הוא חונך
+
+  const handleManageLesson = () => {
+    setIsEditModalVisible(true); // פותח את ה-Modal לעריכת השיעור
+  };
+
+  // אם המשתמש הוא חניך, נבדוק אם הוא רשום לשיעור
+  const isStudentRegistered =
+    isStudent && students.some((student) => student._id === user?._id);
+
   return (
     <Modal visible={visible} transparent animationType="slide">
       <View className="flex-1 bg-black bg-opacity-50 justify-center items-center">
@@ -33,7 +50,7 @@ export default function LessonDetailsModal({
             משעה {startTime} עד {endTime}
           </RTLText>
           <RTLText>
-            החונכ{isMentor ? "ת" : ""}: {mentor}
+            החונך{isMentor ? "ת" : ""}: {mentor}
           </RTLText>
 
           <RTLText style={{ marginTop: 10, fontWeight: "bold" }}>
@@ -47,18 +64,49 @@ export default function LessonDetailsModal({
           {students.length === 0 ? (
             <RTLText>לא נרשמו חניכים עדיין.</RTLText>
           ) : (
-            students.map((name, i) => <RTLText key={i}>• {name}</RTLText>)
+            students.map((student, i) => (
+              <RTLText key={i}>
+                • {student.first_name} {student.last_name}
+              </RTLText>
+            ))
           )}
 
           {/* אזור כפתורים */}
           <View className="w-full mt-8 items-center">
-            <CustomButton
-              title={isMentor ? "ניהול שיעור" : "הצטרפות לשיעור"}
-              handlePress={() =>
-                console.log(isMentor ? "ניהול שיעור" : "הצטרפות")
-              }
-              containerStyles="w-4/5"
-            />
+            {isStudent ? (
+              // אם החניך לא רשום לשיעור
+              isStudentRegistered ? (
+                // אם החניך כבר רשום לשיעור
+                <CustomButton
+                  title="ביטול הרשמה"
+                  handlePress={() => console.log("ביטול הרשמה")}
+                  containerStyles="w-4/5 bg-red-500"
+                />
+              ) : // אם החניך לא רשום לשיעור
+              students.length >= 3 ? (
+                <RTLText>השיעור מלא</RTLText> // הצגת הודעה שהשיעור מלא
+              ) : (
+                <CustomButton
+                  title="הירשם לשיעור"
+                  handlePress={() => console.log("הרשמה לשיעור")}
+                  containerStyles="w-4/5"
+                />
+              )
+            ) : isMentor ? (
+              // אם המשתמש הוא חונך (אפשר להוסיף כאן פעולות שקשורות לחונך)
+              <CustomButton
+                title="נהל שיעור"
+                handlePress={handleManageLesson}
+                containerStyles="w-4/5"
+              />
+            ) : (
+              // אם המשתמש לא חניך ולא חונך (למשל במקרה של מנהל)
+              <CustomButton
+                title="הפעולה לא זמינה"
+                handlePress={() => console.log("הפעולה לא זמינה")}
+                containerStyles="w-4/5 bg-gray-500"
+              />
+            )}
 
             <CustomButton
               title="סגור"
@@ -69,6 +117,29 @@ export default function LessonDetailsModal({
           </View>
         </View>
       </View>
+      {/* Modal של ניהול שיעור */}
+      {isEditModalVisible && (
+        <LessonEditModal
+          visible={isEditModalVisible}
+          onClose={() => setIsEditModalVisible(false)} // סגור את ה-Edit Modal
+          subject={subject}
+          grade={grade}
+          date={date}
+          day={day}
+          startTime={startTime}
+          endTime={endTime}
+          mentor={mentor}
+          description={description}
+          students={students}
+          lessonLocation={lessonLocation} // הוספנו את מיקום השיעור
+          onSaveChanges={(newDescription, newLocation) => {
+            // כאן תוכל לשמור את השינויים (למשל לשלוח בקשה לשרת)
+          }}
+          onDeleteLesson={() => {
+            // כאן תוכל למחוק את השיעור
+          }}
+        />
+      )}
     </Modal>
   );
 }
