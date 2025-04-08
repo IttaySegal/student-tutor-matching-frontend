@@ -1,26 +1,35 @@
 import React, { useEffect } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
-import RTLText from "../../components/RTLText";
+import RTLText from "@components/LessonCard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useLesson } from "../../context/LessonContext";
-import LessonCard from "../../components/LessonCard";
-import { getGreeting } from "./utils/timeUtils"; 
+import { useLesson } from "@context/LessonContext";
+import LessonCard from "@components/LessonCard";
+import { getGreeting } from "@utils/HometimeUtils"; 
+import { TouchableOpacity } from "react-native";
+import { router } from "expo-router";
+import { buildLessonObject } from "@utils/HomelessonUtils";
 
 const MentorHome = () => {
   const { lessonStats, fetchLessonStats } = useLesson();
   //render agian to validate data
   useEffect(() => {
     const loadData = async () => {
+      console.log("📡 useEffect in MentorHome");
       if (!lessonStats) {
         const token = await AsyncStorage.getItem("accessToken");
+        console.log("🔑 Token in MentorHome:", token);
         if (token) await fetchLessonStats(token);
+      } else {
+        console.log("✅ lessonStats already exists");
       }
     };
 
     loadData();
   }, []);
 
-  if (!lessonStats) {
+  const isLoading = !lessonStats;
+
+  if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#000" />
@@ -31,18 +40,7 @@ const MentorHome = () => {
 
   const userName = lessonStats?.userName || "מנטור";
 
-  const nextLesson = {
-    subject: lessonStats.nextLesson.subject,
-    grade: lessonStats.nextLesson.grade,
-    date: lessonStats.nextLesson.date,
-    day: lessonStats.nextLesson.day,
-    startTime: lessonStats.nextLesson.time,
-    endTime: lessonStats.nextLesson.endTime,
-    mentor: lessonStats.nextLesson.student,
-    description: "שיעור באנגלית – הכנה למבחן",
-    students: ["נועה כהן", "יונתן אלון"],
-    isMentor: true,
-  };
+  const nextLesson = buildLessonObject(lessonStats.nextLesson, "שיעור באנגלית – הכנה למבחן", true);
 
   
   return (
@@ -80,6 +78,11 @@ const MentorHome = () => {
         <RTLText style={styles.section}>🕒 השיעור הקרוב שלך:</RTLText>
         <LessonCard {...nextLesson} />
       </View>
+
+    
+      <TouchableOpacity onPress={() => router.push("/lessons/MyLessonsScreen")}>
+        <RTLText style={styles.linkButton}>📚 עבור לשיעורים שלי</RTLText>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -125,6 +128,13 @@ const styles = StyleSheet.create({
   },
   lessonBox: {
     marginTop: 30,
+  },
+  linkButton: {
+    fontSize: 16,
+    color: "#007BFF",
+    marginTop: 20,
+    textAlign: "right",
+    textDecorationLine: "underline",
   },
 });
 

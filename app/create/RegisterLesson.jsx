@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, FlatList } from "react-native";
 import SearchBar from "../../components/SearchBar";
 import LessonCard from "../../components/LessonCard";
-import mockLessons from "../mocks/mockLessons";
+import mockLessons from "../../mocks/mockLessons";
 import { searchLessons } from "../../services/lessonService"; 
 
 const RegisterLesson = () => {

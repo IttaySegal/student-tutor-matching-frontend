@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { signIn, signOut, refreshAccessToken } from "../services/authService"; // Auth service functions to log in and refresh token
+import { router } from "expo-router";
 
 // TODO REFRESH ACCESS TOKEN - NNEDS TO BE IMPLEMENTED IN AUTH SERVICE ??
 
@@ -19,6 +20,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null); // Store the user object after login
   const [accessToken, setAccessToken] = useState(null); // Store the short-lived access token
   const [loading, setLoading] = useState(true); // Used to prevent rendering before auth is checked
+
 
   /**
    * This runs once on app startup and attempts to restore saved user and token
@@ -91,6 +93,8 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setAccessToken(null);
     await AsyncStorage.multiRemove(["user", "accessToken", "refreshToken"]);
+    router.replace("/sign-in");
+
   };
 
   /**

@@ -61,7 +61,7 @@ const SignIn = () => {
       // If successful, navigate to the home screen
       // router.replace("/home")
       //router.back();
-      router.push("/(tabs)/home");
+      router.replace("/(tabs)/home");
 
       // navigation.dispatch(
       //     CommonActions.reset({

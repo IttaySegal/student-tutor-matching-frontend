@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { View, Text, TextInput } from "react-native";
-import SelectField from "../../components/SelectField"; // נתיב לקומפוננטת SelectField
-import DateSelector from "../../components/DateSelector"; // נתיב לקומפוננטת DateSelector
-import TimeSelector from "../../components/TimeSelector"; // נתיב לקומפוננטת TimeSelector
-import CustomButton from "../../components/CustomButton"; // נתיב לקומפוננטת CustomButton
-import TextInputField from "../../components/TextInputField";
-import RTLText from "../../components/RTLText";
-import RadioButtonGroup from "../../components/RadioButtonGroup";
-import IconButton from "../../components/IconButton";
-import { subjects, grades, subjectsWithGroups, lessonTypes } from "../../constants/lessonOptions";
+import SelectField from "@components/SelectField"; // נתיב לקומפוננטת SelectField
+import DateSelector from "@components/DateSelector"; // נתיב לקומפוננטת DateSelector
+import TimeSelector from "@components/TimeSelector"; // נתיב לקומפוננטת TimeSelector
+import CustomButton from "@components/CustomButton"; // נתיב לקומפוננטת CustomButton
+import TextInputField from "@components/TextInputField";
+import RTLText from "@components/RTLText";
+import RadioButtonGroup from "@components/RadioButtonGroup";
+import IconButton from "@components/IconButton";
+import { subjects, grades, subjectsWithGroups, lessonTypes } from "@constants/lessonOptions";
 
 export default function TestPage() {
   const [subject, setSubject] = useState(""); // סטייט לשמירת מקצוע

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useLesson } from "../../context/LessonContext";
-import RTLText from "../../components/RTLText";
-import { getGreeting } from "./utils/timeUtils";
-import RequestCard from "../../components/RequestCard";
-import RequestModal from "../../components/RequestModal";
+import { useLesson } from "@context/LessonContext";
+import RTLText from "@components/RTLText";
+import { getGreeting } from "@utils/HometimeUtils";
+import RequestCard from "@components/RequestCard";
+import RequestModal from "@components/RequestModal";
 
 const AdminHome = () => {
   const { lessonStats, fetchLessonStats } = useLesson();
@@ -18,8 +18,9 @@ const AdminHome = () => {
       if (!lessonStats) {
         const token = await AsyncStorage.getItem("accessToken");
         if (token) await fetchLessonStats(token);
-      }
-    }; 
+      }  
+    };
+  
 
     loadData();
   }, []);
@@ -39,7 +40,10 @@ const AdminHome = () => {
     setModalVisible(false);
   };
 
-  if (!lessonStats) {
+
+  const isLoading = !lessonStats;
+
+  if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#000" />

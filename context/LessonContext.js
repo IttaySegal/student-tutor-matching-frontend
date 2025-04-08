@@ -11,6 +11,7 @@ export const LessonProvider = ({ children }) => {
     console.log("📥 START fetchLessonStats");
 
     try {
+      console.log("📡 שולח בקשה עם הטוקן:", accessToken);
       const data = await getAggregateHomeData(accessToken);
       console.log(data)
       setLessonStats(data);

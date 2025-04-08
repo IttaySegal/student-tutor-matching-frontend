@@ -88,30 +88,30 @@ const TabsLayout = () => {
                 />
                 {/* Each screen represents a tab */}
                 <Tabs.Screen
-                    name="bookmark"
+                    name="create"
                     options={{
-                        title: 'Bookmark', // Title for the tab
+                        title: 'create', // Title for the tab
                         headerShown: false, // Hide the screen header
                         tabBarIcon: ({ color, focused }) => (
                             <TabIcon
-                                icon={icons.bookmark} // Icon for the Bookmark tab
+                                icon={icons.plus} // Icon for the Bookmark tab
                                 color={color}
-                                name="Bookmark"
+                                name="Create"
                                 focused={focused} // Highlight based on active state
                             />
                         )
                     }}
                 />
                 <Tabs.Screen
-                    name="create"
+                    name="notifications"
                     options={{
-                        title: 'Create',
+                        title: 'Notifications',
                         headerShown: false,
                         tabBarIcon: ({ color, focused }) => (
                             <TabIcon
-                                icon={icons.plus} // Icon for the Create tab
+                                icon={icons.bookmark} // Icon for the Create tab //TODO - add notifications and use it
                                 color={color}
-                                name="Create"
+                                name="Notifications"
                                 focused={focused}
                             />
                         )

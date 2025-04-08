@@ -1,4 +1,3 @@
-// Import necessary modules and components
 import { View, Text } from 'react-native'; // React Native components for layout (not used in this file)
 import React from 'react'; // React library for building user interfaces
 import { Stack } from 'expo-router'; // Stack navigator from Expo Router for managing screen navigation

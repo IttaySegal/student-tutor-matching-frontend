@@ -4,7 +4,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useLesson } from "../../context/LessonContext";
 import LessonCard from "../../components/LessonCard";
 import RTLText from "../../components/RTLText";
-import { getGreeting } from "./utils/timeUtils"; 
+import { getGreeting } from "../../utils/HometimeUtils"; 
+import { buildLessonObject } from "../../utils/HomelessonUtils";
+
 
 const StudentHome = () => {
   const { lessonStats, fetchLessonStats } = useLesson();
@@ -19,7 +21,10 @@ const StudentHome = () => {
     loadData();
   }, []);
 
-  if (!lessonStats) {
+
+  const isLoading = !lessonStats;
+
+  if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#000" />
@@ -30,31 +35,8 @@ const StudentHome = () => {
 
   const userName = lessonStats?.userName || "חניך";
 
-  const lastLesson = {
-    subject: lessonStats.lastLesson.subject,
-    grade: lessonStats.lastLesson.grade || "לא ידוע",
-    date: lessonStats.lastLesson.date,
-    day: lessonStats.lastLesson.day || "לא ידוע",
-    startTime: lessonStats.lastLesson.time || "לא ידוע",
-    endTime: lessonStats.lastLesson.endTime || "לא ידוע",
-    mentor: lessonStats.lastLesson.mentor,
-    description: "שיעור קודם",
-    students: [],
-    isMentor: false,
-  };
-
-  const upcomingLesson = {
-    subject: lessonStats.upcomingLesson.subject,
-    grade: lessonStats.upcomingLesson.grade || "לא ידוע",
-    date: lessonStats.upcomingLesson.date,
-    day: lessonStats.upcomingLesson.day || "לא ידוע",
-    startTime: lessonStats.upcomingLesson.time || "לא ידוע",
-    endTime: lessonStats.upcomingLesson.endTime || "לא ידוע",
-    mentor: lessonStats.upcomingLesson.mentor,
-    description: "שיעור קרוב",
-    students: [],
-    isMentor: false,
-  };
+  const lastLesson = buildLessonObject(lessonStats.lastLesson, "שיעור קודם");
+  const upcomingLesson = buildLessonObject(lessonStats.upcomingLesson,"שיעור קרוב");
 
   return (
     <View style={styles.container}>
@@ -73,6 +55,12 @@ const StudentHome = () => {
       {/* שיעור קרוב */}
       <RTLText style={styles.section}>🕒 השיעור הקרוב שלך:</RTLText>
       <LessonCard {...upcomingLesson} />
+
+      <TouchableOpacity onPress={() => router.push("/lessons/MyLessonsScreen")} style={{ marginTop: 20 }}>
+        <RTLText style={{ fontSize: 16, color: '#1E90FF', textAlign: "center" }}>
+          מעבר לרשימת השיעורים שלי
+        </RTLText>
+      </TouchableOpacity>
     </View>
   );
 };

@@ -91,14 +91,8 @@ const RootLayout = () => {
 
   // Stable callback ensuring UI layout is ready before hiding splash screen
   const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
+    if (fontsLoaded  || fontError) {
       await SplashScreen.hideAsync();
-    }
-
-    // Log or handle font errors explicitly
-    if (fontError) {
-      console.error("Font loading error:", fontError);
-      await SplashScreen.hideAsync(); // still hide the splash, or handle differently
     }
   }, [fontsLoaded, fontError]);
 
@@ -109,12 +103,7 @@ const RootLayout = () => {
   return (
     <GlobalProvider>
       <SafeAreaView className="flex-1 bg-primary" onLayout={onLayoutRootView}>
-        <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="(profile)" options={{ headerShown: false }} />
-        </Stack>
+        <Slot />
       </SafeAreaView>
     </GlobalProvider>
   );
