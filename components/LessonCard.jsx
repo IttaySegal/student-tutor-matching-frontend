@@ -41,7 +41,16 @@ export default function LessonCard({
       <LessonDetailsModal
         visible={visible}
         onClose={() => setVisible(false)}
-        {...props}
+        subject={subject}
+        grade={grade}
+        date={date}
+        day={day}
+        startTime={startTime}
+        endTime={endTime}
+        mentor={mentor}
+        description={description}
+        students={students}
+        lessonLocation={lessonLocation}
       />
     </>
   );

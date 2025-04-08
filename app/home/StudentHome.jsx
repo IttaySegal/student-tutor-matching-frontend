@@ -4,9 +4,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useLesson } from "../../context/LessonContext";
 import LessonCard from "../../components/LessonCard";
 import RTLText from "../../components/RTLText";
-import { getGreeting } from "./utils/timeUtils"; 
+import { getGreeting } from "./utils/timeUtils";
+import { useAuth } from "../../context/AuthContext";
+import { mockPrevLesson, mockNextLesson } from "../mocks/mockLessons"; // ייבוא הנתונים
 
 const StudentHome = () => {
+  const { user } = useAuth();
   const { lessonStats, fetchLessonStats } = useLesson();
 
   useEffect(() => {
@@ -28,33 +31,7 @@ const StudentHome = () => {
     );
   }
 
-  const userName = lessonStats?.userName || "חניך";
-
-  const lastLesson = {
-    subject: lessonStats.lastLesson.subject,
-    grade: lessonStats.lastLesson.grade || "לא ידוע",
-    date: lessonStats.lastLesson.date,
-    day: lessonStats.lastLesson.day || "לא ידוע",
-    startTime: lessonStats.lastLesson.time || "לא ידוע",
-    endTime: lessonStats.lastLesson.endTime || "לא ידוע",
-    mentor: lessonStats.lastLesson.mentor,
-    description: "שיעור קודם",
-    students: [],
-    isMentor: false,
-  };
-
-  const upcomingLesson = {
-    subject: lessonStats.upcomingLesson.subject,
-    grade: lessonStats.upcomingLesson.grade || "לא ידוע",
-    date: lessonStats.upcomingLesson.date,
-    day: lessonStats.upcomingLesson.day || "לא ידוע",
-    startTime: lessonStats.upcomingLesson.time || "לא ידוע",
-    endTime: lessonStats.upcomingLesson.endTime || "לא ידוע",
-    mentor: lessonStats.upcomingLesson.mentor,
-    description: "שיעור קרוב",
-    students: [],
-    isMentor: false,
-  };
+  const userName = `${user.first_name} ${user.last_name}`; // יצירת השם המלא
 
   return (
     <View style={styles.container}>
@@ -68,11 +45,11 @@ const StudentHome = () => {
 
       {/* שיעור אחרון */}
       <RTLText style={styles.section}>🕘 השיעור האחרון שלך:</RTLText>
-      <LessonCard {...lastLesson} />
+      <LessonCard {...mockPrevLesson} />
 
       {/* שיעור קרוב */}
       <RTLText style={styles.section}>🕒 השיעור הקרוב שלך:</RTLText>
-      <LessonCard {...upcomingLesson} />
+      <LessonCard {...mockNextLesson} />
     </View>
   );
 };

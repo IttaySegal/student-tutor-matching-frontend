@@ -1,3 +1,24 @@
+// שיעור קודם (prevLesson)
+export const mockPrevLesson = {
+  subject: "פיזיקה",
+  grade: "ח",
+  date: "2025-04-01",
+  day: "שלישי",
+  startTime: "09:00",
+  endTime: "10:00",
+  mentor: "מרים רוזן",
+  description: "תרגול על חוקים של תנועה",
+  students: [
+    { _id: "studentId1", first_name: "דניאל", last_name: "לוי" },
+    { _id: "studentId2", first_name: "נועה", last_name: "פרץ" },
+    {
+      _id: "67ea663d6ab1596bd4dea9ff",
+      first_name: "עידו",
+      last_name: "שמעוני",
+    }, // עידו רשום לשיעור
+  ], // רשימת חניכים עם ה-ID הייחודי שלהם
+};
+
 // שיעורים לדשבורד (שיעור קרוב למנטור או חניך)
 export const mockNextLesson = {
   subject: "אנגלית",
@@ -9,10 +30,14 @@ export const mockNextLesson = {
   mentor: "נועה כהן",
   student: "יוסי לוי", // למנטור בלבד
   description: "שיעור באנגלית – הכנה למבחן",
-  //students: ["תמר", "יונתן"],
   students: [
     { _id: "studentId1", first_name: "תמר", last_name: "כהן" },
     { _id: "studentId2", first_name: "יונתן", last_name: "לוי" },
+    {
+      _id: "67ea663d6ab1596bd4dea9ff",
+      first_name: "עידו",
+      last_name: "שמעוני",
+    }, // עידו רשום לשיעור
   ], // רשימת חניכים עם ה-ID הייחודי שלהם
 };
 
