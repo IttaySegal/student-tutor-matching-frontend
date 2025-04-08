@@ -4,6 +4,7 @@ import RTLText from "./RTLText"; // מותאם לתצוגה בשפה עברית
 import CustomButton from "./CustomButton"; // כפתורים מותאמים אישית
 import TextInputField from "../components/TextInputField"; // שדה טקסט לעריכת תיאור השיעור
 import { useAuth } from "../context/AuthContext";
+import CloseButton from "../components/CloseButton"; // ייבוא הכפתור החדש
 
 export default function LessonEditModal({
   visible,
@@ -53,6 +54,9 @@ export default function LessonEditModal({
           className="bg-white rounded-2xl p-6 w-11/12 max-w-md"
           style={{ direction: "rtl", alignItems: "flex-start" }}
         >
+          {/* כפתור סגירה */}
+          <CloseButton onPress={onClose} />
+
           <RTLText
             style={{ fontSize: 24, fontWeight: "bold", marginBottom: 10 }}
           >
@@ -90,20 +94,13 @@ export default function LessonEditModal({
             <CustomButton
               title="שמור שינויים"
               handlePress={handleSave} // שמירה של השינויים
-              containerStyles="w-4/5"
+              containerStyles="w-4/5 mb-4"
             />
 
             <CustomButton
               title="ביטול שיעור"
               handlePress={handleDelete} // מחיקת השיעור
               containerStyles="w-4/5 bg-red-500"
-            />
-
-            <CustomButton
-              title="סגור"
-              handlePress={onClose} // סגירת המודל בלי לשמור שינויים
-              containerStyles="w-4/5 bg-gray-500 mt-6"
-              textStyles="text-white"
             />
           </View>
         </View>
