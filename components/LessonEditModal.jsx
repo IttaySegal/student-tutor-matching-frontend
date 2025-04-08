@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import { View, Modal } from "react-native";
 import RTLText from "./RTLText"; // מותאם לתצוגה בשפה עברית
 import CustomButton from "./CustomButton"; // כפתורים מותאמים אישית
@@ -20,12 +21,23 @@ export default function LessonEditModal({
   onSaveChanges,
   onDeleteLesson,
 }) {
+  const [localDescription, setLocalDescription] = useState(description || ""); // הוספת state לתיאור השיעור
+  const [localLocation, setLocalLocation] = useState(lessonLocation || ""); // הוספת state למיקום השיעור
+
   const { user } = useAuth();
 
-  // ברגע שהמשתמש לוחץ "שמור שינויים", נבצע את השמירה
+  useEffect(() => {
+    setLocalDescription(description); // מעדכן את התיאור כל פעם כשמתקבל פרופ חדש
+    setLocalLocation(lessonLocation); // עדכון מיקום השיעור
+  }, [description, lessonLocation]);
+
   const handleSave = () => {
-    onSaveChanges(description, lessonLocation); // שמירה של השינויים
+    onSaveChanges(localDescription, localLocation); // שמירה של השינויים
     onClose(); // סגירת המודל
+  };
+
+  const handleDescriptionChange = (text) => {
+    setLocalDescription(text); // עדכון תיאור השיעור
   };
 
   // ברגע שהמשתמש לוחץ "ביטול שיעור", נבצע מחיקה
@@ -41,10 +53,12 @@ export default function LessonEditModal({
           className="bg-white rounded-2xl p-6 w-11/12 max-w-md"
           style={{ direction: "rtl", alignItems: "flex-start" }}
         >
-          <RTLText style={{ fontSize: 18, fontWeight: "bold" }}>
+          <RTLText
+            style={{ fontSize: 24, fontWeight: "bold", marginBottom: 10 }}
+          >
             ערוך שיעור ב{subject} – {grade}
           </RTLText>
-          <RTLText>
+          <RTLText style={{ fontSize: 16, marginBottom: 10 }}>
             {day}, {date}
           </RTLText>
           <RTLText style={{ fontSize: 16, marginBottom: 10 }}>
@@ -57,9 +71,9 @@ export default function LessonEditModal({
           {/* תיאור השיעור */}
           <TextInputField
             label="📝 תיאור השיעור:"
-            value={description || ""} // אם description קיים, יופיע כאן, אחרת השדה יהיה ריק
-            onChangeText={(text) => onSaveChanges(text, lessonLocation)} // שמירה של התיאור החדש
-            placeholder="הכנס תיאור לשיעור" // אם אין value, יופיע placeholder
+            value={localDescription} // ודא שהערך נכון
+            onChangeText={(text) => setLocalDescription(text)} // עדכון ה-description כאשר השדה משתנה
+            placeholder="הכנס תיאור לשיעור"
             multiline={true}
             style={{ width: "100%", paddingHorizontal: 10 }}
           />

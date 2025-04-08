@@ -6,6 +6,7 @@ import { useLesson } from "../../context/LessonContext";
 import LessonCard from "../../components/LessonCard";
 import { getGreeting } from "./utils/timeUtils";
 import { useAuth } from "../../context/AuthContext";
+import { mockNextLesson } from "../mocks/mockLessons"; // ייבוא הנתונים
 
 const MentorHome = () => {
   const { user } = useAuth();
@@ -32,19 +33,6 @@ const MentorHome = () => {
   }
 
   const userName = `${user.first_name} ${user.last_name}`; // יצירת השם המלא
-
-  const nextLesson = {
-    subject: lessonStats.nextLesson.subject,
-    grade: lessonStats.nextLesson.grade,
-    date: lessonStats.nextLesson.date,
-    day: lessonStats.nextLesson.day,
-    startTime: lessonStats.nextLesson.time,
-    endTime: lessonStats.nextLesson.endTime,
-    mentor: lessonStats.nextLesson.student,
-    description: "שיעור באנגלית – הכנה למבחן",
-    students: ["נועה כהן", "יונתן אלון"],
-    isMentor: true,
-  };
 
   return (
     <View style={styles.container}>
@@ -79,7 +67,7 @@ const MentorHome = () => {
       {/* שיעור קרוב */}
       <View style={styles.lessonBox}>
         <RTLText style={styles.section}>🕒 השיעור הקרוב שלך:</RTLText>
-        <LessonCard {...nextLesson} />
+        <LessonCard {...mockNextLesson} />
       </View>
     </View>
   );
