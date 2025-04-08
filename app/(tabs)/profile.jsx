@@ -1,6 +1,5 @@
-// export default Profile
 import React from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { useAuth } from "../../context/AuthContext"; // מייבאים את ה-hook של ה-auth
 import RTLText from "../../components/RTLText";
 import CustomButton from "../../components/CustomButton"; // מייבאים את CustomButton
@@ -28,15 +27,17 @@ const Profile = () => {
       </RTLText>
 
       {/* אימייל */}
-      <View style={[styles.inputContainer, { marginBottom: 20 }]}>
-        <RTLText style={{ fontWeight: "bold" }}>אימייל:</RTLText>
+      <View style={{ width: "100%", marginBottom: 20 }}>
+        <RTLText style={{ fontWeight: "bold", marginBottom: 8 }}>
+          אימייל:
+        </RTLText>
         <View style={styles.emailContainer}>
           <Icon
             name="mail-outline"
             size={20}
             color="#888"
             style={styles.emailIcon}
-          />{" "}
+          />
           {/* אייקון mail-outline */}
           <Text style={styles.emailText}>
             {user?.email} {/* הצגת האימייל */}
@@ -45,11 +46,15 @@ const Profile = () => {
       </View>
 
       {/* תפקיד */}
-      <View style={[styles.inputContainer, { marginBottom: 20 }]}>
-        <RTLText style={{ fontWeight: "bold" }}>תפקיד:</RTLText>
-        <RTLText style={styles.emailText}>
-          {userRole} {/* הצגת התפקיד */}
+      <View style={{ width: "100%", marginBottom: 20 }}>
+        <RTLText style={{ fontWeight: "bold", marginBottom: 8 }}>
+          תפקיד:
         </RTLText>
+        <View style={styles.roleContainer}>
+          <RTLText style={styles.emailText}>
+            {userRole} {/* הצגת התפקיד */}
+          </RTLText>
+        </View>
       </View>
 
       {/* כפתור התנתקות */}
@@ -65,18 +70,14 @@ const Profile = () => {
 };
 
 const styles = StyleSheet.create({
-  inputContainer: {
-    width: "100%",
+  emailContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#f5f5f5",
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 8,
     padding: 10,
-    backgroundColor: "#f5f5f5",
-  },
-  emailContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 8,
   },
   emailIcon: {
     marginRight: 8,
@@ -84,6 +85,13 @@ const styles = StyleSheet.create({
   emailText: {
     fontSize: 16,
     color: "#888", // הצבע הבהיר של הכתובת
+  },
+  roleContainer: {
+    backgroundColor: "#f5f5f5",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    padding: 10,
   },
 });
 
