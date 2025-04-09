@@ -7,6 +7,7 @@ import RTLText from "../../components/RTLText";
 import { getGreeting } from "./utils/timeUtils";
 import { useAuth } from "../../context/AuthContext";
 import { mockPrevLesson, mockNextLesson } from "../mocks/mockLessons"; // ייבוא הנתונים
+import LessonDetailsModal from "../../components/LessonDetailsModal";
 
 const StudentHome = () => {
   const { user } = useAuth();
@@ -45,11 +46,11 @@ const StudentHome = () => {
 
       {/* שיעור אחרון */}
       <RTLText style={styles.section}>🕘 השיעור האחרון שלך:</RTLText>
-      <LessonCard {...mockPrevLesson} />
+      <LessonCard {...mockPrevLesson} ModalComponent={LessonDetailsModal} />
 
       {/* שיעור קרוב */}
       <RTLText style={styles.section}>🕒 השיעור הקרוב שלך:</RTLText>
-      <LessonCard {...mockNextLesson} />
+      <LessonCard {...mockNextLesson} ModalComponent={LessonDetailsModal} />
     </View>
   );
 };

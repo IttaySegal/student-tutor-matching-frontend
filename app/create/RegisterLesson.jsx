@@ -4,6 +4,7 @@ import SearchBar from "../../components/SearchBar";
 import LessonCard from "../../components/LessonCard";
 import { mockSearchResults } from "../mocks/mockLessons";
 import { searchLessons } from "../../services/lessonService";
+import LessonDetailsModal from "../../components/LessonDetailsModal";
 
 const RegisterLesson = () => {
   const [results, setResults] = useState([]);
@@ -52,7 +53,8 @@ const RegisterLesson = () => {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <View className="mb-3">
-              <LessonCard {...item} />
+              <LessonCard {...item} ModalComponent={LessonDetailsModal}
+              />
             </View>
           )}
         />

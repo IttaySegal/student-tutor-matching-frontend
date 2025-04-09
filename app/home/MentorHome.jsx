@@ -7,6 +7,7 @@ import LessonCard from "../../components/LessonCard";
 import { getGreeting } from "./utils/timeUtils";
 import { useAuth } from "../../context/AuthContext";
 import { mockNextLesson } from "../mocks/mockLessons"; // ייבוא הנתונים
+import LessonDetailsModal from "../../components/LessonDetailsModal";
 
 const MentorHome = () => {
   const { user } = useAuth();
@@ -67,7 +68,10 @@ const MentorHome = () => {
       {/* שיעור קרוב */}
       <View style={styles.lessonBox}>
         <RTLText style={styles.section}>🕒 השיעור הקרוב שלך:</RTLText>
-        <LessonCard {...mockNextLesson} />
+        <LessonCard 
+          {...mockNextLesson} 
+          ModalComponent={LessonDetailsModal}
+        />
       </View>
     </View>
   );
