@@ -5,7 +5,7 @@ import Icon from "react-native-vector-icons/AntDesign"; // או כל אייקו�
 const CloseButton = ({ onPress, size = 30, color = "black", style }) => {
   return (
     <TouchableOpacity
-      style={[{ position: "absolute", left: 10, top: 10 }, style]} // מיקום ברירת מחדל
+      style={[{ position: "absolute", left: 10, top: 10 }, style]}
       onPress={onPress}
     >
       <Icon name="close" size={size} color={color} />

@@ -1,44 +1,39 @@
 // שיעור קודם (prevLesson)
 export const mockPrevLesson = {
-  subject: "פיזיקה",
+  id: 4,
+  subject: "מתמטיקה",
   grade: "ח",
-  date: "2025-04-01",
-  day: "שלישי",
-  startTime: "09:00",
-  endTime: "10:00",
-  mentor: "מרים רוזן",
-  description: "תרגול על חוקים של תנועה",
+  date: "1.4.2025",
+  day: "חמישי",
+  startTime: "11:00",
+  endTime: "12:00",
+  mentor: "גלית בר",
+  description: "חזרה על חקירת פונקציות",
   students: [
-    { _id: "studentId1", first_name: "דניאל", last_name: "לוי" },
-    { _id: "studentId2", first_name: "נועה", last_name: "פרץ" },
-    {
-      _id: "67ea663d6ab1596bd4dea9ff",
-      first_name: "עידו",
-      last_name: "שמעוני",
-    }, // עידו רשום לשיעור
-  ], // רשימת חניכים עם ה-ID הייחודי שלהם
+    { _id: "s8", first_name: "עומר", last_name: "גולן" },
+    { _id: "s9", first_name: "רוני", last_name: "חן" }
+  ],
+  lessonLocation: "כיתה 4",
+  hasReview: false
 };
 
 // שיעורים לדשבורד (שיעור קרוב למנטור או חניך)
 export const mockNextLesson = {
-  subject: "אנגלית",
+  id: 5,
+  subject: "מתמטיקה",
   grade: "ח",
-  date: "2025-04-06",
-  day: "ראשון",
-  startTime: "14:00",
-  endTime: "15:00",
-  mentor: "נועה כהן",
-  student: "יוסי לוי", // למנטור בלבד
-  description: "שיעור באנגלית – הכנה למבחן",
+  date: "6.4.2025",
+  day: "שישי",
+  startTime: "13:00",
+  endTime: "14:00",
+  mentor: "עידו כספי",
+  description: "תרגול משוואות ריבועיות",
   students: [
-    { _id: "studentId1", first_name: "תמר", last_name: "כהן" },
-    { _id: "studentId2", first_name: "יונתן", last_name: "לוי" },
-    {
-      _id: "67ea663d6ab1596bd4dea9ff",
-      first_name: "עידו",
-      last_name: "שמעוני",
-    }, // עידו רשום לשיעור
-  ], // רשימת חניכים עם ה-ID הייחודי שלהם
+    { _id: "s10", first_name: "ליהי", last_name: "שפירא" },
+    { _id: "s11", first_name: "אורי", last_name: "ברק" }
+  ],
+  lessonLocation: "כיתה 2",
+  hasReview: false
 };
 
 // רשימת שיעורים לחיפוש (הרשמה לשיעור) - כולם תחת אותו מקצוע, כיתה וקבוצה
@@ -50,7 +45,7 @@ export const mockSearchResults = [
     grade: "ח", // אותה כיתה
     group: "2", // אותה קבוצה
     date: "2.4.2025",
-    day: "רביעי",
+    day: "ראשון",
     startTime: "14:00",
     endTime: "15:00",
     mentor: "יוסי כהן",
@@ -74,14 +69,14 @@ export const mockSearchResults = [
     grade: "ח", // אותה כיתה
     group: "2", // אותה קבוצה
     date: "3.4.2025",
-    day: "חמישי",
+    day: "שני",
     startTime: "15:00",
     endTime: "16:00",
     mentor: "נועה ברק",
     description: "חזרה על נושאים לבגרות. בדיקה: רשום ואין מקום",
     students: [
-      { _id: "studentId6", first_name: "תמר", last_name: "פרץ" },
-      { _id: "studentId7", first_name: "רועי", last_name: "כהן" },
+      { _id: "studentId6", first_name: "תמר", last_name: "דוד" },
+      { _id: "studentId7", first_name: "רועי", last_name: "שלום" },
       {
         _id: "67ea663d6ab1596bd4dea9ff",
         first_name: "עידו",
@@ -97,14 +92,14 @@ export const mockSearchResults = [
     grade: "ח", // אותה כיתה
     group: "2", // אותה קבוצה
     date: "4.4.2025",
-    day: "שישי",
+    day: "שלישי",
     startTime: "12:00",
     endTime: "13:00",
     mentor: "יואב לוי",
     description: "תרגול על נושאים מהשיעור הקודם. בדיקה: לא רשום ויש מקום",
     students: [
-      { _id: "studentId8", first_name: "יובל", last_name: "לוי" },
-      { _id: "studentId9", first_name: "ליה", last_name: "כהן" },
+      { _id: "studentId8", first_name: "יובל", last_name: "מזרחי" },
+      { _id: "studentId9", first_name: "ליה", last_name: "אשכנזי" },
     ],
   },
 
@@ -142,8 +137,8 @@ export const mockMyLessons = [
     description: "שיעור תרגול במודול טריגונומטריה",
     //students: ["יובל", "ליה"],
     students: [
-      { _id: "studentId8", first_name: "יובל", last_name: "לוי" },
-      { _id: "studentId9", first_name: "ליה", last_name: "כהן" },
+      { _id: "studentId8", first_name: "יובל", last_name: "מזרחי" },
+      { _id: "studentId9", first_name: "ליה", last_name: "אשכנזי" },
     ], // רשימת חניכים עם ה-ID הייחודי שלהם
   },
   {
@@ -159,7 +154,7 @@ export const mockMyLessons = [
     //students: ["עומר", "רוני"],
     students: [
       { _id: "studentId10", first_name: "עומר", last_name: "גולן" },
-      { _id: "studentId11", first_name: "רוני", last_name: "מזרחי" },
+      { _id: "studentId11", first_name: "רוני", last_name: "חן" },
     ], // רשימת חניכים עם ה-ID הייחודי שלהם
   },
 ];
@@ -192,3 +187,58 @@ export const mockStudentNoSpace = {
     { _id: "studentId3", first_name: "דניאל", last_name: "לוי" },
   ], // החניכים הרשומים לשיעור (השיעור מלא)
 };
+
+export const mockLessons = [
+  {
+    id: 1,
+    subject: "מתמטיקה",
+    grade: "ח",
+    date: "2.4.2025",
+    day: "ראשון",
+    startTime: "14:00",
+    endTime: "15:00",
+    mentor: "יוסי כהן",
+    description: "פתרון מבחן בנושא חזקות ושורשים",
+    students: [
+      { _id: "s1", first_name: "דניאל", last_name: "לוי" },
+      { _id: "s2", first_name: "נועם", last_name: "כהן" },
+      { _id: "s3", first_name: "שירה", last_name: "אברהם" }
+    ],
+    lessonLocation: "כיתה 3",
+    hasReview: false
+  },
+  {
+    id: 2,
+    subject: "מתמטיקה",
+    grade: "ח",
+    date: "3.4.2025",
+    day: "שני",
+    startTime: "15:00",
+    endTime: "16:00",
+    mentor: "נועה ברק",
+    description: "חזרה על נושאים לבגרות",
+    students: [
+      { _id: "s4", first_name: "תמר", last_name: "דוד" },
+      { _id: "s5", first_name: "רועי", last_name: "שלום" }
+    ],
+    lessonLocation: "כיתה 5",
+    hasReview: false
+  },
+  {
+    id: 3,
+    subject: "פיזיקה",
+    grade: "ח",
+    date: "4.4.2025",
+    day: "שלישי",
+    startTime: "12:00",
+    endTime: "13:00",
+    mentor: "יואב לוי",
+    description: "שיעור תרגול במודול טריגונומטריה",
+    students: [
+      { _id: "s6", first_name: "יובל", last_name: "מזרחי" },
+      { _id: "s7", first_name: "ליה", last_name: "אשכנזי" }
+    ],
+    lessonLocation: "מעבדה 2",
+    hasReview: true
+  }
+];

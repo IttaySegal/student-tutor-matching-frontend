@@ -18,38 +18,60 @@
 // export default SelectField;
 
 import React from "react";
-import { View, Text } from "react-native";
-import { SelectList } from "react-native-dropdown-select-list"; // ייבוא SelectList
-import Ionicons from "react-native-vector-icons/Ionicons"; // ייבוא אייקונים
-import RTLText from "./RTLText"; // RTLText לעברית
+import { View } from "react-native";
+import { SelectList } from "react-native-dropdown-select-list";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import RTLText from "./RTLText";
 
-const SelectField = ({ label, selectedValue, onValueChange, options }) => {
+const SelectField = ({ label, selectedValue, onValueChange, options, multiple = false }) => {
   const sharedStyles = {
     boxStyles: {
       backgroundColor: "#fff",
       borderRadius: 8,
-      flexDirection: "row-reverse", // כיוון RTL
+      flexDirection: "row-reverse",
       justifyContent: "space-between",
       alignItems: "center",
+      width: "100%",
+      borderWidth: 1,
+      borderColor: "#ccc",
+      paddingHorizontal: 10,
+      paddingVertical: 8,
     },
-    inputStyles: { textAlign: "right", fontSize: 16 },
-    dropdownStyles: { backgroundColor: "#fff" },
-    dropdownTextStyles: { textAlign: "right", fontSize: 16 },
-    arrowicon: <Ionicons name="chevron-down-outline" size={20} color="gray" />, // אייקון של חץ
+    inputStyles: { 
+      textAlign: "right", 
+      fontSize: 16,
+      color: "#000",
+    },
+    dropdownStyles: { 
+      backgroundColor: "#fff",
+      width: "100%",
+      borderWidth: 1,
+      borderColor: "#ccc",
+      borderRadius: 8,
+    },
+    dropdownTextStyles: { 
+      textAlign: "right", 
+      fontSize: 16,
+      color: "#000",
+    },
+    arrowicon: <Ionicons name="chevron-down-outline" size={20} color="gray" />,
+    searchPlaceholder: "חיפוש...",
+    searchStyles: {
+      textAlign: "right",
+      fontSize: 16,
+    },
   };
 
   return (
-    <View style={{ marginBottom: 20 }}>
-      {/* כותרת */}
-      <RTLText>{label}</RTLText>
-
-      {/* DropDown */}
+    <View style={{ marginBottom: 20, width: "100%" }}>
+      {label && <RTLText style={{ textAlign: "right", marginBottom: 10, fontWeight: "bold" }}>{label}</RTLText>}
       <SelectList
-        setSelected={onValueChange} // פעולה לעדכון ערך הנבחר
-        data={options} // נתונים לאופציות
-        placeholder="בחר..." // פלייסהולדר
-        defaultOption={{ key: selectedValue, value: selectedValue }} // ערך ברירת מחדל
-        {...sharedStyles} // משתף סטיילים בין כל השדות
+        setSelected={onValueChange}
+        data={options}
+        placeholder="בחר..."
+        defaultOption={selectedValue ? { key: selectedValue, value: selectedValue } : null}
+        multiple={multiple}
+        {...sharedStyles}
       />
     </View>
   );

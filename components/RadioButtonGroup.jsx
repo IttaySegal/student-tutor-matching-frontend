@@ -1,64 +1,73 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, StyleSheet } from "react-native";
 import RTLText from "./RTLText";
 
-const RadioButtonGroup = ({ label, options, selectedValue, onValueChange }) => {
+export default function RadioButtonGroup({
+  label,
+  options,
+  selectedValue,
+  onValueChange,
+  containerStyle,
+}) {
   return (
-    <View style={{ marginBottom: 20 }}>
-      <RTLText style={{ textAlign: "right", marginBottom: 10 }}>
-        {label}
-      </RTLText>
-      <View
-        style={{
-          flexDirection: "row-reverse",
-          flexWrap: "wrap",
-          justifyContent: "flex-start",
-          alignItems: "center",
-        }}
-      >
+    <View style={[styles.container, containerStyle]}>
+      {label && <RTLText style={styles.label}>{label}</RTLText>}
+      <View style={styles.optionsContainer}>
         {options.map((option) => (
           <TouchableOpacity
             key={option.value}
-            onPress={() => onValueChange(option.value)} // עדכון הערך הנבחר
-            style={{
-              flexDirection: "row-reverse", // הפוך את סדר הצגת האלמנטים (העיגול יהיה אחרי הטקסט)
-              alignItems: "center",
-              marginRight: 15, // פחות רווח בין הבחירות
-              marginBottom: 5, // פחות רווח בין הבחירות
-            }}
+            style={styles.optionContainer}
+            onPress={() => onValueChange(option.value)}
           >
-            <View
-              style={{
-                width: 20,
-                height: 20,
-                borderRadius: 10,
-                borderWidth: 2,
-                borderColor:
-                  selectedValue === option.value ? "#007BFF" : "#ccc",
-                justifyContent: "center",
-                alignItems: "center",
-                marginLeft: 1, // העיגול אחרי הטקסט
-              }}
-            >
-              {selectedValue === option.value && (
-                <View
-                  style={{
-                    width: 12,
-                    height: 12,
-                    borderRadius: 6,
-                    backgroundColor: "#007BFF",
-                  }}
-                />
-              )}
+            <View style={styles.radioButton}>
+              {selectedValue === option.value && <View style={styles.selected} />}
             </View>
-            <RTLText style={{ textAlign: "right", marginRight: 8 }}>
-              {option.label}
-            </RTLText>
+            <RTLText style={styles.optionLabel}>{option.label}</RTLText>
           </TouchableOpacity>
         ))}
       </View>
     </View>
   );
-};
+}
 
-export default RadioButtonGroup;
+const styles = StyleSheet.create({
+  container: {
+    width: "100%",
+    marginBottom: 20,
+  },
+  label: {
+    fontSize: 16,
+    marginBottom: 10,
+    fontWeight: "bold",
+  },
+  optionsContainer: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    gap: 20,
+  },
+  optionContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+  },
+  optionLabel: {
+    fontSize: 16,
+  },
+  radioButton: {
+    height: 20,
+    width: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "#000",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  selected: {
+    height: 10,
+    width: 10,
+    borderRadius: 5,
+    backgroundColor: "#000",
+  },
+});
