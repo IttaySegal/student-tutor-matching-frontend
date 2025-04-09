@@ -16,7 +16,6 @@ const TextInputField = ({
       <RTLText
         style={{
           marginBottom: 5,
-          textAlign: "left", // וודא שהטקסט מיושר לימין
           fontSize: 16,
         }}
       >
