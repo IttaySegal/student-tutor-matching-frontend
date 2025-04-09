@@ -13,7 +13,7 @@ export default function LessonCard({
   mentor,
   description,
   students,
-  lessonLocation, // הוספנו את lessonLocation כאן
+  lessonLocation,
   ...props
 }) {
   const [visible, setVisible] = useState(false);

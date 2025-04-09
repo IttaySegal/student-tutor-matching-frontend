@@ -15,7 +15,7 @@ import {
   lessonTypes,
 } from "../../constants/lessonOptions";
 
-export default function TestPage() {
+export default function CreateLesson() {
   const [subject, setSubject] = useState(""); // סטייט לשמירת מקצוע
   const [grade, setGrade] = useState(""); // סטייט לשמירת כיתה
   const [group, setGroup] = useState(""); // סטייט לשמירת הקבצה
@@ -61,11 +61,12 @@ export default function TestPage() {
   const groupOptions = subjectsWithGroups[subject] || [];
 
   return (
-    <ScrollView
-      contentContainerStyle={{ paddingBottom: 20 }} // רווח בתחתית כדי להבטיח שהכפתור יישאר נראה
-      style={{ flex: 1, padding: 20 }}
-    >
-      {/* SelectField עבור מקצוע */}
+    //<ScrollView contentContainerStyle={{ padding: 20 }} className="bg-primary">
+    <ScrollView contentContainerStyle={{ padding: 20 }}>
+      <RTLText className="text-2xl font-semibold text-white mt-10 font-psemibold">
+        יצירת שיעור חדש
+      </RTLText>
+
       <SelectField
         label="📚 מקצוע:"
         selectedValue={subject}
@@ -73,7 +74,6 @@ export default function TestPage() {
         options={subjects}
       />
 
-      {/* SelectField עבור כיתה */}
       <SelectField
         label="🎓 כיתה:"
         selectedValue={grade}
@@ -81,7 +81,6 @@ export default function TestPage() {
         options={grades}
       />
 
-      {/* SelectField עבור הקבצה */}
       {groupOptions.length > 0 ? (
         <SelectField
           label="🧑‍🏫 הקבצה:"
@@ -93,7 +92,6 @@ export default function TestPage() {
         <Text style={{ textAlign: "right", marginTop: 10 }}>הקבצה: כללי</Text>
       )}
 
-      {/* תיאור השיעור */}
       <TextInputField
         label="📝 תיאור השיעור:"
         value={lessonDescription}
@@ -102,7 +100,6 @@ export default function TestPage() {
         multiline={true}
       />
 
-      {/* RadioButton עבור סוג שיעור */}
       <RadioButtonGroup
         label="💻 סוג שיעור:"
         options={lessonTypes}
@@ -116,15 +113,14 @@ export default function TestPage() {
         onChangeText={setLessonLocation}
         placeholder="הכנס מיקום או קישור לזום"
       />
+
       <View style={{ marginBottom: 20 }}>
-        {/* כפתור "בחר תאריך" עם אייקון */}
         <IconButton
           onPress={() => setShowDatePicker(true)}
           icon="calendar"
           title="תאריך"
-          style={{ marginBottom: 10 }} // רווח בין הכפתור הראשון לשני
+          style={{ marginBottom: 10 }}
         />
-        {/* כפתור "בחר שעה" עם אייקון */}
         <IconButton
           onPress={() => setShowTimePicker(true)}
           icon="clock"
@@ -132,7 +128,6 @@ export default function TestPage() {
         />
       </View>
 
-      {/* הצגת תאריך ושעה */}
       {showDatePicker && (
         <DateSelector date={date} setDate={handleDateChange} />
       )}
@@ -140,8 +135,7 @@ export default function TestPage() {
         <TimeSelector time={time} setTime={handleTimeChange} />
       )}
 
-      {/* הצגת התאריך והשעה שנבחרו */}
-      <View style={{ marginTop: 20 }}>
+      <View style={{ marginTop: 3 }}>
         <RTLText>תאריך נבחר: {date.toLocaleDateString()}</RTLText>
         <RTLText>
           שעה נבחרת: {time.getHours()}:
@@ -149,14 +143,12 @@ export default function TestPage() {
         </RTLText>
       </View>
 
-      {/* כפתור צור שיעור */}
       <CustomButton
         title="צור שיעור"
         handlePress={() => {
-          // כאן תוכל להוסיף את הלוגיקה שלך ליצירת השיעור, למשל לשלוח את הנתונים לשרת
           console.log("שיעור נוצר!");
         }}
-        containerStyles="mt-7" // מרווח מהאלמנטים למעלה
+        containerStyles="mt-7"
       />
     </ScrollView>
   );
