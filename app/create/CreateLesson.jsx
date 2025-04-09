@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput } from "react-native";
+import { View, ScrollView, Text } from "react-native";
 import SelectField from "../../components/SelectField"; // נתיב לקומפוננטת SelectField
 import DateSelector from "../../components/DateSelector"; // נתיב לקומפוננטת DateSelector
 import TimeSelector from "../../components/TimeSelector"; // נתיב לקומפוננטת TimeSelector
@@ -8,7 +8,12 @@ import TextInputField from "../../components/TextInputField";
 import RTLText from "../../components/RTLText";
 import RadioButtonGroup from "../../components/RadioButtonGroup";
 import IconButton from "../../components/IconButton";
-import { subjects, grades, subjectsWithGroups, lessonTypes } from "../../constants/lessonOptions";
+import {
+  subjects,
+  grades,
+  subjectsWithGroups,
+  lessonTypes,
+} from "../../constants/lessonOptions";
 
 export default function TestPage() {
   const [subject, setSubject] = useState(""); // סטייט לשמירת מקצוע
@@ -56,7 +61,10 @@ export default function TestPage() {
   const groupOptions = subjectsWithGroups[subject] || [];
 
   return (
-    <View style={{ padding: 20 }}>
+    <ScrollView
+      contentContainerStyle={{ paddingBottom: 20 }} // רווח בתחתית כדי להבטיח שהכפתור יישאר נראה
+      style={{ flex: 1, padding: 20 }}
+    >
       {/* SelectField עבור מקצוע */}
       <SelectField
         label="📚 מקצוע:"
@@ -140,6 +148,16 @@ export default function TestPage() {
           {time.getMinutes() < 10 ? "0" + time.getMinutes() : time.getMinutes()}
         </RTLText>
       </View>
-    </View>
+
+      {/* כפתור צור שיעור */}
+      <CustomButton
+        title="צור שיעור"
+        handlePress={() => {
+          // כאן תוכל להוסיף את הלוגיקה שלך ליצירת השיעור, למשל לשלוח את הנתונים לשרת
+          console.log("שיעור נוצר!");
+        }}
+        containerStyles="mt-7" // מרווח מהאלמנטים למעלה
+      />
+    </ScrollView>
   );
 }
