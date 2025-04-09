@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { View, Text, FlatList } from "react-native";
-import SearchBar from "../../components/SearchBar";
-import LessonCard from "../../components/LessonCard";
-import { mockSearchResults } from "../mocks/mockLessons";
-import { searchLessons } from "../../services/lessonService";
-import LessonDetailsModal from "../../components/LessonDetailsModal";
+import { View, Text, FlatList, StyleSheet } from "react-native";
+import SearchBar from "@/components/SearchBar";
+import LessonCard from "@/components/LessonCard";
+import { mockSearchResults } from "@/app/mocks/mockLessons";
+import { searchLessons } from "@/services/lessonService";
+import LessonDetailsModal from "@/components/LessonDetailsModal";
 
 const RegisterLesson = () => {
   const [results, setResults] = useState([]);
@@ -44,7 +44,7 @@ const RegisterLesson = () => {
   // };
 
   return (
-    <View className="flex-1 bg-primary px-4 py-6">
+    <View style={styles.container}>
       <SearchBar onSearch={handleSearch} />
 
       {results.length > 0 ? (
@@ -52,19 +52,34 @@ const RegisterLesson = () => {
           data={results}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
-            <View className="mb-3">
-              <LessonCard {...item} ModalComponent={LessonDetailsModal}
-              />
+            <View style={styles.cardContainer}>
+              <LessonCard {...item} ModalComponent={LessonDetailsModal} />
             </View>
           )}
         />
       ) : (
-        <Text className="text-center text-gray-200 mt-10">
+        <Text style={styles.emptyText}>
           אין שיעורים להצגה
         </Text>
       )}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#f5f5f5",
+    padding: 16,
+  },
+  cardContainer: {
+    marginBottom: 12,
+  },
+  emptyText: {
+    textAlign: "center",
+    color: "#666",
+    marginTop: 40,
+  },
+});
 
 export default RegisterLesson;

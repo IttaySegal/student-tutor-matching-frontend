@@ -6,11 +6,43 @@ import { Slot } from "expo-router"; // ✅ חובה בשביל ניווט דינ
 import "../global.css";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { I18nManager } from "react-native"; // הוספת I18nManager
-//import { AuthProvider } from "../context/AuthContext";
-import GlobalProvider from "../context/GlobalProvider";
+import { AuthProvider } from "@/context/AuthContext";
+import GlobalProvider from "@/context/GlobalProvider";
+import { useAuth } from "@/context/AuthContext";
+import { Tabs } from "expo-router";
+import { icons } from "@/constants";
+import { View, Text, Image, Dimensions } from "react-native";
 
 // הגדרת RTL גלובלית
 I18nManager.forceRTL(true);
+
+// Get the screen width for responsive styling
+const { width } = Dimensions.get('window');
+
+// Component for rendering individual tab icons and labels
+const TabIcon = ({ icon, color, name, focused }) => {
+  return (
+    <View className="flex items-center justify-center gap-2 top-4" style={{ minWidth: 100 }} >
+      <Image
+        source={icon}
+        resizeMode="contain"
+        tintColor={color}
+        className="w-6 h-6"
+        style={{ marginTop: 20 }}
+      />
+      <Text
+        className={`${focused ? 'font-psemibold' : 'font-pregular'} text-xm`}
+        style={{
+          color: color,
+          fontSize: width > 500 ? 12 : 9,
+        }}
+        numberOfLines={1}
+      >
+        {name}
+      </Text>
+    </View>
+  )
+}
 
 // Keep splash screen visible until ready
 SplashScreen.preventAutoHideAsync();
@@ -46,16 +78,13 @@ const RootLayout = () => {
   }
 
   return (
-    <GlobalProvider>
-      <SafeAreaView className="flex-1 bg-primary" onLayout={onLayoutRootView}>
-        <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="(profile)" options={{ headerShown: false }} />
-        </Stack>
-      </SafeAreaView>
-    </GlobalProvider>
+    <AuthProvider>
+      <GlobalProvider>
+        <SafeAreaView className="flex-1 bg-primary" onLayout={onLayoutRootView}>
+          <Slot />
+        </SafeAreaView>
+      </GlobalProvider>
+    </AuthProvider>
   );
 };
 

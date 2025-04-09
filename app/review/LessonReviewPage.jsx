@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { View, FlatList, Text } from "react-native";
-import LessonCard from "../../components/LessonCard";
-import LessonReviewMentor from "../../components/LessonReviewMentor";
-import RTLText from "../../components/RTLText";
-import PageHeader from "../../components/PageHeader";
-import { mockLessons } from "../mocks/mockLessons";
+import { View, FlatList, Text, StyleSheet } from "react-native";
+import LessonCard from "@/components/LessonCard";
+import LessonReviewMentor from "@/components/LessonReviewMentor";
+import RTLText from "@/components/RTLText";
+import PageHeader from "@/components/PageHeader";
+import { mockLessons } from "@/app/mocks/mockLessons";
 
 const LessonReviewPage = () => {
   const [lessons, setLessons] = useState(mockLessons);
@@ -27,10 +27,10 @@ const LessonReviewPage = () => {
   };
 
   return (
-    <View className="flex-1 bg-primary px-4 py-6">
+    <View style={styles.container}>
       <PageHeader title="סקירת שיעורים" />
       
-      <RTLText className="text-white text-lg mb-4">
+      <RTLText style={styles.headerText}>
         בחר שיעור כדי להוסיף סקירה
       </RTLText>
 
@@ -39,7 +39,7 @@ const LessonReviewPage = () => {
           data={lessons}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
-            <View className="mb-3">
+            <View style={styles.cardContainer}>
               <LessonCard 
                 {...item} 
                 ModalComponent={LessonReviewMentor}
@@ -51,12 +51,34 @@ const LessonReviewPage = () => {
           )}
         />
       ) : (
-        <Text className="text-center text-gray-200 mt-10">
+        <Text style={styles.emptyText}>
           אין שיעורים להצגה
         </Text>
       )}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#f5f5f5",
+    paddingHorizontal: 16,
+    paddingVertical: 24,
+  },
+  headerText: {
+    color: "#fff",
+    fontSize: 18,
+    marginBottom: 16,
+  },
+  cardContainer: {
+    marginBottom: 12,
+  },
+  emptyText: {
+    textAlign: "center",
+    color: "#e5e5e5",
+    marginTop: 40,
+  },
+});
 
 export default LessonReviewPage; 
