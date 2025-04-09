@@ -4,6 +4,7 @@ import CustomButton from "./CustomButton";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
 import LessonEditModal from "./LessonEditModal"; // ייבוא ה-Modal של עריכת שיעור
+import CloseButton from "../components/CloseButton"; // ייבוא הכפתור החדש
 
 export default function LessonDetailsModal({
   visible,
@@ -40,6 +41,8 @@ export default function LessonDetailsModal({
           className="bg-white rounded-2xl p-6 w-11/12 max-w-md"
           style={{ direction: "rtl", alignItems: "flex-start" }}
         >
+          {/* כפתור סגירה */}
+          <CloseButton onPress={onClose} />
           <RTLText style={{ fontSize: 18, fontWeight: "bold" }}>
             שיעור ב{subject} – {grade}
           </RTLText>
@@ -107,13 +110,6 @@ export default function LessonDetailsModal({
                 containerStyles="w-4/5 bg-gray-500"
               />
             )}
-
-            <CustomButton
-              title="סגור"
-              handlePress={onClose}
-              containerStyles="w-4/5 bg-gray-500 mt-6"
-              textStyles="text-white"
-            />
           </View>
         </View>
       </View>
