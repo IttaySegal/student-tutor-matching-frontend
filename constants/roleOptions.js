@@ -1,5 +1,5 @@
 export const roleOptions = {
-  admin: "מנהל מערכת",
-  mentor: "חונך",
-  student: "חניך",
+  admin: "Admin",
+  mentor: "Mentor",
+  student: "Student",
 };
