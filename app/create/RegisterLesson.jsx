@@ -44,7 +44,10 @@ const RegisterLesson = () => {
   // };
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1 bg-primary">
+      <Text className="text-3xl font-bold text-white text-center py-6">
+        Register Lesson
+      </Text>
       <SearchBar onSearch={handleSearch} />
 
       {results.length > 0 ? (
@@ -59,7 +62,7 @@ const RegisterLesson = () => {
         />
       ) : (
         <Text style={styles.emptyText}>
-          אין שיעורים להצגה
+          No lessons to display
         </Text>
       )}
     </View>
@@ -67,11 +70,6 @@ const RegisterLesson = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f5f5f5",
-    padding: 16,
-  },
   cardContainer: {
     marginBottom: 12,
   },
