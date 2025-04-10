@@ -18,17 +18,16 @@
 // export default SelectField;
 
 import React from "react";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import RTLText from "./RTLText";
 
 const SelectField = ({ label, selectedValue, onValueChange, options, multiple = false }) => {
   const sharedStyles = {
     boxStyles: {
       backgroundColor: "#fff",
       borderRadius: 8,
-      flexDirection: "row-reverse",
+      flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
       width: "100%",
@@ -38,7 +37,7 @@ const SelectField = ({ label, selectedValue, onValueChange, options, multiple = 
       paddingVertical: 8,
     },
     inputStyles: { 
-      textAlign: "right", 
+      textAlign: "left", 
       fontSize: 16,
       color: "#000",
     },
@@ -50,25 +49,25 @@ const SelectField = ({ label, selectedValue, onValueChange, options, multiple = 
       borderRadius: 8,
     },
     dropdownTextStyles: { 
-      textAlign: "right", 
+      textAlign: "left", 
       fontSize: 16,
       color: "#000",
     },
     arrowicon: <Ionicons name="chevron-down-outline" size={20} color="gray" />,
-    searchPlaceholder: "חיפוש...",
+    searchPlaceholder: "Search...",
     searchStyles: {
-      textAlign: "right",
+      textAlign: "left",
       fontSize: 16,
     },
   };
 
   return (
     <View style={{ marginBottom: 20, width: "100%" }}>
-      {label && <RTLText style={{ textAlign: "right", marginBottom: 10, fontWeight: "bold" }}>{label}</RTLText>}
+      {label && <Text style={{ textAlign: "left", marginBottom: 10, fontWeight: "bold", color: "#fff" }}>{label}</Text>}
       <SelectList
         setSelected={onValueChange}
         data={options}
-        placeholder="בחר..."
+        placeholder="Select..."
         defaultOption={selectedValue ? { key: selectedValue, value: selectedValue } : null}
         multiple={multiple}
         {...sharedStyles}
