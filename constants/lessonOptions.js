@@ -1,26 +1,26 @@
 export const subjectsWithGroups = {
-    "מתמטיקה": ["1", "2", "3"],
-    "אנגלית": ["א", "ב"],
-    "פיזיקה": ["מתקדמים", "בסיסי"],
+    "Mathematics": ["1", "2", "3"],
+    "English": ["A", "B"],
+    "Physics": ["Advanced", "Basic"],
   };
   
   export const subjects = [
-    { label: "מתמטיקה", value: "מתמטיקה" },
-    { label: "אנגלית", value: "אנגלית" },
-    { label: "פיזיקה", value: "פיזיקה" },
-    { label: "אזרחות", value: "אזרחות" },
-    { label: "היסטוריה", value: "היסטוריה" },
-    { label: "ספרות", value: "ספרות" },
+    { label: "Mathematics", value: "Mathematics" },
+    { label: "English", value: "English" },
+    { label: "Physics", value: "Physics" },
+    { label: "Civics", value: "Civics" },
+    { label: "History", value: "History" },
+    { label: "Literature", value: "Literature" },
   ];
   
   export const grades = [
-    { label: "כיתה ז׳", value: "כיתה ז׳" },
-    { label: "כיתה ח׳", value: "כיתה ח׳" },
-    { label: "כיתה ט׳", value: "כיתה ט׳" },
+    { label: "Grade 7", value: "Grade 7" },
+    { label: "Grade 8", value: "Grade 8" },
+    { label: "Grade 9", value: "Grade 9" },
   ];
   
   export const lessonTypes = [
-    { label: "פרונטלי בבית ספר", value: "פרונטלי" },
-    { label: "מקוון בזום", value: "מקוון" },
+    { label: "In-person at school", value: "In-person" },
+    { label: "Online via Zoom", value: "Online" },
   ];
   

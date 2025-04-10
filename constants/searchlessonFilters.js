@@ -1,24 +1,24 @@
-// מקצועות עם הקבצות
+// Subjects with groups
 export const subjectsWithGroups = {
-    מתמטיקה: ["1", "2", "3"],
-    אנגלית: ["א", "ב"],
-    פיזיקה: ["מתקדמים", "בסיסי"],
-  };
-  
-  // כל המקצועות
-  export const subjects = [
-    { key: "מתמטיקה", value: "מתמטיקה" },
-    { key: "אנגלית", value: "אנגלית" },
-    { key: "פיזיקה", value: "פיזיקה" },
-    { key: "אזרחות", value: "אזרחות" },
-    { key: "היסטוריה", value: "היסטוריה" },
-    { key: "ספרות", value: "ספרות" },
-  ];
-  
-  // כיתות
-  export const grades = [
-    { key: "ז", value: "כיתה ז׳" },
-    { key: "ח", value: "כיתה ח׳" },
-    { key: "ט", value: "כיתה ט׳" },
-  ];
+  Mathematics: ["1", "2", "3"],
+  English: ["A", "B"],
+  Physics: ["Advanced", "Basic"],
+};
+
+// All subjects
+export const subjects = [
+  { key: "Mathematics", value: "Mathematics" },
+  { key: "English", value: "English" },
+  { key: "Physics", value: "Physics" },
+  { key: "Civics", value: "Civics" },
+  { key: "History", value: "History" },
+  { key: "Literature", value: "Literature" },
+];
+
+// Grades
+export const grades = [
+  { key: "7", value: "Grade 7" },
+  { key: "8", value: "Grade 8" },
+  { key: "9", value: "Grade 9" },
+];
   

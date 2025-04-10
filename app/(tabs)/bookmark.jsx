@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
-import { View, FlatList, TouchableOpacity, StyleSheet } from "react-native";
+import { View, FlatList, TouchableOpacity, StyleSheet, Text } from "react-native";
 import { useAuth } from "../../context/AuthContext";
 import LessonReviewMentor from "../../components/LessonReviewMentor";
 import LessonReviewStudent from "../../components/LessonReviewStudent";
-import RTLText from "../../components/RTLText";
 
 export default function BookmarkScreen() {
   const { user } = useAuth();
@@ -14,47 +13,47 @@ export default function BookmarkScreen() {
   const mockLessons = [
     {
       id: 1,
-      subject: "מתמטיקה",
-      grade: "ח",
+      subject: "Mathematics",
+      grade: "8",
       date: "2024-03-15",
-      day: "שלישי",
+      day: "Tuesday",
       startTime: "14:00",
       endTime: "15:00",
-      mentor: "ישראל ישראלי",
-      description: "שיעור בחשבון",
+      mentor: "Israel Israeli",
+      description: "Math lesson",
       students: [
-        { _id: "1", first_name: "דני", last_name: "כהן" },
-        { _id: "2", first_name: "שרה", last_name: "לוי" },
+        { _id: "1", first_name: "Danny", last_name: "Cohen" },
+        { _id: "2", first_name: "Sarah", last_name: "Levy" },
       ],
     },
     {
       id: 2,
-      subject: "אנגלית",
-      grade: "ט",
+      subject: "English",
+      grade: "9",
       date: "2024-03-16",
-      day: "רביעי",
+      day: "Wednesday",
       startTime: "15:30",
       endTime: "16:30",
-      mentor: "שרה כהן",
-      description: "שיעור באנגלית",
+      mentor: "Sarah Cohen",
+      description: "English lesson",
       students: [
-        { _id: "3", first_name: "יוסי", last_name: "לוי" },
-        { _id: "4", first_name: "מיכל", last_name: "אברהם" },
+        { _id: "3", first_name: "Yossi", last_name: "Levy" },
+        { _id: "4", first_name: "Michal", last_name: "Abraham" },
       ],
     },
     {
       id: 3,
-      subject: "היסטוריה",
-      grade: "י",
+      subject: "History",
+      grade: "10",
       date: "2024-03-17",
-      day: "חמישי",
+      day: "Thursday",
       startTime: "16:00",
       endTime: "17:00",
-      mentor: "דני לוי",
-      description: "שיעור בהיסטוריה",
+      mentor: "Danny Levy",
+      description: "History lesson",
       students: [
-        { _id: "5", first_name: "נועה", last_name: "כהן" },
-        { _id: "6", first_name: "עידן", last_name: "אברהם" },
+        { _id: "5", first_name: "Noa", last_name: "Cohen" },
+        { _id: "6", first_name: "Eden", last_name: "Abraham" },
       ],
     },
   ];
@@ -103,19 +102,19 @@ export default function BookmarkScreen() {
       onPress={() => handleLessonPress(item)}
     >
       <View style={styles.lessonHeader}>
-        <RTLText style={styles.subject}>{item.subject}</RTLText>
-        <RTLText style={styles.grade}>כיתה {item.grade}</RTLText>
+        <Text style={styles.subject}>{item.subject}</Text>
+        <Text style={styles.grade}>Grade {item.grade}</Text>
       </View>
       <View style={styles.lessonDetails}>
-        <RTLText style={styles.date}>
+        <Text style={styles.date}>
           {item.day}, {item.date}
-        </RTLText>
-        <RTLText style={styles.time}>
+        </Text>
+        <Text style={styles.time}>
           {item.startTime} - {item.endTime}
-        </RTLText>
+        </Text>
       </View>
-      <RTLText style={styles.mentor}>מנטור: {item.mentor}</RTLText>
-      <RTLText style={styles.description}>{item.description}</RTLText>
+      <Text style={styles.mentor}>Mentor: {item.mentor}</Text>
+      <Text style={styles.description}>{item.description}</Text>
     </TouchableOpacity>
   );
 
