@@ -1,10 +1,9 @@
-import { View, Modal } from "react-native";
-import RTLText from "./RTLText";
+import { View, Modal, Text } from "react-native";
 import CustomButton from "./CustomButton";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
-import LessonEditModal from "./LessonEditModal"; // ייבוא ה-Modal של עריכת שיעור
-import CloseButton from "../components/CloseButton"; // ייבוא הכפתור החדש
+import LessonEditModal from "./LessonEditModal";
+import CloseButton from "../components/CloseButton";
 
 export default function LessonDetailsModal({
   visible,
@@ -21,16 +20,14 @@ export default function LessonDetailsModal({
   lessonLocation,
 }) {
   const { user } = useAuth();
-  const [isEditModalVisible, setIsEditModalVisible] = useState(false); // שומר אם ה-Edit Modal פתוח
-  // קודם כל נוודא אם המשתמש הוא חניך
-  const isStudent = user?.role === "student"; // אם הוא חניך
-  const isMentor = user?.role === "mentor"; // אם הוא חונך
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const isStudent = user?.role === "student";
+  const isMentor = user?.role === "mentor";
 
   const handleManageLesson = () => {
-    setIsEditModalVisible(true); // פותח את ה-Modal לעריכת השיעור
+    setIsEditModalVisible(true);
   };
 
-  // אם המשתמש הוא חניך, נבדוק אם הוא רשום לשיעור
   const isStudentRegistered =
     isStudent && students.some((student) => student._id === user?._id);
 
@@ -39,85 +36,77 @@ export default function LessonDetailsModal({
       <View className="flex-1 bg-black bg-opacity-50 justify-center items-center">
         <View
           className="bg-white rounded-2xl p-6 w-11/12 max-w-md"
-          style={{ direction: "rtl", alignItems: "flex-start" }}
+          style={{ alignItems: "flex-start" }}
         >
-          {/* כפתור סגירה */}
           <CloseButton onPress={onClose} />
-          <RTLText style={{ fontSize: 18, fontWeight: "bold" }}>
-            שיעור ב{subject} – {grade}
-          </RTLText>
-          <RTLText>
+          <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+            {subject} Lesson – Grade {grade}
+          </Text>
+          <Text>
             {day}, {date}
-          </RTLText>
-          <RTLText>
-            משעה {startTime} עד {endTime}
-          </RTLText>
-          <RTLText>
-            החונך{isMentor ? "ת" : ""}: {mentor}
-          </RTLText>
+          </Text>
+          <Text>
+            From {startTime} to {endTime}
+          </Text>
+          <Text>
+            {isMentor ? "Mentor" : "Mentor"}: {mentor}
+          </Text>
 
-          <RTLText style={{ marginTop: 10, fontWeight: "bold" }}>
-            תיאור השיעור:
-          </RTLText>
-          <RTLText>{description}</RTLText>
+          <Text style={{ marginTop: 10, fontWeight: "bold" }}>
+            Lesson Description:
+          </Text>
+          <Text>{description}</Text>
 
-          <RTLText style={{ marginTop: 10, fontWeight: "bold" }}>
-            חניכים שנרשמו:
-          </RTLText>
+          <Text style={{ marginTop: 10, fontWeight: "bold" }}>
+            Registered Students:
+          </Text>
           {students.length === 0 ? (
-            <RTLText>לא נרשמו חניכים עדיין.</RTLText>
+            <Text>No students registered yet.</Text>
           ) : (
             students.map((student, i) => (
-              <RTLText key={i}>
+              <Text key={i}>
                 • {student.first_name} {student.last_name}
-              </RTLText>
+              </Text>
             ))
           )}
 
-          {/* אזור כפתורים */}
           <View className="w-full mt-8 items-center">
             {isStudent ? (
-              // אם החניך לא רשום לשיעור
               isStudentRegistered ? (
-                // אם החניך כבר רשום לשיעור
                 <CustomButton
-                  title="ביטול הרשמה"
-                  handlePress={() => console.log("ביטול הרשמה")}
+                  title="Cancel Registration"
+                  handlePress={() => console.log("Cancel registration")}
                   containerStyles="w-4/5 bg-red-500"
                 />
-              ) : // אם החניך לא רשום לשיעור
-              students.length >= 3 ? (
-                <RTLText>השיעור מלא</RTLText> // הצגת הודעה שהשיעור מלא
+              ) : students.length >= 3 ? (
+                <Text>Lesson is full</Text>
               ) : (
                 <CustomButton
-                  title="הירשם לשיעור"
-                  handlePress={() => console.log("הרשמה לשיעור")}
+                  title="Register for Lesson"
+                  handlePress={() => console.log("Register for lesson")}
                   containerStyles="w-4/5"
                 />
               )
             ) : isMentor ? (
-              // אם המשתמש הוא חונך (אפשר להוסיף כאן פעולות שקשורות לחונך)
               <CustomButton
-                title="נהל שיעור"
+                title="Manage Lesson"
                 handlePress={handleManageLesson}
                 containerStyles="w-4/5"
               />
             ) : (
-              // אם המשתמש לא חניך ולא חונך (למשל במקרה של מנהל)
               <CustomButton
-                title="הפעולה לא זמינה"
-                handlePress={() => console.log("הפעולה לא זמינה")}
+                title="Action Not Available"
+                handlePress={() => console.log("Action not available")}
                 containerStyles="w-4/5 bg-gray-500"
               />
             )}
           </View>
         </View>
       </View>
-      {/* Modal של ניהול שיעור */}
       {isEditModalVisible && (
         <LessonEditModal
           visible={isEditModalVisible}
-          onClose={() => setIsEditModalVisible(false)} // סגור את ה-Edit Modal
+          onClose={() => setIsEditModalVisible(false)}
           subject={subject}
           grade={grade}
           date={date}
@@ -127,12 +116,10 @@ export default function LessonDetailsModal({
           mentor={mentor}
           description={description}
           students={students}
-          lessonLocation={lessonLocation} // הוספנו את מיקום השיעור
+          lessonLocation={lessonLocation}
           onSaveChanges={(newDescription, newLocation) => {
-            // כאן תוכל לשמור את השינויים (למשל לשלוח בקשה לשרת)
           }}
           onDeleteLesson={() => {
-            // כאן תוכל למחוק את השיעור
           }}
         />
       )}

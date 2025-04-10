@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
-import RTLText from "./RTLText";
+import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
 
 export default function LessonCard({
   subject,
@@ -35,19 +34,19 @@ export default function LessonCard({
         style={styles.lessonItem}
       >
         <View style={styles.lessonHeader}>
-          <RTLText style={styles.subject}>{subject}</RTLText>
-          <RTLText style={styles.grade}>כיתה {grade}</RTLText>
+          <Text style={styles.subject}>{subject}</Text>
+          <Text style={styles.grade}>Grade {grade}</Text>
         </View>
         <View style={styles.lessonDetails}>
-          <RTLText style={styles.date}>
+          <Text style={styles.date}>
             {day}, {date}
-          </RTLText>
-          <RTLText style={styles.time}>
+          </Text>
+          <Text style={styles.time}>
             {startTime} - {endTime}
-          </RTLText>
+          </Text>
         </View>
-        <RTLText style={styles.mentor}>מנטור: {mentor}</RTLText>
-        <RTLText style={styles.description}>{description}</RTLText>
+        <Text style={styles.mentor}>Mentor: {mentor}</Text>
+        <Text style={styles.description}>{description}</Text>
       </TouchableOpacity>
 
       {ModalComponent && (
@@ -73,47 +72,48 @@ export default function LessonCard({
 
 const styles = StyleSheet.create({
   lessonItem: {
-    backgroundColor: "white",
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 12,
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    padding: 15,
+    marginVertical: 8,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   lessonHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 8,
+    alignItems: "center",
+    marginBottom: 10,
   },
   subject: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#333",
   },
   grade: {
     fontSize: 16,
     color: "#666",
   },
   lessonDetails: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 8,
+    marginBottom: 10,
   },
   date: {
-    fontSize: 14,
-    color: "#666",
+    fontSize: 16,
+    color: "#444",
   },
   time: {
-    fontSize: 14,
-    color: "#666",
+    fontSize: 16,
+    color: "#444",
   },
   mentor: {
-    fontSize: 14,
-    color: "#666",
-    marginBottom: 4,
+    fontSize: 16,
+    color: "#444",
+    marginBottom: 5,
   },
   description: {
     fontSize: 14,

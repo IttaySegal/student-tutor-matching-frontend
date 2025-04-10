@@ -3,10 +3,9 @@ import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useLesson } from "../../context/LessonContext";
 import LessonCard from "../../components/LessonCard";
-import RTLText from "../../components/RTLText";
 import { getGreeting } from "./utils/timeUtils";
 import { useAuth } from "../../context/AuthContext";
-import { mockPrevLesson, mockNextLesson } from "../mocks/mockLessons"; // ייבוא הנתונים
+import { mockPrevLesson, mockNextLesson } from "../mocks/mockLessons";
 import LessonDetailsModal from "../../components/LessonDetailsModal";
 
 const StudentHome = () => {
@@ -27,29 +26,29 @@ const StudentHome = () => {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#000" />
-        <RTLText style={{ marginTop: 10 }}>טוען מידע...</RTLText>
+        <Text style={{ marginTop: 10 }}>Loading information...</Text>
       </View>
     );
   }
 
-  const userName = `${user.first_name} ${user.last_name}`; // יצירת השם המלא
+  const userName = `${user.first_name} ${user.last_name}`;
 
   return (
     <View style={styles.container}>
-      <RTLText style={styles.title}>
+      <Text style={styles.title}>
         {getGreeting()}, {userName}
-      </RTLText>
+      </Text>
 
-      <RTLText style={styles.description}>
-        הנה סקירה של השיעורים האחרונים והקרובים שלך.
-      </RTLText>
+      <Text style={styles.description}>
+        Here's an overview of your recent and upcoming lessons.
+      </Text>
 
-      {/* שיעור אחרון */}
-      <RTLText style={styles.section}>🕘 השיעור האחרון שלך:</RTLText>
+      {/* Last Lesson */}
+      <Text style={styles.section}>🕘 Your Last Lesson:</Text>
       <LessonCard {...mockPrevLesson} ModalComponent={LessonDetailsModal} />
 
-      {/* שיעור קרוב */}
-      <RTLText style={styles.section}>🕒 השיעור הקרוב שלך:</RTLText>
+      {/* Next Lesson */}
+      <Text style={styles.section}>🕒 Your Next Lesson:</Text>
       <LessonCard {...mockNextLesson} ModalComponent={LessonDetailsModal} />
     </View>
   );
@@ -70,17 +69,17 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    textAlign: "right",
+    textAlign: "left",
   },
   description: {
     fontSize: 18,
     marginTop: 10,
-    textAlign: "right",
+    textAlign: "left",
   },
   section: {
     fontSize: 18,
     marginTop: 30,
-    textAlign: "right",
+    textAlign: "left",
     fontWeight: "bold",
   },
 });

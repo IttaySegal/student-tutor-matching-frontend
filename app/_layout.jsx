@@ -2,19 +2,15 @@ import { useCallback } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { Stack } from "expo-router";
-import { Slot } from "expo-router"; // ✅ חובה בשביל ניווט דינמי
+import { Slot } from "expo-router";
 import "../global.css";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { I18nManager } from "react-native"; // הוספת I18nManager
 import { AuthProvider } from "@/context/AuthContext";
 import GlobalProvider from "@/context/GlobalProvider";
 import { useAuth } from "@/context/AuthContext";
 import { Tabs } from "expo-router";
 import { icons } from "@/constants";
 import { View, Text, Image, Dimensions } from "react-native";
-
-// הגדרת RTL גלובלית
-I18nManager.forceRTL(true);
 
 // Get the screen width for responsive styling
 const { width } = Dimensions.get('window');

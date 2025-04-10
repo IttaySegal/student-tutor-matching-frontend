@@ -1,244 +1,242 @@
-// שיעור קודם (prevLesson)
+// Previous lesson (prevLesson)
 export const mockPrevLesson = {
   id: 4,
-  subject: "מתמטיקה",
-  grade: "ח",
+  subject: "Mathematics",
+  grade: "8",
   date: "1.4.2025",
-  day: "חמישי",
+  day: "Thursday",
   startTime: "11:00",
   endTime: "12:00",
-  mentor: "גלית בר",
-  description: "חזרה על חקירת פונקציות",
+  mentor: "Galit Bar",
+  description: "Review of function analysis",
   students: [
-    { _id: "s8", first_name: "עומר", last_name: "גולן" },
-    { _id: "s9", first_name: "רוני", last_name: "חן" }
+    { _id: "s8", first_name: "Omer", last_name: "Golan" },
+    { _id: "s9", first_name: "Roni", last_name: "Chen" }
   ],
-  lessonLocation: "כיתה 4",
+  lessonLocation: "Classroom 4",
   hasReview: false
 };
 
-// שיעורים לדשבורד (שיעור קרוב למנטור או חניך)
+// Next lesson for dashboard (next lesson for mentor or student)
 export const mockNextLesson = {
   id: 5,
-  subject: "מתמטיקה",
-  grade: "ח",
+  subject: "Mathematics",
+  grade: "8",
   date: "6.4.2025",
-  day: "שישי",
+  day: "Friday",
   startTime: "13:00",
   endTime: "14:00",
-  mentor: "עידו כספי",
-  description: "תרגול משוואות ריבועיות",
+  mentor: "Ido Caspi",
+  description: "Practice quadratic equations",
   students: [
-    { _id: "s10", first_name: "ליהי", last_name: "שפירא" },
-    { _id: "s11", first_name: "אורי", last_name: "ברק" }
+    { _id: "s10", first_name: "Lihi", last_name: "Shapira" },
+    { _id: "s11", first_name: "Uri", last_name: "Barak" }
   ],
-  lessonLocation: "כיתה 2",
+  lessonLocation: "Classroom 2",
   hasReview: false
 };
 
-// רשימת שיעורים לחיפוש (הרשמה לשיעור) - כולם תחת אותו מקצוע, כיתה וקבוצה
+// List of lessons for search (lesson registration) - all under the same subject, grade and group
 export const mockSearchResults = [
-  // סיטואציה 1: רשום ויש מקום
+  // Scenario 1: Registered and space available
   {
     id: 1,
-    subject: "מתמטיקה", // אותו מקצוע
-    grade: "ח", // אותה כיתה
-    group: "2", // אותה קבוצה
+    subject: "Mathematics",
+    grade: "8",
+    group: "2",
     date: "2.4.2025",
-    day: "ראשון",
+    day: "Sunday",
     startTime: "14:00",
     endTime: "15:00",
-    mentor: "יוסי כהן",
-    description: "פתרון מבחן בנושא חזקות ושורשים. בדיקה: רשום ויש מקום",
+    mentor: "Yossi Cohen",
+    description: "Test preparation on powers and roots. Check: Registered and space available",
     students: [
-      { _id: "studentId3", first_name: "דניאל", last_name: "לוי" },
-      { _id: "studentId4", first_name: "נועם", last_name: "כץ" },
-      { _id: "studentId5", first_name: "שירה", last_name: "כהן" },
+      { _id: "studentId3", first_name: "Daniel", last_name: "Levi" },
+      { _id: "studentId4", first_name: "Noam", last_name: "Katz" },
+      { _id: "studentId5", first_name: "Shira", last_name: "Cohen" },
       {
         _id: "67ea663d6ab1596bd4dea9ff",
-        first_name: "עידו",
-        last_name: "שמעוני",
-      }, // עידו רשום לשיעור
+        first_name: "Ido",
+        last_name: "Shimony",
+      },
     ],
   },
 
-  // סיטואציה 2: רשום ואין מקום
+  // Scenario 2: Registered and no space
   {
     id: 2,
-    subject: "מתמטיקה", // אותו מקצוע
-    grade: "ח", // אותה כיתה
-    group: "2", // אותה קבוצה
+    subject: "Mathematics",
+    grade: "8",
+    group: "2",
     date: "3.4.2025",
-    day: "שני",
+    day: "Monday",
     startTime: "15:00",
     endTime: "16:00",
-    mentor: "נועה ברק",
-    description: "חזרה על נושאים לבגרות. בדיקה: רשום ואין מקום",
+    mentor: "Noa Barak",
+    description: "Review of topics for final exam. Check: Registered and no space",
     students: [
-      { _id: "studentId6", first_name: "תמר", last_name: "דוד" },
-      { _id: "studentId7", first_name: "רועי", last_name: "שלום" },
+      { _id: "studentId6", first_name: "Tamar", last_name: "David" },
+      { _id: "studentId7", first_name: "Roi", last_name: "Shalom" },
       {
         _id: "67ea663d6ab1596bd4dea9ff",
-        first_name: "עידו",
-        last_name: "שמעוני",
-      }, // עידו רשום לשיעור
+        first_name: "Ido",
+        last_name: "Shimony",
+      },
     ],
   },
 
-  // סיטואציה 3: לא רשום ויש מקום
+  // Scenario 3: Not registered and space available
   {
     id: 3,
-    subject: "מתמטיקה", // אותו מקצוע
-    grade: "ח", // אותה כיתה
-    group: "2", // אותה קבוצה
+    subject: "Mathematics",
+    grade: "8",
+    group: "2",
     date: "4.4.2025",
-    day: "שלישי",
+    day: "Tuesday",
     startTime: "12:00",
     endTime: "13:00",
-    mentor: "יואב לוי",
-    description: "תרגול על נושאים מהשיעור הקודם. בדיקה: לא רשום ויש מקום",
+    mentor: "Yoav Levi",
+    description: "Practice on topics from previous lesson. Check: Not registered and space available",
     students: [
-      { _id: "studentId8", first_name: "יובל", last_name: "מזרחי" },
-      { _id: "studentId9", first_name: "ליה", last_name: "אשכנזי" },
+      { _id: "studentId8", first_name: "Yuval", last_name: "Mizrahi" },
+      { _id: "studentId9", first_name: "Lia", last_name: "Ashkenazi" },
     ],
   },
 
-  // סיטואציה 4: לא רשום ואין מקום
+  // Scenario 4: Not registered and no space
   {
     id: 4,
-    subject: "מתמטיקה", // אותו מקצוע
-    grade: "ח", // אותה כיתה
-    group: "2", // אותה קבוצה
+    subject: "Mathematics",
+    grade: "8",
+    group: "2",
     date: "5.4.2025",
-    day: "שבת",
+    day: "Wednesday",
     startTime: "10:00",
     endTime: "11:00",
-    mentor: "גלית בר",
-    description: "סיכום לקראת המבחן. בדיקה: לא רשום ואין מקום",
+    mentor: "Galit Bar",
+    description: "Summary before the test. Check: Not registered and no space",
     students: [
-      { _id: "studentId1", first_name: "תמר", last_name: "כהן" },
-      { _id: "studentId2", first_name: "יונתן", last_name: "לוי" },
-      { _id: "studentId3", first_name: "דניאל", last_name: "לוי" },
-    ], // רשימת חניכים רשומים (השיעור מלא)
+      { _id: "studentId1", first_name: "Tamar", last_name: "Cohen" },
+      { _id: "studentId2", first_name: "Yonatan", last_name: "Levi" },
+      { _id: "studentId3", first_name: "Daniel", last_name: "Levi" },
+    ],
   },
 ];
 
-// רשימת שיעורים אישיים (של המנטור או החניך)
+// Personal lessons list (for mentor or student)
 export const mockMyLessons = [
   {
     id: 3,
-    subject: "פיזיקה",
-    grade: "ח",
+    subject: "Physics",
+    grade: "8",
     group: "1",
     date: "4.4.2025",
     startTime: "12:00",
     endTime: "13:00",
-    mentor: "יואב לוי",
-    description: "שיעור תרגול במודול טריגונומטריה",
-    //students: ["יובל", "ליה"],
+    mentor: "Yoav Levi",
+    description: "Practice lesson in trigonometry module",
     students: [
-      { _id: "studentId8", first_name: "יובל", last_name: "מזרחי" },
-      { _id: "studentId9", first_name: "ליה", last_name: "אשכנזי" },
-    ], // רשימת חניכים עם ה-ID הייחודי שלהם
+      { _id: "studentId8", first_name: "Yuval", last_name: "Mizrahi" },
+      { _id: "studentId9", first_name: "Lia", last_name: "Ashkenazi" },
+    ],
   },
   {
     id: 4,
-    subject: "מתמטיקה",
-    grade: "ח",
+    subject: "Mathematics",
+    grade: "8",
     group: "2",
     date: "5.4.2025",
     startTime: "11:00",
     endTime: "12:00",
-    mentor: "גלית בר",
-    description: "חזרה על חקירת פונקציות",
-    //students: ["עומר", "רוני"],
+    mentor: "Galit Bar",
+    description: "Review of function analysis",
     students: [
-      { _id: "studentId10", first_name: "עומר", last_name: "גולן" },
-      { _id: "studentId11", first_name: "רוני", last_name: "חן" },
-    ], // רשימת חניכים עם ה-ID הייחודי שלהם
+      { _id: "studentId10", first_name: "Omer", last_name: "Golan" },
+      { _id: "studentId11", first_name: "Roni", last_name: "Chen" },
+    ],
   },
 ];
 
-// סיטואציה 1 - חניך רשום לשיעור
+// Scenario 1 - Student registered for lesson
 export const mockStudentRegistered = {
   students: [
     {
       _id: "67ea663d6ab1596bd4dea9ff",
-      first_name: "עידו",
-      last_name: "שמעוני",
-    }, // עידו רשום לשיעור
-    { _id: "studentId2", first_name: "יונתן", last_name: "לוי" },
-  ], // החניכים הרשומים לשיעור
+      first_name: "Ido",
+      last_name: "Shimony",
+    },
+    { _id: "studentId2", first_name: "Yonatan", last_name: "Levi" },
+  ],
 };
 
-// סיטואציה 2 - חניך לא רשום ויש מקום להרשם
+// Scenario 2 - Student not registered and space available
 export const mockStudentNotRegistered = {
   students: [
-    { _id: "studentId4", first_name: "נועם", last_name: "כץ" },
-    { _id: "studentId5", first_name: "שירה", last_name: "כהן" },
-  ], // החניכים הרשומים לשיעור
+    { _id: "studentId4", first_name: "Noam", last_name: "Katz" },
+    { _id: "studentId5", first_name: "Shira", last_name: "Cohen" },
+  ],
 };
 
-// סיטואציה 3 - חניך לא רשום ואין מקום להרשם
+// Scenario 3 - Student not registered and no space
 export const mockStudentNoSpace = {
   students: [
-    { _id: "studentId1", first_name: "תמר", last_name: "כהן" },
-    { _id: "studentId2", first_name: "יונתן", last_name: "לוי" },
-    { _id: "studentId3", first_name: "דניאל", last_name: "לוי" },
-  ], // החניכים הרשומים לשיעור (השיעור מלא)
+    { _id: "studentId1", first_name: "Tamar", last_name: "Cohen" },
+    { _id: "studentId2", first_name: "Yonatan", last_name: "Levi" },
+    { _id: "studentId3", first_name: "Daniel", last_name: "Levi" },
+  ],
 };
 
 export const mockLessons = [
   {
     id: 1,
-    subject: "מתמטיקה",
-    grade: "ח",
+    subject: "Mathematics",
+    grade: "8",
     date: "2.4.2025",
-    day: "ראשון",
+    day: "Sunday",
     startTime: "14:00",
     endTime: "15:00",
-    mentor: "יוסי כהן",
-    description: "פתרון מבחן בנושא חזקות ושורשים",
+    mentor: "Yossi Cohen",
+    description: "Test preparation on powers and roots",
     students: [
-      { _id: "s1", first_name: "דניאל", last_name: "לוי" },
-      { _id: "s2", first_name: "נועם", last_name: "כהן" },
-      { _id: "s3", first_name: "שירה", last_name: "אברהם" }
+      { _id: "s1", first_name: "Daniel", last_name: "Levi" },
+      { _id: "s2", first_name: "Noam", last_name: "Cohen" },
+      { _id: "s3", first_name: "Shira", last_name: "Abraham" }
     ],
-    lessonLocation: "כיתה 3",
+    lessonLocation: "Classroom 3",
     hasReview: false
   },
   {
     id: 2,
-    subject: "מתמטיקה",
-    grade: "ח",
+    subject: "Mathematics",
+    grade: "8",
     date: "3.4.2025",
-    day: "שני",
+    day: "Monday",
     startTime: "15:00",
     endTime: "16:00",
-    mentor: "נועה ברק",
-    description: "חזרה על נושאים לבגרות",
+    mentor: "Noa Barak",
+    description: "Review of topics for final exam",
     students: [
-      { _id: "s4", first_name: "תמר", last_name: "דוד" },
-      { _id: "s5", first_name: "רועי", last_name: "שלום" }
+      { _id: "s4", first_name: "Tamar", last_name: "David" },
+      { _id: "s5", first_name: "Roi", last_name: "Shalom" }
     ],
-    lessonLocation: "כיתה 5",
+    lessonLocation: "Classroom 5",
     hasReview: false
   },
   {
     id: 3,
-    subject: "פיזיקה",
-    grade: "ח",
+    subject: "Physics",
+    grade: "8",
     date: "4.4.2025",
-    day: "שלישי",
+    day: "Tuesday",
     startTime: "12:00",
     endTime: "13:00",
-    mentor: "יואב לוי",
-    description: "שיעור תרגול במודול טריגונומטריה",
+    mentor: "Yoav Levi",
+    description: "Practice lesson in trigonometry module",
     students: [
-      { _id: "s6", first_name: "יובל", last_name: "מזרחי" },
-      { _id: "s7", first_name: "ליה", last_name: "אשכנזי" }
+      { _id: "s6", first_name: "Yuval", last_name: "Mizrahi" },
+      { _id: "s7", first_name: "Lia", last_name: "Ashkenazi" }
     ],
-    lessonLocation: "מעבדה 2",
+    lessonLocation: "Lab 2",
     hasReview: true
   }
 ];
