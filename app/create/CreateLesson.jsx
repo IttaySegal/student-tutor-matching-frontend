@@ -63,10 +63,6 @@ export default function CreateLesson() {
   return (
     //<ScrollView contentContainerStyle={{ padding: 20 }} className="bg-primary">
     <ScrollView contentContainerStyle={{ padding: 20 }}>
-      <RTLText className="text-2xl font-semibold text-white mt-10 font-psemibold">
-        יצירת שיעור חדש
-      </RTLText>
-
       <SelectField
         label="📚 מקצוע:"
         selectedValue={subject}

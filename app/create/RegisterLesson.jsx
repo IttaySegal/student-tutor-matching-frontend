@@ -45,9 +45,6 @@ const RegisterLesson = () => {
 
   return (
     <View className="flex-1 bg-primary">
-      <Text className="text-3xl font-bold text-white text-center py-6">
-        Register Lesson
-      </Text>
       <SearchBar onSearch={handleSearch} />
 
       {results.length > 0 ? (
