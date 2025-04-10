@@ -1,13 +1,9 @@
 import React, { useState } from "react";
-import { View, ScrollView, Text } from "react-native";
-import SelectField from "../../components/SelectField"; // נתיב לקומפוננטת SelectField
-import DateSelector from "../../components/DateSelector"; // נתיב לקומפוננטת DateSelector
-import TimeSelector from "../../components/TimeSelector"; // נתיב לקומפוננטת TimeSelector
-import CustomButton from "../../components/CustomButton"; // נתיב לקומפוננטת CustomButton
-import TextInputField from "../../components/TextInputField";
-import RTLText from "../../components/RTLText";
-import RadioButtonGroup from "../../components/RadioButtonGroup";
-import IconButton from "../../components/IconButton";
+import { View, ScrollView, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { FontAwesome5 } from "@expo/vector-icons";
+import CustomButton from "../../components/CustomButton";
+import SelectField from "../../components/SelectField";
 import {
   subjects,
   grades,
@@ -16,136 +12,231 @@ import {
 } from "../../constants/lessonOptions";
 
 export default function CreateLesson() {
-  const [subject, setSubject] = useState(""); // סטייט לשמירת מקצוע
-  const [grade, setGrade] = useState(""); // סטייט לשמירת כיתה
-  const [group, setGroup] = useState(""); // סטייט לשמירת הקבצה
-  const [date, setDate] = useState(new Date()); // סטייט לשמירת התאריך הנבחר
-  const [time, setTime] = useState(new Date()); // סטייט לשמירת השעה הנבחרת
-  const [showDatePicker, setShowDatePicker] = useState(false); // סטייט לשליטה אם להציג את לוח השנה
-  const [showTimePicker, setShowTimePicker] = useState(false); // סטייט לשליטה אם להציג את השעון
-  const [lessonDescription, setLessonDescription] = useState(""); // סטייט לשמירת תיאור השיעור
-  const [lessonType, setLessonType] = useState(""); // הוספת הסטייט של סוג השיעור
-  const [lessonLocation, setLessonLocation] = useState(""); // סטייט לשמירת מיקום השיעור
+  const [subject, setSubject] = useState("");
+  const [grade, setGrade] = useState("");
+  const [group, setGroup] = useState("");
+  const [date, setDate] = useState(new Date());
+  const [time, setTime] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
+  const [lessonDescription, setLessonDescription] = useState("");
+  const [lessonType, setLessonType] = useState("");
+  const [lessonLocation, setLessonLocation] = useState("");
 
-  // פונקציה לשמירת שינויי מקצוע
-  const handleSubjectChange = (value) => {
-    setSubject(value);
-  };
-
-  // פונקציה לשמירת שינויי כיתה
-  const handleGradeChange = (value) => {
-    setGrade(value);
-  };
-
-  // פונקציה לשמירת שינויי הקבצה
-  const handleGroupChange = (value) => {
-    setGroup(value);
-  };
-
-  // פונקציה לשמירת שינויי סוג השיעור
-  const handleLessonTypeChange = (value) => {
-    setLessonType(value);
-  };
-
-  const handleDateChange = (newDate) => {
-    setShowDatePicker(false); // סוגר את לוח השנה אחרי בחירת תאריך
-    setDate(newDate); // עדכון התאריך
-  };
-
-  const handleTimeChange = (newTime) => {
-    setShowTimePicker(false); // סוגר את השעון אחרי בחירת שעה
-    setTime(newTime); // עדכון השעה
-  };
-
-  // אפשרויות הקבצה לפי מקצוע
+  // Get group options based on selected subject
   const groupOptions = subjectsWithGroups[subject] || [];
 
+  // Handle date change
+  const handleDateChange = (event, selectedDate) => {
+    setShowDatePicker(false);
+    if (selectedDate) {
+      setDate(selectedDate);
+    }
+  };
+
+  // Handle time change
+  const handleTimeChange = (event, selectedTime) => {
+    setShowTimePicker(false);
+    if (selectedTime) {
+      setTime(selectedTime);
+    }
+  };
+
+  // Format date for display
+  const formatDate = (date) => {
+    return date.toLocaleDateString('en-US', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+  };
+
+  // Format time for display
+  const formatTime = (time) => {
+    return time.toLocaleTimeString('en-US', { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      hour12: true 
+    });
+  };
+
   return (
-    //<ScrollView contentContainerStyle={{ padding: 20 }} className="bg-primary">
-    <ScrollView contentContainerStyle={{ padding: 20 }}>
-      <SelectField
-        label="📚 מקצוע:"
-        selectedValue={subject}
-        onValueChange={handleSubjectChange}
-        options={subjects}
-      />
+    <ScrollView className="flex-1 bg-primary">
+      <View className="px-5 py-6">
+        <Text className="text-white font-bold text-lg mb-4">
+          Create New Lesson
+        </Text>
 
-      <SelectField
-        label="🎓 כיתה:"
-        selectedValue={grade}
-        onValueChange={handleGradeChange}
-        options={grades}
-      />
-
-      {groupOptions.length > 0 ? (
+        {/* Subject Selection */}
         <SelectField
-          label="🧑‍🏫 הקבצה:"
-          selectedValue={group}
-          onValueChange={handleGroupChange}
-          options={groupOptions.map((g) => ({ label: g, value: g }))}
+          label="📚 Subject"
+          selectedValue={subject}
+          onValueChange={setSubject}
+          options={subjects.map((s) => ({ key: s.value, value: s.value }))}
         />
-      ) : (
-        <Text style={{ textAlign: "right", marginTop: 10 }}>הקבצה: כללי</Text>
-      )}
 
-      <TextInputField
-        label="📝 תיאור השיעור:"
-        value={lessonDescription}
-        onChangeText={setLessonDescription}
-        placeholder="הכנס תיאור לשיעור"
-        multiline={true}
-      />
-
-      <RadioButtonGroup
-        label="💻 סוג שיעור:"
-        options={lessonTypes}
-        selectedValue={lessonType}
-        onValueChange={handleLessonTypeChange}
-      />
-
-      <TextInputField
-        label="📍 מיקום השיעור:"
-        value={lessonLocation}
-        onChangeText={setLessonLocation}
-        placeholder="הכנס מיקום או קישור לזום"
-      />
-
-      <View style={{ marginBottom: 20 }}>
-        <IconButton
-          onPress={() => setShowDatePicker(true)}
-          icon="calendar"
-          title="תאריך"
-          style={{ marginBottom: 10 }}
+        {/* Grade Selection */}
+        <SelectField
+          label="🎓 Grade"
+          selectedValue={grade}
+          onValueChange={setGrade}
+          options={grades}
         />
-        <IconButton
-          onPress={() => setShowTimePicker(true)}
-          icon="clock"
-          title="שעה"
+
+        {/* Group Selection (if applicable) */}
+        {groupOptions.length > 0 ? (
+          <SelectField
+            label="🧑‍🏫 Group"
+            selectedValue={group}
+            onValueChange={setGroup}
+            options={groupOptions.map((g) => ({ key: g, value: g }))}
+          />
+        ) : (
+          <Text className="text-white text-base mb-4">
+            Group: General
+          </Text>
+        )}
+
+        {/* Lesson Description */}
+        <View className="mb-4">
+          <Text className="text-white text-base mb-2">📝 Lesson Description</Text>
+          <View className="bg-white rounded-lg p-3">
+            <TextInput
+              className="text-gray-800 text-base"
+              placeholder="Enter lesson description"
+              placeholderTextColor="#9CA3AF"
+              value={lessonDescription}
+              onChangeText={setLessonDescription}
+              multiline={true}
+              numberOfLines={4}
+              textAlignVertical="top"
+            />
+          </View>
+        </View>
+
+        {/* Lesson Type */}
+        <View className="mb-4">
+          <Text className="text-white text-base mb-2">💻 Lesson Type</Text>
+          <View className="flex-row flex-wrap">
+            {lessonTypes.map((type) => (
+              <TouchableOpacity
+                key={type.value}
+                className={`mr-3 mb-3 px-4 py-2 rounded-full border ${
+                  lessonType === type.value
+                    ? "bg-blue-500 border-blue-600"
+                    : "bg-white border-gray-300"
+                }`}
+                onPress={() => setLessonType(type.value)}
+              >
+                <Text
+                  className={`${
+                    lessonType === type.value ? "text-white" : "text-gray-800"
+                  }`}
+                >
+                  {type.label}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+
+        {/* Lesson Location */}
+        <View className="mb-4">
+          <Text className="text-white text-base mb-2">📍 Location</Text>
+          <View className="bg-white rounded-lg p-3">
+            <TextInput
+              className="text-gray-800 text-base"
+              placeholder={lessonType === "Online" ? "Enter Zoom link" : "Enter location"}
+              placeholderTextColor="#9CA3AF"
+              value={lessonLocation}
+              onChangeText={setLessonLocation}
+            />
+          </View>
+        </View>
+
+        {/* Date and Time Selection */}
+        <View className="mb-4">
+          <Text className="text-white text-base mb-2">🕒 Date & Time</Text>
+          <View className="flex-row flex-wrap">
+            <TouchableOpacity
+              className="bg-white rounded-lg p-3 mr-3 mb-3 flex-row items-center"
+              onPress={() => setShowDatePicker(true)}
+            >
+              <FontAwesome5 name="calendar" size={16} color="#6B7280" style={{ marginRight: 8 }} />
+              <Text className="text-gray-800">{formatDate(date)}</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity
+              className="bg-white rounded-lg p-3 mb-3 flex-row items-center"
+              onPress={() => setShowTimePicker(true)}
+            >
+              <FontAwesome5 name="clock" size={16} color="#6B7280" style={{ marginRight: 8 }} />
+              <Text className="text-gray-800">{formatTime(time)}</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Date Picker Modal */}
+        {showDatePicker && (
+          <DateTimePicker
+            value={date}
+            mode="date"
+            display="default"
+            onChange={handleDateChange}
+            minimumDate={new Date()}
+            maximumDate={new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)} // 1 week from now
+          />
+        )}
+
+        {/* Time Picker Modal */}
+        {showTimePicker && (
+          <DateTimePicker
+            value={time}
+            mode="time"
+            display="default"
+            onChange={handleTimeChange}
+            minuteInterval={15}
+          />
+        )}
+
+        {/* Create Lesson Button */}
+        <CustomButton
+          title="Create Lesson"
+          handlePress={() => {
+            console.log("Lesson created!");
+          }}
+          containerStyles="mt-4 w-full"
         />
       </View>
-
-      {showDatePicker && (
-        <DateSelector date={date} setDate={handleDateChange} />
-      )}
-      {showTimePicker && (
-        <TimeSelector time={time} setTime={handleTimeChange} />
-      )}
-
-      <View style={{ marginTop: 3 }}>
-        <RTLText>תאריך נבחר: {date.toLocaleDateString()}</RTLText>
-        <RTLText>
-          שעה נבחרת: {time.getHours()}:
-          {time.getMinutes() < 10 ? "0" + time.getMinutes() : time.getMinutes()}
-        </RTLText>
-      </View>
-
-      <CustomButton
-        title="צור שיעור"
-        handlePress={() => {
-          console.log("שיעור נוצר!");
-        }}
-        containerStyles="mt-7"
-      />
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  selectBox: {
+    backgroundColor: "transparent",
+    borderRadius: 8,
+    borderWidth: 0,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+  },
+  selectInput: {
+    color: "#F9FAFB",
+    fontSize: 16,
+  },
+  dropdown: {
+    backgroundColor: "#1F2937",
+    borderWidth: 1,
+    borderColor: "#374151",
+    borderRadius: 8,
+  },
+  dropdownText: {
+    color: "#F9FAFB",
+    fontSize: 16,
+  },
+  searchInput: {
+    color: "#F9FAFB",
+    fontSize: 16,
+  },
+});
