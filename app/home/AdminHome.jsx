@@ -52,7 +52,7 @@ const AdminHome = () => {
   const pendingRequests = lessonStats.pendingRequests || [];
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingTop: 40 }]}>
       <RTLText style={styles.title}>{greeting}, מנהל/ת יקר/ה</RTLText>
 
       {/* ממוצע דירוג חונכים */}

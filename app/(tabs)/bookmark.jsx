@@ -106,7 +106,7 @@ export default function BookmarkScreen() {
 
   return (
     <View className="flex-1 bg-primary px-5 py-6">
-      <Text className="text-2xl font-bold text-white mb-6">
+      <Text className="text-2xl font-bold text-white mb-6 text-center">
         My Lessons
       </Text>
       <FlatList

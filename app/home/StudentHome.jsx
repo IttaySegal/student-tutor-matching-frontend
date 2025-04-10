@@ -34,7 +34,7 @@ const StudentHome = () => {
   const userName = `${user.first_name} ${user.last_name}`;
 
   return (
-    <View className="flex-1 bg-primary px-5">
+    <View className="flex-1 bg-primary px-5 pt-10">
       <Text className="text-2xl font-bold text-white">
         {getGreeting()}, {userName}
       </Text>
