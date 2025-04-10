@@ -36,38 +36,38 @@ const MentorHome = () => {
   const userName = `${user.first_name} ${user.last_name}`; // יצירת השם המלא
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1 bg-primary px-5">
       {/* כותרת שלום */}
-      <RTLText style={styles.title}>
+      <RTLText className="text-2xl font-bold text-white">
         {getGreeting()}, {userName}
       </RTLText>
 
       {/* תיאור כללי */}
-      <RTLText style={styles.description}>
+      <RTLText className="text-lg text-gray-300 mt-2">
         כאן תוכל לנהל את השיעורים שלך ולעזור לחניכים להצליח.
       </RTLText>
 
       {/* שעות שהושלמו */}
-      <RTLText style={styles.section}>
+      <RTLText className="text-xl font-bold text-white mt-8">
         ✅ ביצעת {lessonStats.lessonCount} מתוך 60 שעות מחויבות אישית
       </RTLText>
 
       {/* פידבק ממוצע */}
       {lessonStats.feedbackStats && (
-        <View style={styles.feedbackBox}>
-          <RTLText style={styles.section}>⭐ דירוג כולל מהחניכים:</RTLText>
-          <RTLText style={styles.feedbackDetail}>
+        <View className="mt-4 p-4 bg-gray-800 rounded-lg">
+          <RTLText className="text-xl font-bold text-white">⭐ דירוג כולל מהחניכים:</RTLText>
+          <RTLText className="text-gray-300 mt-2">
             ציון ממוצע: {lessonStats.feedbackStats.averageScore} מתוך 5
           </RTLText>
-          <RTLText style={styles.feedbackDetail}>
+          <RTLText className="text-gray-300">
             מספר פידבקים: {lessonStats.feedbackStats.totalFeedbacks}
           </RTLText>
         </View>
       )}
 
       {/* שיעור קרוב */}
-      <View style={styles.lessonBox}>
-        <RTLText style={styles.section}>🕒 השיעור הקרוב שלך:</RTLText>
+      <View className="mt-8">
+        <RTLText className="text-xl font-bold text-white">🕒 השיעור הקרוב שלך:</RTLText>
         <LessonCard 
           {...mockNextLesson} 
           ModalComponent={LessonDetailsModal}
@@ -78,46 +78,11 @@ const MentorHome = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: "#fff",
-  },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "right",
-  },
-  description: {
-    fontSize: 18,
-    marginTop: 10,
-    textAlign: "right",
-  },
-  section: {
-    fontSize: 18,
-    marginTop: 30,
-    textAlign: "right",
-    fontWeight: "bold",
-  },
-  feedbackBox: {
-    marginTop: 10,
-    padding: 10,
-    backgroundColor: "#e8f4ff",
-    borderRadius: 8,
-  },
-  feedbackDetail: {
-    fontSize: 16,
-    textAlign: "right",
-    marginTop: 5,
-  },
-  lessonBox: {
-    marginTop: 30,
+    backgroundColor: "#161622",
   },
 });
 

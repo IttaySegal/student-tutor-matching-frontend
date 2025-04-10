@@ -34,53 +34,32 @@ const StudentHome = () => {
   const userName = `${user.first_name} ${user.last_name}`;
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>
+    <View className="flex-1 bg-primary px-5">
+      <Text className="text-2xl font-bold text-white">
         {getGreeting()}, {userName}
       </Text>
 
-      <Text style={styles.description}>
+      <Text className="text-lg text-gray-300 mt-2">
         Here's an overview of your recent and upcoming lessons.
       </Text>
 
       {/* Last Lesson */}
-      <Text style={styles.section}>🕘 Your Last Lesson:</Text>
+      <Text className="text-xl font-bold text-white mt-8">🕘 Your Last Lesson:</Text>
       <LessonCard {...mockPrevLesson} ModalComponent={LessonDetailsModal} />
 
       {/* Next Lesson */}
-      <Text style={styles.section}>🕒 Your Next Lesson:</Text>
+      <Text className="text-xl font-bold text-white mt-8">🕒 Your Next Lesson:</Text>
       <LessonCard {...mockNextLesson} ModalComponent={LessonDetailsModal} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: "#fff",
-  },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "left",
-  },
-  description: {
-    fontSize: 18,
-    marginTop: 10,
-    textAlign: "left",
-  },
-  section: {
-    fontSize: 18,
-    marginTop: 30,
-    textAlign: "left",
-    fontWeight: "bold",
+    backgroundColor: "#161622",
   },
 });
 

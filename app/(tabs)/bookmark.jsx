@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
-import { View, FlatList, TouchableOpacity, StyleSheet, Text } from "react-native";
+import { View, FlatList, StyleSheet, Text } from "react-native";
 import { useAuth } from "../../context/AuthContext";
 import LessonReviewMentor from "../../components/LessonReviewMentor";
 import LessonReviewStudent from "../../components/LessonReviewStudent";
+import LessonCard from "../../components/LessonCard";
 
 export default function BookmarkScreen() {
   const { user } = useAuth();
@@ -97,93 +98,25 @@ export default function BookmarkScreen() {
   };
 
   const renderLessonItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.lessonItem}
+    <LessonCard
+      {...item}
       onPress={() => handleLessonPress(item)}
-    >
-      <View style={styles.lessonHeader}>
-        <Text style={styles.subject}>{item.subject}</Text>
-        <Text style={styles.grade}>Grade {item.grade}</Text>
-      </View>
-      <View style={styles.lessonDetails}>
-        <Text style={styles.date}>
-          {item.day}, {item.date}
-        </Text>
-        <Text style={styles.time}>
-          {item.startTime} - {item.endTime}
-        </Text>
-      </View>
-      <Text style={styles.mentor}>Mentor: {item.mentor}</Text>
-      <Text style={styles.description}>{item.description}</Text>
-    </TouchableOpacity>
+    />
   );
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1 bg-primary px-5 py-6">
+      <Text className="text-2xl font-bold text-white mb-6">
+        My Lessons
+      </Text>
       <FlatList
         data={mockLessons}
         renderItem={renderLessonItem}
         keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={styles.listContainer}
       />
       {renderReviewComponent()}
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f5f5f5",
-  },
-  listContainer: {
-    padding: 16,
-  },
-  lessonItem: {
-    backgroundColor: "white",
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 12,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  lessonHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 8,
-  },
-  subject: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#333",
-  },
-  grade: {
-    fontSize: 16,
-    color: "#666",
-  },
-  lessonDetails: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 8,
-  },
-  date: {
-    fontSize: 14,
-    color: "#666",
-  },
-  time: {
-    fontSize: 14,
-    color: "#666",
-  },
-  mentor: {
-    fontSize: 14,
-    color: "#666",
-    marginBottom: 4,
-  },
-  description: {
-    fontSize: 14,
-    color: "#666",
-  },
-});
+const styles = StyleSheet.create({});

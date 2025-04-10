@@ -21,38 +21,37 @@ const Profile = () => {
   }
 
   return (
-    <View style={{ padding: 20, alignItems: "center" }}>
-      <RTLText style={{ fontSize: 24, fontWeight: "bold", marginBottom: 20 }}>
+    <View className="flex-1 bg-primary px-5 py-6">
+      <RTLText className="text-2xl font-bold text-white mb-6">
         הפרופיל שלי
       </RTLText>
 
       {/* אימייל */}
-      <View style={{ width: "100%", marginBottom: 20 }}>
-        <RTLText style={{ fontWeight: "bold", marginBottom: 8 }}>
+      <View className="w-full mb-6">
+        <RTLText className="font-bold text-white mb-2">
           אימייל:
         </RTLText>
-        <View style={styles.emailContainer}>
+        <View className="flex-row items-center bg-gray-800 rounded-lg p-3 border border-gray-700">
           <Icon
             name="mail-outline"
             size={20}
-            color="#888"
-            style={styles.emailIcon}
+            color="#9CA3AF"
+            style={{ marginRight: 8 }}
           />
-          {/* אייקון mail-outline */}
-          <Text style={styles.emailText}>
-            {user?.email} {/* הצגת האימייל */}
+          <Text className="text-gray-300 text-base">
+            {user?.email}
           </Text>
         </View>
       </View>
 
       {/* תפקיד */}
-      <View style={{ width: "100%", marginBottom: 20 }}>
-        <RTLText style={{ fontWeight: "bold", marginBottom: 8 }}>
+      <View className="w-full mb-6">
+        <RTLText className="font-bold text-white mb-2">
           תפקיד:
         </RTLText>
-        <View style={styles.roleContainer}>
-          <RTLText style={styles.emailText}>
-            {userRole} {/* הצגת התפקיד */}
+        <View className="bg-gray-800 rounded-lg p-3 border border-gray-700">
+          <RTLText className="text-gray-300 text-base">
+            {userRole}
           </RTLText>
         </View>
       </View>
@@ -61,38 +60,14 @@ const Profile = () => {
       <CustomButton
         title="התנתקות"
         handlePress={logout}
-        isLoading={false} // אם אתה רוצה להוסיף מצב טעינה, תוכל לשנות ל-true
-        containerStyles="bg-red-500 w-full" // כפתור רחב
+        isLoading={false}
+        containerStyles="bg-red-500 w-full"
         textStyles="text-white"
       />
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  emailContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#f5f5f5",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    padding: 10,
-  },
-  emailIcon: {
-    marginRight: 8,
-  },
-  emailText: {
-    fontSize: 16,
-    color: "#888", // הצבע הבהיר של הכתובת
-  },
-  roleContainer: {
-    backgroundColor: "#f5f5f5",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    padding: 10,
-  },
-});
+const styles = StyleSheet.create({});
 
 export default Profile;
