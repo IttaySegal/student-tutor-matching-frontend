@@ -82,7 +82,7 @@ const FormField = ({
       {/* Field Title: Display the title above the input field */}
       <Text
         className="text-base text-gray-100 font-pmedium"
-        style={{ textAlign: "right" }}
+        style={{ textAlign: "left" }}
       >
         {title}
       </Text>
@@ -92,7 +92,6 @@ const FormField = ({
         className={`w-full h-16 px-4 bg-black-100 rounded-2xl border-2 ${
           error ? "border-red-500" : "border-black-200"
         } flex flex-row items-center`}
-        style={{ direction: "lrt" }}
       >
         {/* TextInput component for user input */}
         <TextInput
@@ -123,7 +122,7 @@ const FormField = ({
       {error && (
         <Text
           className="text-red-500 text-sm mt-1"
-          style={{ textAlign: "right" }}
+          style={{ textAlign: "left" }}
         >
           {error}
         </Text>

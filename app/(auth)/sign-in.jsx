@@ -5,7 +5,6 @@ import {
   ScrollView,
   Image,
   Alert,
-  I18nManager,
 } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context"; // Ensures UI doesn't overlap with notches/status bars
@@ -15,8 +14,6 @@ import CustomButton from "../../components/CustomButton"; // Reusable button wit
 import { Link, router } from "expo-router"; // For navigation
 import isEmail from "validator/lib/isEmail"; // Email validation
 import { useAuth } from "../../context/AuthContext"; // 🔐 Auth context to access login function
-import { CommonActions, useNavigation } from "@react-navigation/native";
-import RTLText from "../../components/RTLText";
 
 // SignIn component: the login screen
 const SignIn = () => {
@@ -32,21 +29,19 @@ const SignIn = () => {
   // Get login function from auth context
   const { login } = useAuth();
 
-  //const navigation = useNavigation();
-
   /**
    * Handles the form submission when the user presses "Sign In"
    */
   const submit = async () => {
     // Check for empty fields
     if (form.email === "" || form.password === "") {
-      Alert.alert("שגיאה, אנא מלא את כל השדות");
+      Alert.alert("Error", "Please fill in all fields");
       return;
     }
 
     // Check for email validation error
     if (emailError) {
-      Alert.alert("שגיאה, אנא ספק כתובת אימייל תקינה");
+      Alert.alert("Error", "Please provide a valid email address");
       return;
     }
 
@@ -56,23 +51,12 @@ const SignIn = () => {
       // Attempt to login using AuthContext
       await login({ email: form.email, password: form.password });
 
-      // router.replace('/(tabs)/home'); // This clears the previous group stack
-
       // If successful, navigate to the home screen
-      // router.replace("/home")
-      //router.back();
       router.push("/(tabs)/home");
-
-      // navigation.dispatch(
-      //     CommonActions.reset({
-      //         index: 0,
-      //         routes: [{ name: '/(tabs)/home' }],
-      //     })
-      // );
     } catch (error) {
-      console.error("שגיאת התחברות:", error);
+      console.error("Login error:", error);
       // Show alert on login failure
-      Alert.alert("שגיאה", error.message || "התחברות נכשלה");
+      Alert.alert("Error", error.message || "Login failed");
     } finally {
       // End loading spinner regardless of success/failure
       setIsSubmitting(false);
@@ -88,7 +72,7 @@ const SignIn = () => {
 
     // Validate email format and show error if invalid
     if (!isEmail(value)) {
-      setEmailError("יש להזין כתובת מייל תקינה");
+      setEmailError("Please enter a valid email address");
     } else {
       setEmailError("");
     }
@@ -107,13 +91,13 @@ const SignIn = () => {
           />
 
           {/* Screen Title */}
-          <RTLText className="text-2xl font-semibold text-white mt-10 font-psemibold">
-            התחבר למערכת
-          </RTLText>
+          <Text className="text-2xl font-semibold text-white mt-10 font-psemibold">
+            Sign In
+          </Text>
 
           {/* Email Input Field */}
           <FormField
-            title="אימייל"
+            title="Email"
             value={form.email}
             handleChangeText={handleEmailChange} // Live validation on change
             error={emailError} // Show email error message
@@ -123,7 +107,7 @@ const SignIn = () => {
 
           {/* Password Input Field */}
           <FormField
-            title="סיסמה"
+            title="Password"
             value={form.password}
             handleChangeText={(e) =>
               setForm((prev) => ({ ...prev, password: e }))
@@ -134,49 +118,35 @@ const SignIn = () => {
 
           {/* Sign In Button with loading spinner */}
           <CustomButton
-            title="התחבר"
+            title="Sign In"
             handlePress={submit}
             containerStyles="mt-7"
             isLoading={isSubmitting}
           />
 
           {/* Link to Sign Up screen */}
-          <View
-            className="flex justify-center pt-5 flex-row gap-2"
-            style={{
-              flexDirection: "row-reverse",
-              //justifyContent: "flex-start",
-              //alignItems: "center",
-            }}
-          >
-            <RTLText className="text-lg text-gray-100 font-pregular">
-              אין לך חשבון?
-            </RTLText>
+          <View className="flex justify-center pt-5 flex-row gap-2">
+            <Text className="text-lg text-gray-100 font-pregular">
+              Don't have an account?
+            </Text>
             <Link
               href="/sign-up"
               className="text-lg font-psemibold text-secondary"
             >
-              הירשם עכשיו
+              Sign Up
             </Link>
           </View>
 
           {/* Link to Password Reset screen */}
-          <View
-            className="flex justify-center pt-3 flex-row gap-2"
-            style={{
-              flexDirection: "row-reverse",
-              //justifyContent: "flex-start",
-              //alignItems: "center",
-            }}
-          >
-            <RTLText className="text-lg text-gray-100 font-pregular">
-              שכחת את הסיסמה?
-            </RTLText>
+          <View className="flex justify-center pt-3 flex-row gap-2">
+            <Text className="text-lg text-gray-100 font-pregular">
+              Forgot your password?
+            </Text>
             <Link
               href="/reset-password"
               className="text-lg font-psemibold text-secondary"
             >
-              איפוס סיסמה
+              Reset Password
             </Link>
           </View>
         </View>
