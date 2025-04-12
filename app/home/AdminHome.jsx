@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useLesson } from "../../context/LessonContext";
+import { useHome } from "@context/HomeContext";
+
 import RTLText from "../../components/RTLText";
 import { getGreeting } from "./utils/timeUtils";
 import RequestCard from "../../components/RequestCard";
 import RequestModal from "../../components/RequestModal";
 
 const AdminHome = () => {
-  const { lessonStats, fetchLessonStats } = useLesson();
+  const { homeStats, fetchHomeStats } = useHome();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
 
   useEffect(() => {
     const loadData = async () => {
-      if (!lessonStats) {
+      if (!homeStats) {
         const token = await AsyncStorage.getItem("accessToken");
-        if (token) await fetchLessonStats(token);
+        if (token) await fetchHomeStats(token);
       }
     }; 
 
@@ -39,7 +40,7 @@ const AdminHome = () => {
     setModalVisible(false);
   };
 
-  if (!lessonStats) {
+  if (!homeStats) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#000" />
@@ -49,7 +50,7 @@ const AdminHome = () => {
   }
 
   const greeting = getGreeting();
-  const pendingRequests = lessonStats.pendingRequests || [];
+  const pendingRequests = homeStats.pendingRequests || [];
 
   return (
     <View style={[styles.container, { paddingTop: 40 }]}>
@@ -57,7 +58,7 @@ const AdminHome = () => {
 
       {/* ממוצע דירוג חונכים */}
       <RTLText style={styles.section}>
-        ⭐ ממוצע דירוג חונכים: {lessonStats.mentorAvgScore} מתוך 5
+        ⭐ ממוצע דירוג חונכים: {homeStats.mentorAvgScore} מתוך 5
       </RTLText>
 
       {/* בקשות ממתינות */}

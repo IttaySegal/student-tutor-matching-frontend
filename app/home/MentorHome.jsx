@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useLesson } from "../../context/LessonContext";
+import { useHome } from "@context/HomeContext";
 import LessonCard from "../../components/LessonCard";
 import { getGreeting } from "./utils/timeUtils";
 import { useAuth } from "../../context/AuthContext";
@@ -10,20 +10,20 @@ import LessonDetailsModal from "../../components/LessonDetailsModal";
 
 const MentorHome = () => {
   const { user } = useAuth();
-  const { lessonStats, fetchLessonStats } = useLesson();
+  const { homeStats, fetchHomeStats  } = useHome();
   
   useEffect(() => {
     const loadData = async () => {
-      if (!lessonStats) {
+      if (!homeStats) {
         const token = await AsyncStorage.getItem("accessToken");
-        if (token) await fetchLessonStats(token);
+        if (token) await fetchHomeStats (token);
       }
     };
 
     loadData();
   }, []);
 
-  if (!lessonStats) {
+  if (!homeStats) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#000" />
@@ -48,18 +48,18 @@ const MentorHome = () => {
 
       {/* Completed hours */}
       <Text className="text-xl font-bold text-white mt-8">
-        ✅ You completed {lessonStats.lessonCount} out of 60 required personal hours
+        ✅ You completed {homeStats.lessonCount} out of 60 required personal hours
       </Text>
 
       {/* Average feedback */}
-      {lessonStats.feedbackStats && (
+      {homeStats.feedbackStats && (
         <View className="mt-4 p-4 bg-gray-800 rounded-lg">
           <Text className="text-xl font-bold text-white">⭐ Overall rating from students:</Text>
           <Text className="text-gray-300 mt-2">
-            Average score: {lessonStats.feedbackStats.averageScore} out of 5
+            Average score: {homeStats.feedbackStats.averageScore} out of 5
           </Text>
           <Text className="text-gray-300">
-            Number of feedbacks: {lessonStats.feedbackStats.totalFeedbacks}
+            Number of feedbacks: {homeStats.feedbackStats.totalFeedbacks}
           </Text>
         </View>
       )}

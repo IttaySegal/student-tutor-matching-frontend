@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useLesson } from "../../context/LessonContext";
+import { useHome } from "@context/HomeContext";
 import LessonCard from "../../components/LessonCard";
 import { getGreeting } from "./utils/timeUtils";
 import { useAuth } from "../../context/AuthContext";
@@ -10,19 +10,19 @@ import LessonDetailsModal from "../../components/LessonDetailsModal";
 
 const StudentHome = () => {
   const { user } = useAuth();
-  const { lessonStats, fetchLessonStats } = useLesson();
+  const { homeStats, fetchHomeStats  } = useHome();
 
   useEffect(() => {
     const loadData = async () => {
-      if (!lessonStats) {
+      if (!homeStats) {
         const token = await AsyncStorage.getItem("accessToken");
-        if (token) await fetchLessonStats(token);
+        if (token) await fetchHomeStats (token);
       }
     };
     loadData();
   }, []);
 
-  if (!lessonStats) {
+  if (!homeStats) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#000" />

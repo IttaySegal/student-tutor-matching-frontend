@@ -23,6 +23,19 @@ module.exports = function (api) {
         {
           alias: {
             "@": "./", // ⬅️ הוספנו את זה
+            "@app": "./app",
+            "@home": "./app/home",
+            "@create": "./app/create",
+            "@context": "./context",
+            "@components": "./components",
+            "@services": "./services",
+            "@utils": "./app/home/utils",
+            "@mocks": "./app/mocks",
+            "@assets": "./assets",
+            "@hooks": "./hooks",
+            "@constants": "./constants",
+            "@navigation": "./navigation",
+            "@styles": "./styles"
           },
         },
       ],

@@ -1,11 +1,14 @@
 import React from "react";
 import { AuthProvider } from "./AuthContext";
 import { LessonProvider } from "./LessonContext";
+import { HomeProvider } from "@context/HomeContext";
 
 const GlobalProvider = ({ children }) => {
   return (
     <AuthProvider>
-      <LessonProvider>{children}</LessonProvider>
+      <HomeProvider>
+        {children}
+      </HomeProvider>
     </AuthProvider>
   );
 };
