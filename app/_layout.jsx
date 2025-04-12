@@ -1,44 +1,10 @@
 import { useCallback } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { Stack } from "expo-router";
 import { Slot } from "expo-router";
 import "../global.css";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { AuthProvider } from "@/context/AuthContext";
 import GlobalProvider from "@/context/GlobalProvider";
-import { useAuth } from "@/context/AuthContext";
-import { Tabs } from "expo-router";
-import { icons } from "@/constants";
-import { View, Text, Image, Dimensions } from "react-native";
-
-// Get the screen width for responsive styling
-const { width } = Dimensions.get('window');
-
-// Component for rendering individual tab icons and labels
-const TabIcon = ({ icon, color, name, focused }) => {
-  return (
-    <View className="flex items-center justify-center gap-2 top-4" style={{ minWidth: 100 }} >
-      <Image
-        source={icon}
-        resizeMode="contain"
-        tintColor={color}
-        className="w-6 h-6"
-        style={{ marginTop: 20 }}
-      />
-      <Text
-        className={`${focused ? 'font-psemibold' : 'font-pregular'} text-xm`}
-        style={{
-          color: color,
-          fontSize: width > 500 ? 12 : 9,
-        }}
-        numberOfLines={1}
-      >
-        {name}
-      </Text>
-    </View>
-  )
-}
 
 // Keep splash screen visible until ready
 SplashScreen.preventAutoHideAsync();
@@ -74,13 +40,11 @@ const RootLayout = () => {
   }
 
   return (
-    <AuthProvider>
-      <GlobalProvider>
-        <SafeAreaView className="flex-1 bg-primary" onLayout={onLayoutRootView}>
-          <Slot />
-        </SafeAreaView>
-      </GlobalProvider>
-    </AuthProvider>
+    <GlobalProvider>
+      <SafeAreaView className="flex-1 bg-primary" onLayout={onLayoutRootView}>
+        <Slot />
+      </SafeAreaView>
+    </GlobalProvider>
   );
 };
 
