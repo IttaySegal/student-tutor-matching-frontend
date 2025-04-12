@@ -9,19 +9,24 @@ import { mockNextLesson } from "../mocks/mockLessons";
 import LessonDetailsModal from "../../components/LessonDetailsModal";
 
 const MentorHome = () => {
-  const { user } = useAuth();
+  const { user, loading, isAuthenticated  } = useAuth();
   const { homeStats, fetchHomeStats  } = useHome();
   
   useEffect(() => {
-    const loadData = async () => {
-      if (!homeStats) {
-        const token = await AsyncStorage.getItem("accessToken");
-        if (token) await fetchHomeStats (token);
+    const tryFetchStats = async () => {
+      if (!user || loading) return; // ❗ Wait for user and auth loading to complete
+  
+      const token = await AsyncStorage.getItem("accessToken");
+      if (token) {
+        console.log("🏠 MentorHome → valid token, fetching home stats");
+        fetchHomeStats();
+      } else {
+        console.log("🛑 MentorHome → no token found, skipping fetch");
       }
     };
-
-    loadData();
-  }, []);
+  
+    tryFetchStats();
+  }, [user, loading]); // 🔁 rerun when auth state finishes loading
 
   if (!homeStats) {
     return (

@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { signIn, signOut, refreshAccessToken } from "../services/authService"; // Auth service functions to log in and refresh token
+import { setAuthHelpers } from "@services/axiosInstance";
+import { router } from "expo-router";
 
 // TODO REFRESH ACCESS TOKEN - NNEDS TO BE IMPLEMENTED IN AUTH SERVICE ??
 
@@ -25,30 +27,36 @@ export const AuthProvider = ({ children }) => {
    * from AsyncStorage to keep the user logged in across sessions.
    */
   useEffect(() => {
-    const loadAuthState = async () => {
+    const initAuth = async () => {
       try {
-        ///////////////////////
-        // 🧹 הוספתי ↓↓↓↓
-        await AsyncStorage.clear(); // 🧹 נוקה לצורך בדיקה
-        console.log("🧹 AsyncStorage נוקה מתוך AuthContext");
-        /////////////////////////////////////////////
+
         const storedUser = await AsyncStorage.getItem("user");
-        console.log("1 sotredUser: ", storedUser);
         const storedToken = await AsyncStorage.getItem("accessToken");
-        console.log("2 sotredToken: ", storedToken);
         // If we have both user and token, restore them to state
         if (storedUser && storedToken) {
           setUser(JSON.parse(storedUser));
           setAccessToken(storedToken);
+
         }
       } catch (error) {
         console.error("Failed to load auth state:", error);
       } finally {
-        setLoading(false); // Mark loading complete whether successful or not
-      }
+        setLoading(false);
+        // Inject helper functions into axiosInstance
+        setAuthHelpers({
+          getTokenFn: async () => {
+            const tokenFromMemory = accessToken;
+            const tokenFromStorage = await AsyncStorage.getItem("accessToken");
+            return tokenFromMemory || tokenFromStorage;
+          },
+          refreshFn: refresh,
+          logoutFn: logout,
+        }); // Mark loading complete whether successful or not
+        setLoading(false);
+      } 
     };
 
-    loadAuthState();
+    initAuth ();
   }, []);
 
   /**
@@ -91,6 +99,8 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setAccessToken(null);
     await AsyncStorage.multiRemove(["user", "accessToken", "refreshToken"]);
+    console.log("✅ Auth state cleared. Redirecting to sign-in...");
+    router.replace("/sign-in"); // 👈 This is the key line
   };
 
   /**
@@ -104,16 +114,21 @@ export const AuthProvider = ({ children }) => {
       if (!storedRefreshToken) throw new Error("No refresh token found");
 
       // Request a new access token using the refresh token
-      const { accessToken: newToken } = await refreshAccessToken(
-        storedRefreshToken
-      );
-      if (!newToken) throw new Error("No new access token received");
+      const { accessToken: newToken, refreshToken: newRefreshToken } = await refreshAccessToken(storedRefreshToken);
+
+      console.log("✅ Frontend received new accessToken:", newToken?.slice(0, 10));
+      console.log("✅ Frontend received new refreshToken:", newRefreshToken?.slice(0, 10));
+ 
+      if (!newToken || !newRefreshToken) throw new Error("Missing token(s)");
 
       // Update state and storage with the new access token
       setAccessToken(newToken);
       await AsyncStorage.setItem("accessToken", newToken);
+      await AsyncStorage.setItem("refreshToken", newRefreshToken);
+      console.log("📦 Refresh function completed");
+ 
     } catch (err) {
-      console.error("Token refresh failed:", err);
+      console.error("Token refresh failed:", err.message);
       logout(); // Force logout if refresh fails (e.g., refresh token is expired or invalid)
     }
   };

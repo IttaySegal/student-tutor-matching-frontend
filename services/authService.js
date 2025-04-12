@@ -134,3 +134,14 @@ export async function signOut(userId) {
     handleError(error);
   }
 }
+
+export async function refreshAccessToken(refreshToken) {
+  const API_URL = `${BASE_URL}/refresh`; // Make sure your backend supports this
+  try {
+    const response = await axios.post(API_URL, { refreshToken });
+    return response.data; // should return { accessToken: "..." }
+  } catch (error) {
+    handleError(error);
+  }
+}
+ 

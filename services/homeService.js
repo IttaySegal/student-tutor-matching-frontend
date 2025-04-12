@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "@services/axiosInstance";
 // import { REACT_APP_SERVER_DOMAIN } from "@env";
 import { EXPO_PUBLIC_SERVER_URL } from "@env";
 
@@ -11,11 +11,7 @@ export const getAggregateHomeData = async (accessToken) => {
  
   try {
     // const response = await axios.get(`${REACT_APP_SERVER_DOMAIN}/home/data`, {
-    const response = await axios.get(`${EXPO_PUBLIC_SERVER_URL}/home/data`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const response = await axios.get(`${EXPO_PUBLIC_SERVER_URL}/home/data`);
 
     return response.data;
   } catch (error) {
