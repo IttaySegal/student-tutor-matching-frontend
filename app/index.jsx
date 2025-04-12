@@ -13,21 +13,16 @@ import { useCallback } from "react";
 
 // Main App component definition
 const Welcome = () => {
-  console.log("Inside Welcome before: useAuth");
   const { isAuthenticated, loading } = useAuth();
-  console.log("isAuth: ", isAuthenticated);
-  console.log("isLoad: ", loading);
-  console.log("Inside Welcome after: useAuth");
 
   useEffect(() => {
     const clearStorage = async () => {
       await AsyncStorage.clear();
-      console.log("🧹 AsyncStorage נוקה בהצלחה");
     };
 
     clearStorage();
   }, []);
-  
+
   useFocusEffect(
     useCallback(() => {
       if (!loading && isAuthenticated) {
@@ -78,12 +73,6 @@ const Welcome = () => {
           <CustomButton
             title="Continue with Email" // Button text
             handlePress={() => router.push("/(auth)/sign-in")} // Navigation to sign-in page on press
-            containerStyles="w-full mt-7" // Styling for button container
-          />
-          <CustomButton
-            title="TabsForCheck" // Button text
-            //handlePress={() => router.replace('/(tabs)/home')} // Navigation to sign-in page on press
-            handlePress={() => router.push("/(profile)/profile")}
             containerStyles="w-full mt-7" // Styling for button container
           />
         </View>
