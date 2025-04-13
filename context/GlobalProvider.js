@@ -6,9 +6,11 @@ import { HomeProvider } from "@context/HomeContext";
 const GlobalProvider = ({ children }) => {
   return (
     <AuthProvider>
-      <HomeProvider>
-        {children}
-      </HomeProvider>
+       <LessonProvider>
+        <HomeProvider>
+          {children}
+        </HomeProvider>
+       </LessonProvider>
     </AuthProvider>
   );
 };

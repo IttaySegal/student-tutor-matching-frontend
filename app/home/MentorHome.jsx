@@ -1,4 +1,4 @@
-import React, { useFocusEffect } from "react";
+import React from "react";
 import { useCallback } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -8,6 +8,7 @@ import { getGreeting } from "./utils/timeUtils";
 import { useAuth } from "../../context/AuthContext";
 import { mockNextLesson } from "../mocks/mockLessons";
 import LessonDetailsModal from "../../components/LessonDetailsModal";
+import { useFocusEffect } from "@react-navigation/native";
 
 const MentorHome = () => {
   const { user, loading, isAuthenticated  } = useAuth();

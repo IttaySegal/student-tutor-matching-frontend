@@ -1,5 +1,6 @@
-import React, { useFocusEffect } from "react";
+import React from "react";
 import { useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useHome } from "@context/HomeContext";
@@ -25,7 +26,7 @@ const StudentHome = () => {
         } else {
           console.log("🛑 StudentHome → no token found, skipping fetch");
         }
-      };
+      }; 
 
       tryFetchStats();
     }, [user, loading])

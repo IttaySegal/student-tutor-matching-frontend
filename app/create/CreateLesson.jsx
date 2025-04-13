@@ -185,7 +185,7 @@ export default function CreateLesson() {
           <View className="bg-white rounded-lg p-3">
             <TextInput
               className="text-gray-800 text-base"
-              placeholder={lessonType === "Online" ? "Enter Zoom link" : "Enter location"}
+              placeholder="Enter location"
               placeholderTextColor="#9CA3AF"
               value={lessonLocation}
               onChangeText={setLessonLocation}
