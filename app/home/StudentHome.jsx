@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useFocusEffect } from "react";
+import { useCallback } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useHome } from "@context/HomeContext";
@@ -9,18 +10,26 @@ import { mockPrevLesson, mockNextLesson } from "../mocks/mockLessons";
 import LessonDetailsModal from "../../components/LessonDetailsModal";
 
 const StudentHome = () => {
-  const { user } = useAuth();
-  const { homeStats, fetchHomeStats  } = useHome();
+  const { user, loading } = useAuth();
+  const { homeStats, fetchHomeStats } = useHome();
 
-  useEffect(() => {
-    const loadData = async () => {
-      if (!homeStats) {
+  useFocusEffect(
+    useCallback(() => {
+      const tryFetchStats = async () => {
+        if (!user || loading) return;
+
         const token = await AsyncStorage.getItem("accessToken");
-        if (token) await fetchHomeStats (token);
-      }
-    };
-    loadData();
-  }, []);
+        if (token) {
+          console.log("🎓 StudentHome → valid token, fetching home stats");
+          fetchHomeStats();
+        } else {
+          console.log("🛑 StudentHome → no token found, skipping fetch");
+        }
+      };
+
+      tryFetchStats();
+    }, [user, loading])
+  );
 
   if (!homeStats) {
     return (

@@ -1,29 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
+import React, { useFocusEffect } from "react";
+import { useCallback } from "react";
 import { View, StyleSheet, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useHome } from "@context/HomeContext";
-
+import { useAuth } from "@context/AuthContext"; // ודא שאתה מייבא את זה
 import RTLText from "../../components/RTLText";
 import { getGreeting } from "./utils/timeUtils";
 import RequestCard from "../../components/RequestCard";
 import RequestModal from "../../components/RequestModal";
 
 const AdminHome = () => {
+  const { user, loading } = useAuth();
   const { homeStats, fetchHomeStats } = useHome();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
 
-  useEffect(() => {
-    const loadData = async () => {
-      if (!homeStats) {
-        const token = await AsyncStorage.getItem("accessToken");
-        if (token) await fetchHomeStats(token);
-      }
-    }; 
+  useFocusEffect(
+    useCallback(() => {
+      const tryFetchStats = async () => {
+        if (!user || loading) return;
 
-    loadData();
-  }, []);
+        const token = await AsyncStorage.getItem("accessToken");
+        if (token) {
+          console.log("👩‍💼 AdminHome → valid token, fetching home stats");
+          fetchHomeStats();
+        } else {
+          console.log("🛑 AdminHome → no token found, skipping fetch");
+        }
+      };
+
+      tryFetchStats();
+    }, [user, loading])
+  );
 
   const handleRequestPress = (request) => {
     setSelectedRequest(request);

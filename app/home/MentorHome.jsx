@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useFocusEffect } from "react";
+import { useCallback } from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useHome } from "@context/HomeContext";
@@ -12,21 +13,23 @@ const MentorHome = () => {
   const { user, loading, isAuthenticated  } = useAuth();
   const { homeStats, fetchHomeStats  } = useHome();
   
-  useEffect(() => {
-    const tryFetchStats = async () => {
-      if (!user || loading) return; // ❗ Wait for user and auth loading to complete
+  useFocusEffect(
+    useCallback(() => {
+      const tryFetchStats = async () => {
+        if (!user || loading) return; // ❗ Wait for user and auth loading to complete
   
-      const token = await AsyncStorage.getItem("accessToken");
-      if (token) {
-        console.log("🏠 MentorHome → valid token, fetching home stats");
-        fetchHomeStats();
-      } else {
-        console.log("🛑 MentorHome → no token found, skipping fetch");
-      }
-    };
+        const token = await AsyncStorage.getItem("accessToken");
+        if (token) {
+          console.log("🏠 MentorHome → valid token, fetching home stats");
+          fetchHomeStats();
+        } else {
+          console.log("🛑 MentorHome → no token found, skipping fetch");
+        }
+      };
   
-    tryFetchStats();
-  }, [user, loading]); // 🔁 rerun when auth state finishes loading
+      tryFetchStats();
+    }, [user, loading]) // 🔁 rerun when auth state finishes loading
+  );
 
   if (!homeStats) {
     return (

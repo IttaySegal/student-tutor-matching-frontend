@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
-import SearchBar from "@/components/SearchBar";
-import LessonCard from "@/components/LessonCard";
-import { mockSearchResults } from "@/app/mocks/mockLessons";
-import { searchLessons } from "@/services/lessonService";
-import LessonDetailsModal from "@/components/LessonDetailsModal";
+import SearchBar from "@components/SearchBar";
+import LessonCard from "@components/LessonCard";
+import { mockSearchResults } from "@mocks/mockLessons";
+import { searchLessons } from "@services/lessonService";
+import LessonDetailsModal from "@components/LessonDetailsModal";
+import { useLesson } from "@context/LessonContext";
 
 const RegisterLesson = () => {
   const [results, setResults] = useState([]);

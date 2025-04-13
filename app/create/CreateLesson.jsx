@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Alert } from "react-native";
+import Toast from "react-native-toast-message";
 import { View, ScrollView, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -10,8 +12,11 @@ import {
   subjectsWithGroups,
   lessonTypes,
 } from "../../constants/lessonOptions";
+import { useLesson } from "@context/LessonContext"; 
 
 export default function CreateLesson() {
+  const { createNewLesson } = useLesson(); 
+  
   const [subject, setSubject] = useState("");
   const [grade, setGrade] = useState("");
   const [group, setGroup] = useState("");
@@ -60,6 +65,39 @@ export default function CreateLesson() {
       hour12: true 
     });
   };
+
+  const handleCreateLesson = async () => {
+    try {
+      const lessonData = {
+        subject,
+        grade,
+        group: group || "General",
+        date: date.toISOString().split("T")[0],
+        time: time.toTimeString().split(" ")[0],
+        description: lessonDescription,
+        type: lessonType,
+        location: lessonLocation,
+      };
+
+      console.log("📦 Sending new lesson data:", lessonData);
+      await createNewLesson(lessonData);
+
+      Toast.show({
+        type: "success",
+        text1: "Lesson created successfully!",
+        position: "bottom",
+      });
+      } catch (err) {
+      console.error("❌ Failed to create lesson:", err);
+      Toast.show({
+        type: "error",
+        text1: "Error creating lesson",
+        text2: err.message || "Something went wrong",
+        position: "bottom",
+      });
+    }
+  };
+
 
   return (
     <ScrollView className="flex-1 bg-primary">
@@ -203,9 +241,7 @@ export default function CreateLesson() {
         {/* Create Lesson Button */}
         <CustomButton
           title="Create Lesson"
-          handlePress={() => {
-            console.log("Lesson created!");
-          }}
+          handlePress={handleCreateLesson}
           containerStyles="mt-4 w-full"
         />
       </View>

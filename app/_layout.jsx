@@ -11,6 +11,7 @@ import { useAuth } from "@/context/AuthContext";
 import { Tabs } from "expo-router";
 import { icons } from "@/constants";
 import { View, Text, Image, Dimensions } from "react-native";
+import Toast from "react-native-toast-message";
 
 // Get the screen width for responsive styling
 const { width } = Dimensions.get('window');
@@ -78,6 +79,7 @@ const RootLayout = () => {
       <GlobalProvider>
         <SafeAreaView className="flex-1 bg-primary" onLayout={onLayoutRootView}>
           <Slot />
+          <Toast /> {/* ✅ שימוש בטוסט */}
         </SafeAreaView>
       </GlobalProvider>
     </AuthProvider>
