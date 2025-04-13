@@ -1,16 +1,34 @@
 import React, { useEffect } from "react";
 import { View, FlatList, StyleSheet, Text } from "react-native";
 import { useAuth } from "../../context/AuthContext";
+import { useLesson } from "@context/LessonContext";
 import LessonReviewMentor from "../../components/LessonReviewMentor";
 import LessonReviewStudent from "../../components/LessonReviewStudent";
 import LessonCard from "../../components/LessonCard";
-import { mockLessons } from '@mocks/mockLessons';
 
-export default function BookmarkScreen() {
+export default function MyLessonSscreen() {
   const { user } = useAuth();
+  const {
+    mentorLessons,
+    studentLessons,
+    fetchMentorLessons,
+    fetchStudentLessons,
+  } = useLesson();
   const [selectedLesson, setSelectedLesson] = React.useState(null);
   const [isReviewModalVisible, setIsReviewModalVisible] = React.useState(false);
-
+  useEffect(() => {
+    if (user?.role === "mentor") {
+      console.log("📡 Fetching mentor lessons...");
+      fetchMentorLessons().then(() => {
+        console.log("🎓 mentorLessons:", mentorLessons);
+      });
+    } else if (user?.role === "student") {
+      console.log("📡 Fetching student lessons...");
+      fetchStudentLessons().then(() => {
+        console.log("🎓 studentLessons:", studentLessons);
+      });
+    }
+  }, []); 
   // Mock data for testing - replace with actual data from your backend
 
   const handleLessonPress = (lesson) => {
@@ -57,6 +75,8 @@ export default function BookmarkScreen() {
       onPress={() => handleLessonPress(item)}
     />
   );
+  const lessonList = user?.role === "mentor" ? mentorLessons : studentLessons;
+
 
   return (
     <View className="flex-1 bg-primary px-5 py-6">
@@ -64,9 +84,12 @@ export default function BookmarkScreen() {
         My Lessons
       </Text>
       <FlatList
-        data={mockLessons}
+        data={lessonList}
         renderItem={renderLessonItem}
         keyExtractor={(item) => item.id.toString()}
+        ListEmptyComponent={
+          <Text className="text-white text-center mt-10">No lessons found.</Text>
+        }
       />
       {renderReviewComponent()}
     </View>

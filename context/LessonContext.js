@@ -9,6 +9,9 @@ export const LessonProvider = ({ children }) => {
   // Common State
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  // Modal
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedLesson, setSelectedLesson] = useState(null);
 
   // Mentor
   const [mentorLessons, setMentorLessons] = useState([]);
@@ -140,6 +143,11 @@ export const LessonProvider = ({ children }) => {
     // Search
     searchResults,
     searchLessons,
+    //model
+    modalVisible,
+    setModalVisible,
+    selectedLesson,
+    setSelectedLesson,
   };
 
   return (
