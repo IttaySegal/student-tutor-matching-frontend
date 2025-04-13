@@ -1,11 +1,9 @@
 import { useCallback } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { Stack } from "expo-router";
 import { Slot } from "expo-router";
 import "../global.css";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { AuthProvider } from "@/context/AuthContext";
 import GlobalProvider from "@/context/GlobalProvider";
 import { useAuth } from "@/context/AuthContext";
 import { Tabs } from "expo-router";
@@ -75,14 +73,12 @@ const RootLayout = () => {
   }
 
   return (
-    <AuthProvider>
-      <GlobalProvider>
-        <SafeAreaView className="flex-1 bg-primary" onLayout={onLayoutRootView}>
-          <Slot />
-          <Toast /> {/* ✅ שימוש בטוסט */}
-        </SafeAreaView>
-      </GlobalProvider>
-    </AuthProvider>
+    <GlobalProvider>
+      <SafeAreaView className="flex-1 bg-primary" onLayout={onLayoutRootView}>
+        <Slot />
+        <Toast /> {/* ✅ שימוש בטוסט */}
+      </SafeAreaView>
+    </GlobalProvider>
   );
 };
 
