@@ -1,11 +1,9 @@
-import React, {useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
-import { useCallback } from "react";
-import { View, StyleSheet, ActivityIndicator } from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useHome } from "@context/HomeContext";
-import { useAuth } from "@context/AuthContext"; // ודא שאתה מייבא את זה
-import RTLText from "../../components/RTLText";
+import { useAuth } from "@context/AuthContext";
 import { getGreeting } from "./utils/timeUtils";
 import RequestCard from "../../components/RequestCard";
 import RequestModal from "../../components/RequestModal";
@@ -21,7 +19,6 @@ const AdminHome = () => {
     useCallback(() => {
       const tryFetchStats = async () => {
         if (!user || loading) return;
-
         const token = await AsyncStorage.getItem("accessToken");
         if (token) {
           console.log("👩‍💼 AdminHome → valid token, fetching home stats");
@@ -41,20 +38,20 @@ const AdminHome = () => {
   };
 
   const handleApprove = () => {
-    console.log("✅ אושר:", selectedRequest);
+    console.log("✅ Approved:", selectedRequest);
     setModalVisible(false);
   };
 
   const handleReject = () => {
-    console.log("❌ נחסם:", selectedRequest);
+    console.log("❌ Rejected:", selectedRequest);
     setModalVisible(false);
   };
 
   if (!homeStats) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#000" />
-        <RTLText style={{ marginTop: 10 }}>טוען מידע...</RTLText>
+        <ActivityIndicator size="large" color="#fff" />
+        <Text style={styles.loadingText}>Loading information...</Text>
       </View>
     );
   }
@@ -63,19 +60,20 @@ const AdminHome = () => {
   const pendingRequests = homeStats.pendingRequests || [];
 
   return (
-    <View style={[styles.container, { paddingTop: 40 }]}>
-      <RTLText style={styles.title}>{greeting}, מנהל/ת יקר/ה</RTLText>
+    <View style={styles.container}>
+      <Text style={styles.greetingText}>{greeting}, {user.first_name} {user.last_name}</Text>
+      <Text style={styles.subText}>Here's an overview of requests and mentor stats.</Text>
 
-      {/* ממוצע דירוג חונכים */}
-      <RTLText style={styles.section}>
-        ⭐ ממוצע דירוג חונכים: {homeStats.mentorAvgScore} מתוך 5
-      </RTLText>
+      {/* Mentor Rating */}
+      <Text style={styles.sectionTitle}>Mentor Rating:</Text>
+      <Text style={styles.cardText}>
+      ⭐{homeStats.mentorAvgScore}/5
+      </Text>
 
-      {/* בקשות ממתינות */}
-      <RTLText style={styles.section}>📥 בקשות ממתינות:</RTLText>
-
+      {/* Requests */}
+      <Text style={styles.sectionTitle}>📥 Pending Requests</Text>
       {pendingRequests.length === 0 ? (
-        <RTLText>אין בקשות חדשות כרגע.</RTLText>
+        <Text style={styles.emptyText}>No new requests at the moment.</Text>
       ) : (
         pendingRequests.map((req, index) => (
           <RequestCard key={index} {...req} onPress={() => handleRequestPress(req)} />
@@ -96,25 +94,48 @@ const AdminHome = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: "#fff",
+    backgroundColor: "#161622", // כמו StudentHome
+    paddingHorizontal: 20,
+    paddingTop: 60,
+  },
+  greetingText: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  subText: {
+    fontSize: 16,
+    color: "#ccc",
+    marginTop: 8,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#fff",
+    marginTop: 24,
+    marginBottom: 8,
+  },
+  cardText: {
+    fontSize: 18,
+    color: "#eee",
+    fontWeight: "600",
+    marginBottom: 8,
+  },
+  emptyText: {
+    fontSize: 16,
+    color: "#aaa",
+    fontStyle: "italic",
   },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#161622",
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "right",
-  },
-  section: {
-    fontSize: 18,
-    marginTop: 30,
-    textAlign: "right",
-    fontWeight: "bold",
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: "#aaa",
   },
 });
 

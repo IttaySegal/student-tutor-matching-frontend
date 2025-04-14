@@ -1,7 +1,8 @@
 import React from "react";
-import { Modal, View, StyleSheet } from "react-native";
-import RTLText from "./RTLText";
+import { Modal, View, StyleSheet, Text } from "react-native";
 import CustomButton from "./CustomButton";
+import CloseButton from "./CloseButton";
+
 
 const RequestModal = ({ visible, request, onClose, onApprove, onReject }) => {
   if (!request) return null;
@@ -10,31 +11,25 @@ const RequestModal = ({ visible, request, onClose, onApprove, onReject }) => {
     <Modal visible={visible} transparent animationType="slide">
       <View style={styles.overlay}>
         <View style={styles.modal}>
-          <RTLText style={styles.title}>פרטי הבקשה</RTLText>
-          <RTLText style={styles.detail}>סוג הבקשה: {request.type}</RTLText>
-          <RTLText style={styles.detail}>משתמש: {request.user}</RTLText>
+        <CloseButton onPress={onClose} />
+          <Text style={styles.title}>Request Details</Text>
+          <Text style={styles.detail}>Request Type: {request.type}</Text>
+          <Text style={styles.detail}>User: {request.user}</Text>
 
           <View style={styles.buttonRow}>
             <CustomButton
-              title="אשר"
+              title="Approve"
               handlePress={onApprove}
               containerStyles="bg-green-500 mr-2 flex-1"
               textStyles="text-white"
             />
             <CustomButton
-              title="חסום"
+              title="Reject"
               handlePress={onReject}
               containerStyles="bg-red-500 ml-2 flex-1"
               textStyles="text-white"
             />
           </View>
-
-          <CustomButton
-            title="סגור"
-            handlePress={onClose}
-            containerStyles="w-full bg-gray-500 mt-4"
-            textStyles="text-white"
-          />
         </View>
       </View>
     </Modal>
@@ -53,21 +48,20 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 16,
     padding: 20,
-    direction: "rtl",
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 12,
-    textAlign: "right",
+    textAlign: "left", // LTR
   },
   detail: {
     fontSize: 16,
     marginBottom: 8,
-    textAlign: "right",
+    textAlign: "left", // LTR
   },
   buttonRow: {
-    flexDirection: "row-reverse",
+    flexDirection: "row", // LTR direction
     marginTop: 20,
   },
 });
