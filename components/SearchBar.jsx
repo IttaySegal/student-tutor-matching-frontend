@@ -5,7 +5,7 @@ import CustomButton from "./CustomButton";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { subjectsWithGroups, subjects, grades } from "../constants/searchlessonFilters";
 
-const SearchBar = ({ onSearch }) => {
+const SearchBar = ({ onSearch, isLoading }) => {
   const [selectedSubject, setSelectedSubject] = useState("");
   const [selectedGrade, setSelectedGrade] = useState("");
   const [selectedGroup, setSelectedGroup] = useState("");
@@ -70,10 +70,12 @@ const SearchBar = ({ onSearch }) => {
         </Text>
       )}
 
-      {/* Button */}
+      {/* Search Button with loading + disabled */}
       <CustomButton
         title="Search Lessons"
         handlePress={handleSearch}
+        isLoading={isLoading}
+        disabled={isLoading}
         containerStyles="w-full mt-4"
       />
     </View>

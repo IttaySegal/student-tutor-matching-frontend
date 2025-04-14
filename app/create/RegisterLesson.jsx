@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
 import SearchBar from "@components/SearchBar";
 import LessonCard from "@components/LessonCard";
-import { mockSearchResults } from "@mocks/mockLessons";
-import { searchLessons } from "@services/lessonService";
 import LessonDetailsModal from "@components/LessonDetailsModal";
 import { useLesson } from "@context/LessonContext";
 
@@ -17,19 +15,25 @@ const RegisterLesson = () => {
     setModalVisible,
   } = useLesson();
 
-  const normalizeGrade = (grade) => {
-    if (!grade) return "";
-    return grade.replace("כיתה ", "").replace("׳", "").trim();
+  const [isSearching, setIsSearching] = useState(false); // 🆕 סטייט לטעינה
+
+  const handleSearch = async ({ subject, grade, group }) => {
+    setIsSearching(true);
+    try {
+      await searchLessons({ subject, grade, group });
+    } catch (error) {
+      console.error("Search failed:", error);
+    } finally {
+      setIsSearching(false);
+    }
   };
-  const handleSearch = ({ subject, grade, group }) => {
-    const normalizedGrade = normalizeGrade(grade);
-    searchLessons({ subject, grade: normalizedGrade, group });
-  };
+  
 
   return (
     <View className="flex-1 bg-primary">
-      <SearchBar onSearch={handleSearch} />
-  
+      {/* שליחת הפונקציה + מצב טעינה ל-SearchBar */}
+      <SearchBar onSearch={handleSearch} isLoading={isSearching} />
+     
       {searchResults.length > 0 ? (
         <FlatList
           data={searchResults}
@@ -49,8 +53,7 @@ const RegisterLesson = () => {
       ) : (
         <Text style={styles.emptyText}>No lessons to display</Text>
       )}
-  
-      {/* 👇 Render the modal only if visible */}
+
       {modalVisible && (
         <LessonDetailsModal
           lesson={selectedLesson}
@@ -60,7 +63,6 @@ const RegisterLesson = () => {
       )}
     </View>
   );
-  
 };
 
 const styles = StyleSheet.create({
