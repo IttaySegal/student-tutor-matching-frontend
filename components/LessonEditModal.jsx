@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { View, Modal } from "react-native";
-import RTLText from "./RTLText"; // מותאם לתצוגה בשפה עברית
-import CustomButton from "./CustomButton"; // כפתורים מותאמים אישית
-import TextInputField from "../components/TextInputField"; // שדה טקסט לעריכת תיאור השיעור
+import { View, Modal, Text } from "react-native";
+import CustomButton from "./CustomButton";
+import TextInputField from "./TextInputField";
 import { useAuth } from "../context/AuthContext";
-import CloseButton from "../components/CloseButton"; // ייבוא הכפתור החדש
+import CloseButton from "./CloseButton";
 
 export default function LessonEditModal({
   visible,
@@ -22,84 +21,78 @@ export default function LessonEditModal({
   onSaveChanges,
   onDeleteLesson,
 }) {
-  const [localDescription, setLocalDescription] = useState(description || ""); // הוספת state לתיאור השיעור
-  const [localLocation, setLocalLocation] = useState(lessonLocation || ""); // הוספת state למיקום השיעור
+  const [localDescription, setLocalDescription] = useState(description || "");
+  const [localLocation, setLocalLocation] = useState(lessonLocation || "");
 
   const { user } = useAuth();
 
   useEffect(() => {
-    setLocalDescription(description); // מעדכן את התיאור כל פעם כשמתקבל פרופ חדש
-    setLocalLocation(lessonLocation); // עדכון מיקום השיעור
+    setLocalDescription(description);
+    setLocalLocation(lessonLocation);
   }, [description, lessonLocation]);
 
   const handleSave = () => {
-    onSaveChanges(localDescription, localLocation); // שמירה של השינויים
-    onClose(); // סגירת המודל
+    onSaveChanges(localDescription, localLocation);
+    onClose();
   };
 
   const handleDescriptionChange = (text) => {
-    setLocalDescription(text); // עדכון תיאור השיעור
+    setLocalDescription(text);
   };
 
-  // ברגע שהמשתמש לוחץ "ביטול שיעור", נבצע מחיקה
   const handleDelete = () => {
     onDeleteLesson();
-    onClose(); // סגירת המודל
+    onClose();
   };
 
   return (
     <Modal visible={visible} transparent animationType="slide">
-      <View className="flex-1 bg-black bg-opacity-50 justify-center items-center">
-        <View
-          className="bg-white rounded-2xl p-6 w-11/12 max-w-md"
-          style={{ direction: "rtl", alignItems: "flex-start" }}
-        >
-          {/* כפתור סגירה */}
+      <View className="flex-1 bg-black/50 justify-center items-center">
+        <View className="bg-white rounded-2xl p-6 w-11/12 max-w-md shadow-lg">
           <CloseButton onPress={onClose} />
-
-          <RTLText
-            style={{ fontSize: 24, fontWeight: "bold", marginBottom: 10 }}
-          >
-            ערוך שיעור ב{subject} – {grade}
-          </RTLText>
-          <RTLText style={{ fontSize: 16, marginBottom: 10 }}>
-            {day}, {date}
-          </RTLText>
-          <RTLText style={{ fontSize: 16, marginBottom: 10 }}>
-            משעה {startTime} עד {endTime}
-          </RTLText>
-          <RTLText style={{ fontSize: 16, marginBottom: 10 }}>
-            החונך: {mentor}
-          </RTLText>
-
-          {/* תיאור השיעור */}
+          
+          <View className="w-full items-start mt-6">
+            <Text className="text-xl font-bold text-gray-800 mb-3">
+              Edit Lesson - {subject} – {grade}
+            </Text>
+            <View className="bg-gray-50 p-4 rounded-xl w-full mb-6">
+              <Text className="text-gray-600 mb-1">
+                {day}, {date}
+              </Text>
+              <Text className="text-gray-600">
+                From {startTime} to {endTime}
+              </Text>
+              <Text className="text-gray-600 mt-1">
+                Mentor: {mentor}
+              </Text>
+            </View>
+          </View>
+          
           <TextInputField
-            label="📝 תיאור השיעור:"
-            value={localDescription} // ודא שהערך נכון
-            onChangeText={(text) => setLocalDescription(text)} // עדכון ה-description כאשר השדה משתנה
-            placeholder="הכנס תיאור לשיעור"
+            label="Lesson Description"
+            value={localDescription}
+            onChangeText={handleDescriptionChange}
+            placeholder="Enter lesson description"
             multiline={true}
-            style={{ width: "100%", paddingHorizontal: 10 }}
           />
-
-          {/* מיקום השיעור */}
+          
           <TextInputField
-            label="📍 מיקום השיעור (או קישור לזום):"
-            value={lessonLocation}
-            onChangeText={(text) => onSaveChanges(description, text)} // שמירה של מיקום השיעור
-            placeholder="הכנס מיקום או קישור"
+            label="Lesson Location"
+            value={localLocation}
+            onChangeText={setLocalLocation}
+            placeholder="Enter location or Zoom link"
           />
-
-          <View className="w-full mt-8 items-center">
+          
+          <View className="w-full items-center mt-6">
             <CustomButton
-              title="שמור שינויים"
-              handlePress={handleSave} // שמירה של השינויים
+              title="Save Changes"
+              handlePress={handleSave}
               containerStyles="w-4/5 mb-4"
             />
-
+            
             <CustomButton
-              title="ביטול שיעור"
-              handlePress={handleDelete} // מחיקת השיעור
+              title="Cancel Lesson"
+              handlePress={handleDelete}
               containerStyles="w-4/5 bg-red-500"
             />
           </View>
