@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { View, Modal, ScrollView, TouchableOpacity } from "react-native";
-import RTLText from "./RTLText";
+import { View, Modal, ScrollView, TouchableOpacity, Text } from "react-native";
 import CustomButton from "./CustomButton";
 import CloseButton from "./CloseButton";
 import RadioButtonGroup from "./RadioButtonGroup";
@@ -31,22 +30,22 @@ export default function LessonReviewMentor({
   // State for selected lesson descriptions
   const [selectedDescriptions, setSelectedDescriptions] = useState([]);
   
-  // Options for lesson descriptions in Hebrew
+  // Options for lesson descriptions
   const lessonDescriptionOptions = [
-    { label: "התלמידים הבינו את החומר", value: "התלמידים הבינו את החומר" },
-    { label: "השיעור היה מעניין", value: "השיעור היה מעניין" },
-    { label: "התלמידים השתתפו פעיל", value: "התלמידים השתתפו פעיל" },
-    { label: "היה צורך בהסברים נוספים", value: "היה צורך בהסברים נוספים" },
-    { label: "החומר היה קשה מדי", value: "החומר היה קשה מדי" },
-    { label: "החומר היה קל מדי", value: "החומר היה קל מדי" },
-    { label: "היה צורך בהתאמה אישית", value: "היה צורך בהתאמה אישית" },
+    { label: "Students understood the material", value: "Students understood the material" },
+    { label: "The lesson was interesting", value: "The lesson was interesting" },
+    { label: "Students actively participated", value: "Students actively participated" },
+    { label: "Additional explanations were needed", value: "Additional explanations were needed" },
+    { label: "The material was too difficult", value: "The material was too difficult" },
+    { label: "The material was too easy", value: "The material was too easy" },
+    { label: "Individual adaptation was needed", value: "Individual adaptation was needed" },
   ];
   
-  // Attendance options in Hebrew
+  // Attendance options
   const attendanceOptions = [
-    { label: "הגיע", value: "הגיע" },
-    { label: "לא הגיע", value: "לא הגיע" },
-    { label: "איחר", value: "איחר" },
+    { label: "Present", value: "Present" },
+    { label: "Absent", value: "Absent" },
+    { label: "Late", value: "Late" },
   ];
   
   // Handle student attendance change
@@ -97,38 +96,35 @@ export default function LessonReviewMentor({
 
   return (
     <Modal visible={visible} transparent animationType="slide">
-      <View className="flex-1 bg-black bg-opacity-50 justify-center items-center" style={{ direction: "rtl" }}>
-        <View
-          className="bg-white rounded-2xl p-6 w-11/12 max-w-md"
-          style={{ direction: "rtl", alignItems: "flex-start" }}
-        >
-          <ScrollView className="w-full" contentContainerStyle={{ direction: "rtl", alignItems: "flex-start" }}>
-            {/* כפתור סגירה */}
+      <View className="flex-1 bg-black bg-opacity-50 justify-center items-center">
+        <View className="bg-white rounded-2xl p-6 w-11/12 max-w-md">
+          <ScrollView className="w-full">
+            {/* Close button */}
             <CloseButton onPress={onClose} />
             
-            <View style={{ direction: "rtl", width: "100%", alignItems: "flex-start" }}>
-              <RTLText style={{ fontSize: 18, fontWeight: "bold", marginTop: 40 }}>
-                סקירת שיעור ב{subject} – {grade}
-              </RTLText>
-              <RTLText>
+            <View className="w-full items-start mt-10">
+              <Text className="text-lg font-bold">
+                Lesson Review - {subject} – {grade}
+              </Text>
+              <Text>
                 {day}, {date}
-              </RTLText>
-              <RTLText>
-                משעה {startTime} עד {endTime}
-              </RTLText>
+              </Text>
+              <Text>
+                From {startTime} to {endTime}
+              </Text>
             </View>
             
-            {/* נוכחות תלמידים */}
-            <View style={{ direction: "rtl", marginTop: 20, width: "100%", alignItems: "flex-start" }}>
-              <RTLText style={{ fontWeight: "bold" }}>
-                נוכחות תלמידים:
-              </RTLText>
+            {/* Student attendance */}
+            <View className="mt-5 w-full items-start">
+              <Text className="font-bold">
+                Student Attendance:
+              </Text>
               
               {students.map((student) => (
-                <View key={student._id} className="mb-4" style={{ direction: "rtl", width: "100%", alignItems: "flex-start" }}>
-                  <RTLText style={{ marginBottom: 5 }}>
+                <View key={student._id} className="mb-4 w-full items-start">
+                  <Text className="mb-1">
                     {student.first_name} {student.last_name}:
-                  </RTLText>
+                  </Text>
                   <RadioButtonGroup
                     options={attendanceOptions}
                     selectedValue={studentAttendance[student._id]}
@@ -138,38 +134,32 @@ export default function LessonReviewMentor({
               ))}
             </View>
             
-            {/* דירוג השיעור */}
-            <View style={{ direction: "rtl", marginTop: 20, width: "100%", alignItems: "flex-start" }}>
-              <RTLText style={{ fontWeight: "bold" }}>
-                דירוג השיעור:
-              </RTLText>
-              <View style={{ 
-                flexDirection: "row", 
-                justifyContent: "flex-end", 
-                width: "100%", 
-                marginVertical: 16,
-                gap: 8
-              }}>
+            {/* Lesson rating */}
+            <View className="mt-5 w-full items-start">
+              <Text className="font-bold">
+                Lesson Rating:
+              </Text>
+              <View className="flex-row justify-start w-full my-4 gap-2">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <TouchableOpacity
                     key={star}
                     onPress={() => handleRatingChange(star)}
                   >
-                    <RTLText style={{ fontSize: 30, color: star <= rating ? "#FFD700" : "#D3D3D3" }}>
+                    <Text className="text-3xl" style={{ color: star <= rating ? "#FFD700" : "#D3D3D3" }}>
                       ★
-                    </RTLText>
+                    </Text>
                   </TouchableOpacity>
                 ))}
               </View>
             </View>
             
-            {/* תיאור השיעור */}
-            <View style={{ marginTop: 20, width: "100%" }}>
-              <RTLText style={{ fontWeight: "bold", marginBottom: 10 }}>
-                תיאור השיעור:
-              </RTLText>
+            {/* Lesson description */}
+            <View className="mt-5 w-full">
+              <Text className="font-bold mb-2">
+                Lesson Description:
+              </Text>
               <SelectField
-                label="בחר תיאורים המתאימים לשיעור:"
+                label="Select descriptions that match the lesson:"
                 selectedValue={selectedDescriptions}
                 onValueChange={handleDescriptionChange}
                 options={lessonDescriptionOptions}
@@ -177,10 +167,10 @@ export default function LessonReviewMentor({
               />
             </View>
             
-            {/* כפתור שליחה */}
-            <View className="w-full mt-8 items-center" style={{ direction: "rtl", alignItems: "center" }}>
+            {/* Submit button */}
+            <View className="w-full mt-8 items-center">
               <CustomButton
-                title="שלח סקירה"
+                title="Submit Review"
                 handlePress={handleSubmit}
                 containerStyles={`w-4/5 ${isFormValid() ? "" : ""}`}
                 disabled={!isFormValid()}
