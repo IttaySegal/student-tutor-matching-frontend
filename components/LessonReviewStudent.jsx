@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { View, Modal, ScrollView, TouchableOpacity } from "react-native";
-import RTLText from "./RTLText";
+import { View, Modal, ScrollView, TouchableOpacity, Text } from "react-native";
 import CustomButton from "./CustomButton";
 import CloseButton from "./CloseButton";
 import SelectField from "./SelectField";
@@ -25,15 +24,15 @@ export default function LessonReviewStudent({
   // State for selected lesson descriptions
   const [selectedDescriptions, setSelectedDescriptions] = useState([]);
   
-  // Options for lesson descriptions in Hebrew
+  // Options for lesson descriptions
   const lessonDescriptionOptions = [
-    { label: "הבנתי את החומר", value: "הבנתי את החומר" },
-    { label: "השיעור היה מעניין", value: "השיעור היה מעניין" },
-    { label: "השתתפתי פעיל בשיעור", value: "השתתפתי פעיל בשיעור" },
-    { label: "היה צורך בהסברים נוספים", value: "היה צורך בהסברים נוספים" },
-    { label: "החומר היה קשה מדי", value: "החומר היה קשה מדי" },
-    { label: "החומר היה קל מדי", value: "החומר היה קל מדי" },
-    { label: "היה צורך בהתאמה אישית", value: "היה צורך בהתאמה אישית" },
+    { label: "I understood the material", value: "I understood the material" },
+    { label: "The lesson was interesting", value: "The lesson was interesting" },
+    { label: "I actively participated in the lesson", value: "I actively participated in the lesson" },
+    { label: "Additional explanations were needed", value: "Additional explanations were needed" },
+    { label: "The material was too difficult", value: "The material was too difficult" },
+    { label: "The material was too easy", value: "The material was too easy" },
+    { label: "Individual adaptation was needed", value: "Individual adaptation was needed" },
   ];
   
   // Handle rating change
@@ -70,75 +69,71 @@ export default function LessonReviewStudent({
 
   return (
     <Modal visible={visible} transparent animationType="slide">
-      <View className="flex-1 bg-black bg-opacity-50 justify-center items-center" style={{ direction: "rtl" }}>
-        <View
-          className="bg-white rounded-2xl p-6 w-11/12 max-w-md"
-          style={{ direction: "rtl", alignItems: "flex-start" }}
-        >
-          <ScrollView className="w-full" contentContainerStyle={{ direction: "rtl", alignItems: "flex-start" }}>
-            {/* כפתור סגירה */}
+      <View className="flex-1 bg-black/50 justify-center items-center">
+        <View className="bg-white rounded-2xl p-6 w-11/12 max-w-md shadow-lg">
+          <ScrollView className="w-full">
             <CloseButton onPress={onClose} />
             
-            <View style={{ direction: "rtl", width: "100%", alignItems: "flex-start" }}>
-              <RTLText style={{ fontSize: 18, fontWeight: "bold", marginTop: 40 }}>
-                סקירת שיעור ב{subject} – {grade}
-              </RTLText>
-              <RTLText>
-                {day}, {date}
-              </RTLText>
-              <RTLText>
-                משעה {startTime} עד {endTime}
-              </RTLText>
-              <RTLText>
-                החונך: {mentor}
-              </RTLText>
-            </View>
-            
-            {/* דירוג השיעור */}
-            <View style={{ direction: "rtl", marginTop: 20, width: "100%", alignItems: "flex-start" }}>
-              <RTLText style={{ fontWeight: "bold" }}>
-                דירוג השיעור:
-              </RTLText>
-              <View style={{ 
-                flexDirection: "row", 
-                justifyContent: "flex-end", 
-                width: "100%", 
-                marginVertical: 16,
-                gap: 8
-              }}>
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <TouchableOpacity
-                    key={star}
-                    onPress={() => handleRatingChange(star)}
-                  >
-                    <RTLText style={{ fontSize: 30, color: star <= rating ? "#FFD700" : "#D3D3D3" }}>
-                      ★
-                    </RTLText>
-                  </TouchableOpacity>
-                ))}
+            <View className="w-full items-start mt-6">
+              <Text className="text-xl font-bold text-gray-800 mb-3">
+                Lesson Review - {subject} – {grade}
+              </Text>
+              <View className="bg-gray-50 p-4 rounded-xl w-full mb-6">
+                <Text className="text-gray-600 mb-1">
+                  {day}, {date}
+                </Text>
+                <Text className="text-gray-600 mb-1">
+                  From {startTime} to {endTime}
+                </Text>
+                <Text className="text-gray-600">
+                  Mentor: {mentor}
+                </Text>
               </View>
             </View>
             
-            {/* תיאור השיעור */}
-            <View style={{ marginTop: 20, width: "100%" }}>
-              <RTLText style={{ fontWeight: "bold", marginBottom: 10 }}>
-                תיאור השיעור:
-              </RTLText>
-              <SelectField
-                label="בחר תיאורים המתאימים לשיעור:"
-                selectedValue={selectedDescriptions}
-                onValueChange={handleDescriptionChange}
-                options={lessonDescriptionOptions}
-                multiple={true}
-              />
+            {/* Lesson rating */}
+            <View className="w-full items-start mb-6">
+              <Text className="text-lg font-bold text-gray-800 mb-3">
+                Lesson Rating
+              </Text>
+              <View className="w-full bg-white p-4 rounded-xl border border-gray-100">
+                <View className="flex-row justify-center gap-4">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <TouchableOpacity
+                      key={star}
+                      onPress={() => handleRatingChange(star)}
+                    >
+                      <Text className="text-3xl" style={{ color: star <= rating ? "#FFD700" : "#E5E7EB" }}>
+                        ★
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
             </View>
             
-            {/* כפתור שליחה */}
-            <View className="w-full mt-8 items-center" style={{ direction: "rtl", alignItems: "center" }}>
+            {/* Lesson description */}
+            <View className="w-full mb-6">
+              <Text className="text-lg font-bold text-gray-800 mb-3">
+                Lesson Description
+              </Text>
+              <View className="w-full bg-white p-4 rounded-xl border border-gray-100">
+                <SelectField
+                  label="Select descriptions that match the lesson:"
+                  selectedValue={selectedDescriptions}
+                  onValueChange={handleDescriptionChange}
+                  options={lessonDescriptionOptions}
+                  multiple={true}
+                />
+              </View>
+            </View>
+            
+            {/* Submit button */}
+            <View className="w-full items-center mb-4">
               <CustomButton
-                title="שלח סקירה"
+                title="Submit Review"
                 handlePress={handleSubmit}
-                containerStyles={`w-4/5 ${isFormValid() ? "" : ""}`}
+                containerStyles={`w-4/5 ${isFormValid() ? "opacity-100" : "opacity-50"}`}
                 disabled={!isFormValid()}
               />
             </View>
