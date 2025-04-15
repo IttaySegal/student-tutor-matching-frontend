@@ -45,21 +45,39 @@ const StudentHome = () => {
 
   return (
     <View className="flex-1 bg-primary px-5 pt-10">
-      <Text className="text-2xl font-bold text-white">
-        {getGreeting()}, {userName}
-      </Text>
+      {/* Greeting Section */}
+      <View className="mb-6">
+        <Text className="text-3xl font-bold text-white">
+          {getGreeting()}, {userName}
+        </Text>
+        <Text className="text-lg text-gray-300 mt-2">
+          Welcome to your learning journey
+        </Text>
+      </View>
 
-      <Text className="text-lg text-gray-300 mt-2">
-        Here's an overview of your recent and upcoming lessons.
-      </Text>
+      {/* Next Lesson Section */}
+      <View className="mt-6">
+        <Text className="text-2xl font-bold text-white mb-4">📚 Your Next Lesson</Text>
+        {homeStats.nextLesson ? (
+          <LessonCard 
+            {...homeStats.nextLesson} 
+            ModalComponent={LessonDetailsModal}
+            modalProps={{ isMyLessons: true }}
+          />
+        ) : (
+          <View className="bg-white rounded-2xl p-6">
+            <Text className="text-center text-gray-600">No upcoming lessons scheduled</Text>
+          </View>
+        )}
+      </View>
 
-      {/* Last Lesson */}
-      <Text className="text-xl font-bold text-white mt-8">🕘 Your Last Lesson:</Text>
-      <LessonCard {...mockPrevLesson} ModalComponent={LessonDetailsModal} />
-
-      {/* Next Lesson */}
-      <Text className="text-xl font-bold text-white mt-8">🕒 Your Next Lesson:</Text>
-      <LessonCard {...mockNextLesson} ModalComponent={LessonDetailsModal} />
+      {/* Motivation Section */}
+      <View className="bg-white rounded-2xl p-6 mt-6 shadow-lg">
+        <Text className="text-xl font-bold text-center mb-2">✨ Daily Inspiration</Text>
+        <Text className="text-center text-lg text-gray-700 italic">
+          "{homeStats.motivationSentence}"
+        </Text>
+      </View>
     </View>
   );
 };

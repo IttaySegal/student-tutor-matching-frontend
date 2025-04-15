@@ -2,9 +2,8 @@ import React, { useEffect } from "react";
 import { View, FlatList, StyleSheet, Text } from "react-native";
 import { useAuth } from "../../context/AuthContext";
 import { useLesson } from "@context/LessonContext";
-import LessonReviewMentor from "../../components/LessonReviewMentor";
-import LessonReviewStudent from "../../components/LessonReviewStudent";
 import LessonCard from "../../components/LessonCard";
+import LessonDetailsModal from "../../components/LessonDetailsModal";
 
 export default function MyLessonSscreen() {
   const { user } = useAuth();
@@ -15,58 +14,34 @@ export default function MyLessonSscreen() {
     fetchStudentLessons,
   } = useLesson();
   const [selectedLesson, setSelectedLesson] = React.useState(null);
-  const [isReviewModalVisible, setIsReviewModalVisible] = React.useState(false);
-  useEffect(() => {
+  const [isDetailsModalVisible, setIsDetailsModalVisible] = React.useState(false);
+
+  const fetchLessons = async () => {
     if (user?.role === "mentor") {
       console.log("📡 Fetching mentor lessons...");
-      fetchMentorLessons().then(() => {
-        console.log("🎓 mentorLessons:", mentorLessons);
-      });
+      await fetchMentorLessons();
+      console.log("🎓 mentorLessons:", mentorLessons);
     } else if (user?.role === "student") {
       console.log("📡 Fetching student lessons...");
-      fetchStudentLessons().then(() => {
-        console.log("🎓 studentLessons:", studentLessons);
-      });
+      await fetchStudentLessons();
+      console.log("🎓 studentLessons:", studentLessons);
     }
-  }, []); 
-  // Mock data for testing - replace with actual data from your backend
+  };
+
+  useEffect(() => {
+    fetchLessons();
+  }, []);
 
   const handleLessonPress = (lesson) => {
     setSelectedLesson(lesson);
-    setIsReviewModalVisible(true);
+    setIsDetailsModalVisible(true);
   };
 
-  const handleSubmitReview = (reviewData) => {
-    console.log("Review submitted:", reviewData);
-    // Here you would send the review data to your backend
-    setIsReviewModalVisible(false);
-  };
-
-  // Render the appropriate review component based on user role
-  const renderReviewComponent = () => {
-    if (!selectedLesson) return null;
-
-    if (user?.role === "mentor") {
-      return (
-        <LessonReviewMentor
-          visible={isReviewModalVisible}
-          onClose={() => setIsReviewModalVisible(false)}
-          onSubmit={handleSubmitReview}
-          {...selectedLesson}
-        />
-      );
-    } else if (user?.role === "student") {
-      return (
-        <LessonReviewStudent
-          visible={isReviewModalVisible}
-          onClose={() => setIsReviewModalVisible(false)}
-          onSubmit={handleSubmitReview}
-          {...selectedLesson}
-        />
-      );
+  const handleUnregisterSuccess = (lessonId) => {
+    // Remove the unregistered lesson from the list
+    if (user?.role === "student") {
+      fetchLessons(); // Refresh the list
     }
-
-    return null;
   };
 
   const renderLessonItem = ({ item }) => (
@@ -75,8 +50,8 @@ export default function MyLessonSscreen() {
       onPress={() => handleLessonPress(item)}
     />
   );
-  const lessonList = user?.role === "mentor" ? mentorLessons : studentLessons;
 
+  const lessonList = user?.role === "mentor" ? mentorLessons : studentLessons;
 
   return (
     <View className="flex-1 bg-primary px-5 py-6">
@@ -91,7 +66,18 @@ export default function MyLessonSscreen() {
           <Text className="text-white text-center mt-10">No lessons found.</Text>
         }
       />
-      {renderReviewComponent()}
+      {selectedLesson && (
+        <LessonDetailsModal
+          visible={isDetailsModalVisible}
+          onClose={() => {
+            setIsDetailsModalVisible(false);
+            setSelectedLesson(null);
+          }}
+          isMyLessons={true}
+          onUnregisterSuccess={handleUnregisterSuccess}
+          {...selectedLesson}
+        />
+      )}
     </View>
   );
 }

@@ -5,6 +5,7 @@ import { useState } from "react";
 import LessonEditModal from "./LessonEditModal";
 import CloseButton from "../components/CloseButton";
 import { useLesson } from "@context/LessonContext";
+import { useToast } from "@context/ToastContext";
 
 export default function LessonDetailsModal({
   visible,
@@ -20,6 +21,8 @@ export default function LessonDetailsModal({
   students = [],
   lessonLocation,
   id,
+  isMyLessons = false,
+  onUnregisterSuccess,
 }) {
   const { user } = useAuth();
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
@@ -32,15 +35,43 @@ export default function LessonDetailsModal({
     deleteLesson,
     fetchMentorLessons,
   } = useLesson();
+  const { showToast } = useToast();
 
   const handleRegister = async () => {
-    await registerLesson(id); // id is passed via modalProps from LessonCard
-    onClose(); //close modal after success
+    try {
+      await registerLesson(id);
+      showToast({
+        message: 'Register to lesson successfully!',
+        type: "success"
+      });
+      onClose();
+    } catch (error) {
+      showToast({
+        message: 'Registration Failed',
+        subMessage: error.message || 'Failed to register for the lesson',
+        type: "error"
+      });
+    }
   };
   
   const handleUnregister = async () => {
-    await unregisterLesson(id);
-    onClose();
+    try {
+      await unregisterLesson(id);
+      showToast({
+        message: 'You unRegister to lesson successfully',
+        type: "success"
+      });
+      onClose();
+      if (onUnregisterSuccess) {
+        onUnregisterSuccess(id);
+      }
+    } catch (error) {
+      showToast({
+        message: 'Registration Failed',
+        subMessage: error.message || 'Failed to register for the lesson',
+        type: "erro r" 
+      });
+    }
   };
 
   const handleSaveChanges = async (newDescription, newLocation) => {
@@ -63,7 +94,7 @@ export default function LessonDetailsModal({
   };
 
   const isStudentRegistered =
-    isStudent && students.some((student) => student._id === user?._id);
+    isStudent && (isMyLessons || students.some((student) => student._id === user?._id));
 
   return (
     <Modal visible={visible} transparent animationType="slide">
@@ -112,15 +143,15 @@ export default function LessonDetailsModal({
                   handlePress={handleUnregister}
                   containerStyles="w-4/5 bg-red-500"
                 />
-              ) : students.length >= 3 ? (
+              ) : !isMyLessons && students.length >= 3 ? (
                 <Text>Lesson is full</Text>
-              ) : (
+              ) : !isMyLessons ? (
                 <CustomButton
                   title="Register for Lesson"
                   handlePress={handleRegister}
                   containerStyles="w-4/5"
                 />
-              )
+              ) : null
             ) : isMentor ? (
               <CustomButton
                 title="Manage Lesson"

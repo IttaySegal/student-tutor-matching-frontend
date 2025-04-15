@@ -45,41 +45,49 @@ const MentorHome = () => {
 
   return (
     <View className="flex-1 bg-primary px-5 pt-10">
-      {/* Greeting */}
-      <Text className="text-2xl font-bold text-white">
-        {getGreeting()}, {userName}
-      </Text>
+      {/* Greeting Section */}
+      <View className="mb-6">
+        <Text className="text-3xl font-bold text-white">
+          {getGreeting()}, {userName}
+        </Text>
+        <Text className="text-lg text-gray-300 mt-2">
+          Welcome to your mentoring dashboard
+        </Text>
+      </View>
 
-      {/* General description */}
-      <Text className="text-lg text-gray-300 mt-2">
-        Here you can manage your lessons and help your students succeed.
-      </Text>
-
-      {/* Completed hours */}
-      <Text className="text-xl font-bold text-white mt-8">
-        ✅ You completed {homeStats.lessonCount} out of 60 required personal hours
-      </Text>
-
-      {/* Average feedback */}
-      {homeStats.feedbackStats && (
-        <View className="mt-4 p-4 bg-gray-800 rounded-lg">
-          <Text className="text-xl font-bold text-white">⭐ Overall rating from students:</Text>
-          <Text className="text-gray-300 mt-2">
-            Average score: {homeStats.feedbackStats.averageScore} out of 5
-          </Text>
-          <Text className="text-gray-300">
-            Number of feedbacks: {homeStats.feedbackStats.totalFeedbacks}
-          </Text>
+      {/* Stats Section */}
+      <View className="bg-white rounded-2xl p-6 shadow-lg">
+        <Text className="text-xl font-bold text-center mb-4">📊 Your Mentoring Stats</Text>
+        <View className="flex-row justify-between mt-2">
+          <View className="items-center">
+            <Text className="text-3xl font-bold text-primary">{homeStats.totalHours}</Text>
+            <Text className="text-gray-600">Teaching Hours</Text>
+          </View>
+          <View className="items-center">
+            <Text className="text-3xl font-bold text-primary">{homeStats.feedbackStats.averageScore}</Text>
+            <Text className="text-gray-600">Average Rating</Text> 
+          </View>
+          <View className="items-center">
+            <Text className="text-3xl font-bold text-primary">{homeStats.feedbackStats.totalFeedbacks}</Text>
+            <Text className="text-gray-600">Total Reviews</Text>
+          </View>
         </View>
-      )}
+      </View>
 
-      {/* Next lesson */}
+      {/* Next Lesson Section */}
       <View className="mt-8">
-        <Text className="text-xl font-bold text-white">🕒 Your next lesson:</Text>
-        <LessonCard 
-          {...mockNextLesson} 
-          ModalComponent={LessonDetailsModal}
-        />
+        <Text className="text-2xl font-bold text-white mb-4">📚 Your Next Lesson</Text>
+        {homeStats.nextLesson ? (
+          <LessonCard 
+            {...homeStats.nextLesson} 
+            ModalComponent={LessonDetailsModal}
+            modalProps={{ isMyLessons: true }}
+          />
+        ) : (
+          <View className="bg-white rounded-2xl p-6">
+            <Text className="text-center text-gray-600">No upcoming lessons scheduled</Text>
+          </View>
+        )}
       </View>
     </View>
   );

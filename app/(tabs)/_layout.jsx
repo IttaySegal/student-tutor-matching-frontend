@@ -115,7 +115,7 @@ const TabsLayout = () => {
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
           <TabIcon
-            icon={icons.clock} 
+            icon={icons.upload} 
             color={color} 
             name="Pendings" 
             focused={focused} 

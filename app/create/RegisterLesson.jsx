@@ -4,8 +4,10 @@ import SearchBar from "@components/SearchBar";
 import LessonCard from "@components/LessonCard";
 import LessonDetailsModal from "@components/LessonDetailsModal";
 import { useLesson } from "@context/LessonContext";
+import { useAuth } from "@context/AuthContext";
 
 const RegisterLesson = () => {
+  const { user } = useAuth();
   const {
     searchLessons,
     searchResults,
@@ -15,7 +17,7 @@ const RegisterLesson = () => {
     setModalVisible,
   } = useLesson();
 
-  const [isSearching, setIsSearching] = useState(false); // 🆕 סטייט לטעינה
+  const [isSearching, setIsSearching] = useState(false);
 
   const handleSearch = async ({ subject, grade, group }) => {
     setIsSearching(true);
@@ -27,11 +29,14 @@ const RegisterLesson = () => {
       setIsSearching(false);
     }
   };
-  
+
+  const handleLessonPress = (lesson) => {
+    setSelectedLesson(lesson);
+    setModalVisible(true);
+  };
 
   return (
     <View className="flex-1 bg-primary">
-      {/* שליחת הפונקציה + מצב טעינה ל-SearchBar */}
       <SearchBar onSearch={handleSearch} isLoading={isSearching} />
      
       {searchResults.length > 0 ? (
@@ -42,10 +47,7 @@ const RegisterLesson = () => {
             <View style={styles.cardContainer}>
               <LessonCard
                 {...item}
-                onPress={() => {
-                  setSelectedLesson(item);
-                  setModalVisible(true);
-                }}
+                onPress={() => handleLessonPress(item)}
               />
             </View>
           )}
@@ -54,11 +56,15 @@ const RegisterLesson = () => {
         <Text style={styles.emptyText}>No lessons to display</Text>
       )}
 
-      {modalVisible && (
+      {modalVisible && selectedLesson && (
         <LessonDetailsModal
-          lesson={selectedLesson}
           visible={modalVisible}
-          onClose={() => setModalVisible(false)}
+          onClose={() => {
+            setModalVisible(false);
+            setSelectedLesson(null);
+          }}
+          isMyLessons={false}
+          {...selectedLesson}
         />
       )}
     </View>
