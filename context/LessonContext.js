@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 import * as LessonAPI from "@services/lessonService";
-import Toast from "react-native-toast-message";
+import { useToast } from "@context/ToastContext";
 
 const LessonContext = createContext();
 
@@ -10,6 +10,8 @@ export const LessonProvider = ({ children }) => {
   // Common State
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { showToast } = useToast();
+
   // Modal
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedLesson, setSelectedLesson] = useState(null);
@@ -27,6 +29,8 @@ export const LessonProvider = ({ children }) => {
 
   //  Admin
   const [allLessons, setAllLessons] = useState([]);
+  const [pendingReviews, setPendingReviews] = useState([]);
+
 
   // Search
   const [searchResults, setSearchResults] = useState([]);
@@ -39,14 +43,24 @@ export const LessonProvider = ({ children }) => {
     } catch (err) {
       console.error(err);
       setError(err.message || "An error occurred");
-      Toast.show({
-        type: "error",
-        text1: "Error",
-        text2: err.message || "An error occurred",
+      showToast({
+        message: 'Error',
+        subMessage: err.message || "An error occurred",
+        type: "error"
       });
     } finally {
       setLoading(false);
     }
+  };
+
+  const openModal = (lesson) => {
+    setSelectedLesson(lesson);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setSelectedLesson(null);
+    setModalVisible(false);
   };
 
   // ================= Mentor =================
@@ -73,21 +87,19 @@ export const LessonProvider = ({ children }) => {
   const updateLesson = async (id, updates) => wrap(async () => {
     await LessonAPI.updateLesson(id, updates);
     await fetchMentorLessons(); // refresh lessons
-    Toast.show({
-      type: "success",
-      text1: "Lesson updated successfully!",
-      position: "bottom",
+    showToast({
+      message: 'Lesson updated successfully!',
+      type: "success"
     });
   });
   
   const deleteLesson = async (id) => wrap(async () => {
     await LessonAPI.deleteLesson(id);
     setMentorLessons(prev => prev.filter(lesson => lesson.id !== id));
-    Toast.show({
-    type: "success",
-    text1: "Lesson deleted successfully!",
-    position: "bottom",
-  });
+    showToast({
+      message: 'Lesson deleted successfully!',
+      type: "success"
+     });
   });
 
   const createNewLesson = async (lessonData) => wrap(async () => {
@@ -130,10 +142,24 @@ export const LessonProvider = ({ children }) => {
     await LessonAPI.unregisterFromLesson(lessonId);
   });
 
+  const submitStudentReview = async (lessonId, reviewData) => wrap(async () => {
+    console.log("📝 Context: Submitting student review");
+    await LessonAPI.submitStudentReview(lessonId, reviewData);
+    await fetchStudentLessons();
+    showToast({
+      message: 'Review submitted successfully!',
+      type: "success"
+    });
+  });
   // ================= Admin =================
   const fetchAllLessons = async () => wrap(async () => {
     const data = await LessonAPI.getAllLessons();
     setAllLessons(data);
+  });
+
+  const fetchPendingReviews = async () => wrap(async () => {
+    const data = await LessonAPI.getPendingReviews(); // from service
+    setPendingReviews(data);
   });
 
   const approveLesson = async (lessonId) => wrap(async () => {
@@ -153,6 +179,10 @@ export const LessonProvider = ({ children }) => {
   const value = {
     loading,
     error,
+    openModal,
+    closeModal,
+    modalVisible,
+    selectedLesson,
     // Mentor
     mentorLessons,
     upcomingLessons,
@@ -181,6 +211,8 @@ export const LessonProvider = ({ children }) => {
     fetchAllLessons,
     approveLesson,
     rejectLesson,
+    fetchPendingReviews,
+    pendingReviews,
     // Search
     searchResults,
     searchLessons,
@@ -189,6 +221,7 @@ export const LessonProvider = ({ children }) => {
     setModalVisible,
     selectedLesson,
     setSelectedLesson,
+    submitStudentReview,
   };
 
   return (

@@ -178,6 +178,17 @@ export const unregisterFromLesson = async (lessonId) => {
   }
 };
 
+export const submitStudentReview = async (lessonId, reviewData) => {
+  try {
+    console.log("📝 Submitting student review:", { lessonId, reviewData });
+    const res = await axios.post(`${BASE_URL}/lessons/${lessonId}/student-review`, reviewData);
+    return res.data;
+  } catch (err) {
+    console.error("Error submitting student review:", err);
+    throw new Error("Failed to submit student review.");
+  }
+};
+
 /* =========================
    Admin Actions
 ========================= */
@@ -209,5 +220,15 @@ export const rejectLesson = async (lessonId) => {
   } catch (err) {
     console.error("Error rejecting lesson:", err);
     throw new Error("Failed to reject lesson.");
+  }
+};
+
+export const getPendingReviews = async () => {
+  try {
+    const res = await axios.get(`${BASE_URL}/admin/pending-reviews`);
+    return res.data;
+  } catch (err) {
+    console.error("Error fetching pending reviews:", err);
+    throw new Error("Failed to fetch pending reviews.");
   }
 };

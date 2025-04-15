@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Alert } from "react-native";
-import Toast from "react-native-toast-message";
 import { View, ScrollView, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { FontAwesome5 } from "@expo/vector-icons";
 import CustomButton from "../../components/CustomButton";
 import SelectField from "../../components/SelectField";
+import { useToast } from "@context/ToastContext";
+
 
 import {
   subjects,
@@ -17,6 +17,8 @@ import { useLesson } from "@context/LessonContext";
 
 export default function CreateLesson() {
   const { createNewLesson } = useLesson(); 
+  const { showToast } = useToast();
+
   
   const [subject, setSubject] = useState("");
   const [grade, setGrade] = useState("");
@@ -82,18 +84,17 @@ export default function CreateLesson() {
 
       console.log("📦 Sending new lesson data:", lessonData);
       await createNewLesson(lessonData);
-
-      Toast.show({
-        type: "customMiddleToast",
-        text1: "Lesson created successfully!",
-        text2: "Your lesson has been posted successfully",
+      showToast({
+        message: 'Lesson created successfully!',
+        subMessage: 'Your lesson has been posted successfully',
+        type: "success"
       });
       } catch (err) {
       console.error("❌ Failed to create lesson:", err);
-      Toast.show({
-        type: "error",
-        text1: "Error creating lesson",
-        text2: err.message || "Something went wrong",
+      showToast({
+        message: 'Error created successfully!',
+        subMessage: 'err.message || "Something went wrong',
+        type: "error"
       });
     }
   };

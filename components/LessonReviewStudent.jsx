@@ -47,10 +47,11 @@ export default function LessonReviewStudent({
   
   // Handle form submission
   const handleSubmit = () => {
-    if (onSubmit) {
+    if (onSubmit && isFormValid()) {
       onSubmit({
         rating,
-        selectedDescriptions
+        selectedDescriptions,
+        lessonId: props.id // Make sure to pass the lesson ID
       });
     }
     onClose();

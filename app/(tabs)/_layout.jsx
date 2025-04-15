@@ -109,6 +109,21 @@ const TabsLayout = () => {
           }}
         />
         <Tabs.Screen
+          name="pendings"
+          options={{
+          title: "Pendings",
+          headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+          <TabIcon
+            icon={icons.clock} 
+            color={color} 
+            name="Pendings" 
+            focused={focused} 
+          />
+         ),
+        }}
+      />
+        <Tabs.Screen
           name="profile"
           options={{
             title: "Profile",

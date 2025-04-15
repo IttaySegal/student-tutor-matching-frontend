@@ -22,9 +22,10 @@ module.exports = function (api) {
         "module-resolver",
         {
           alias: {
-            "@": "./", // ⬅️ הוספנו את זה
+            "@": "./", 
             "@app": "./app",
             "@home": "./app/home",
+            "@review": "./app/review",
             "@create": "./app/create",
             "@context": "./context",
             "@components": "./components",

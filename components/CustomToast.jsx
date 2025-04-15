@@ -1,59 +1,84 @@
-import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
+import React, { useEffect } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+  Animated,
+} from "react-native";
 
-const { width } = Dimensions.get("window");
+const { height, width } = Dimensions.get("window");
 
 const CustomToast = ({ text1, text2, onHide }) => {
+  const fadeAnim = new Animated.Value(0);
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 250,
+      useNativeDriver: true,
+    }).start();
+
+    const timer = setTimeout(() => {
+      onHide();
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
+    <View style={styles.overlayContainer}>
+      <Animated.View style={[styles.toastContent, { opacity: fadeAnim }]}>
         <View style={{ flex: 1 }}>
-          <Text style={styles.title}>{text1}</Text>
-          {text2 && <Text style={styles.subtitle}>{text2}</Text>}
+          <Text style={styles.toastTitle}>{text1}</Text>
+          {text2 && <Text style={styles.toastSubtitle}>{text2}</Text>}
         </View>
         <TouchableOpacity onPress={onHide}>
-          <Text style={styles.close}>✕</Text>
+          <Text style={styles.toastClose}>✕</Text>
         </TouchableOpacity>
-      </View>
+      </Animated.View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  overlayContainer: {
     position: "absolute",
-    top: "50%",
-    left: 20,
-    right: 20,
-    transform: [{ translateY: -50 }],
+    height,
+    width,
+    justifyContent: "center",
+    alignItems: "center",
     zIndex: 9999,
   },
-  content: {
-    backgroundColor: "#fff",
-    borderRadius: 12,
+  toastContent: {
+    backgroundColor: "#ffffff",
+    borderRadius: 16,
     padding: 16,
     flexDirection: "row",
     alignItems: "center",
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 10,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 12,
+    maxWidth: width - 40,
   },
-  title: {
-    fontWeight: "600",
+  toastTitle: {
     fontSize: 16,
+    fontWeight: "600",
     marginBottom: 4,
+    color: "#111827",
   },
-  subtitle: {
+  toastSubtitle: {
     fontSize: 14,
-    color: "#555",
+    color: "#4B5563",
   },
-  close: {
-    fontSize: 20,
+  toastClose: {
+    fontSize: 18,
+    marginLeft: 12,
+    color: "#9CA3AF",
     fontWeight: "bold",
-    marginLeft: 16,
-    color: "#999",
   },
 });
 

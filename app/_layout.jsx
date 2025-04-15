@@ -9,8 +9,7 @@ import { useAuth } from "@/context/AuthContext";
 import { Tabs } from "expo-router";
 import { icons } from "@/constants";
 import { View, Text, Image, Dimensions } from "react-native";
-import Toast from "react-native-toast-message";
-import CustomToast from "@components/CustomToast";
+import { ToastProvider } from "@context/ToastContext";
 
 // Get the screen width for responsive styling
 const { width } = Dimensions.get('window');
@@ -74,18 +73,13 @@ const RootLayout = () => {
   }
 
   return (
-    <GlobalProvider>
-      <SafeAreaView className="flex-1 bg-primary" onLayout={onLayoutRootView}>
-        <Slot />
-        <Toast
-          config={{
-            customMiddleToast: ({ text1, text2, hide }) => (
-              <CustomToast text1={text1} text2={text2} onHide={hide} />
-            ),
-          }}
-        />
-      </SafeAreaView>
-    </GlobalProvider>
+    <ToastProvider> {/* ✅ Wrap FIRST */}
+      <GlobalProvider> {/* ⬅️ Now GlobalProvider can use useToast */}
+        <SafeAreaView className="flex-1 bg-primary" onLayout={onLayoutRootView}>
+          <Slot />
+        </SafeAreaView>
+      </GlobalProvider>
+    </ToastProvider>
   );
 };
 

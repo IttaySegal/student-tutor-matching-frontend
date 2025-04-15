@@ -5,6 +5,7 @@ import CloseButton from "./CloseButton";
 import RadioButtonGroup from "./RadioButtonGroup";
 import SelectField from "./SelectField";
 import { useLesson } from "@context/LessonContext";
+import { useToast } from "@context/ToastContext";
 
 export default function LessonReviewMentor({
   visible,
@@ -20,9 +21,10 @@ export default function LessonReviewMentor({
   students = [],
   lessonLocation,
   onSubmit,
+  id,
   ...props
 }) {
-  const { submitReview } = useLesson();
+  const { submitReview, fetchMentorLessons  } = useLesson();
   // State for student attendance
   const [studentAttendance, setStudentAttendance] = useState({});
   
@@ -31,6 +33,8 @@ export default function LessonReviewMentor({
   
   // State for selected lesson descriptions
   const [selectedDescriptions, setSelectedDescriptions] = useState([]);
+  const { showToast } = useToast();
+
   
   // Options for lesson descriptions
   const lessonDescriptionOptions = [
@@ -75,13 +79,12 @@ export default function LessonReviewMentor({
       rating,
       selectedDescriptions,
     });
-  
-    Toast.show({
-      type: "success",
-      text1: "Review submitted!",
-      position: "bottom",
+    showToast({
+      message: 'submitted approved!',
+      type: "success"
     });
-  
+
+    await fetchMentorLessons();
     onClose();
   }
   
