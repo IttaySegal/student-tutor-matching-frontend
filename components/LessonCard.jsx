@@ -63,6 +63,7 @@ export default function LessonCard({
           description={description}
           students={students}
           lessonLocation={lessonLocation}
+          {...props}
           {...modalProps}
         />
       )}

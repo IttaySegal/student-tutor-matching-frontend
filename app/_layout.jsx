@@ -10,6 +10,7 @@ import { Tabs } from "expo-router";
 import { icons } from "@/constants";
 import { View, Text, Image, Dimensions } from "react-native";
 import Toast from "react-native-toast-message";
+import CustomToast from "@components/CustomToast";
 
 // Get the screen width for responsive styling
 const { width } = Dimensions.get('window');
@@ -76,7 +77,13 @@ const RootLayout = () => {
     <GlobalProvider>
       <SafeAreaView className="flex-1 bg-primary" onLayout={onLayoutRootView}>
         <Slot />
-        <Toast /> {/* ✅ שימוש בטוסט */}
+        <Toast
+          config={{
+            customMiddleToast: ({ text1, text2, hide }) => (
+              <CustomToast text1={text1} text2={text2} onHide={hide} />
+            ),
+          }}
+        />
       </SafeAreaView>
     </GlobalProvider>
   );

@@ -6,6 +6,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { FontAwesome5 } from "@expo/vector-icons";
 import CustomButton from "../../components/CustomButton";
 import SelectField from "../../components/SelectField";
+
 import {
   subjects,
   grades,
@@ -83,9 +84,9 @@ export default function CreateLesson() {
       await createNewLesson(lessonData);
 
       Toast.show({
-        type: "success",
+        type: "customMiddleToast",
         text1: "Lesson created successfully!",
-        position: "bottom",
+        text2: "Your lesson has been posted successfully",
       });
       } catch (err) {
       console.error("❌ Failed to create lesson:", err);
@@ -93,7 +94,6 @@ export default function CreateLesson() {
         type: "error",
         text1: "Error creating lesson",
         text2: err.message || "Something went wrong",
-        position: "bottom",
       });
     }
   };

@@ -104,6 +104,26 @@ export const getNextLesson = async () => {
   }
 };
 
+export const submitMentorReview = async (lessonId, reviewData) => {
+  try {
+    const res = await axios.post(`${BASE_URL}/mentor/review/${lessonId}`, reviewData);
+    return res.data;
+  } catch (err) {
+    console.error("Error submitting mentor review:", err);
+    throw new Error("Failed to submit mentor review.");
+  }
+};
+
+export const fetchUnresolvedMentorReview = async () => {
+  try {
+    const res = await axios.get(`${BASE_URL}/mentor/review`);
+    return res.data;
+  } catch (err) {
+    console.error("Error getting mentor review:", err);
+    throw new Error("Failed to get mentor review.");
+  }
+};
+
 /* =========================
   Student Actions
 ========================= */

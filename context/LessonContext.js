@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 import * as LessonAPI from "@services/lessonService";
+import Toast from "react-native-toast-message";
 
 const LessonContext = createContext();
 
@@ -13,7 +14,7 @@ export const LessonProvider = ({ children }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedLesson, setSelectedLesson] = useState(null);
 
-  // Mentor
+  // Mentor 
   const [mentorLessons, setMentorLessons] = useState([]);
   const [upcomingLessons, setUpcomingLessons] = useState([]);
   const [lessonCount, setLessonCount] = useState(null);
@@ -38,6 +39,11 @@ export const LessonProvider = ({ children }) => {
     } catch (err) {
       console.error(err);
       setError(err.message || "An error occurred");
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: err.message || "An error occurred",
+      });
     } finally {
       setLoading(false);
     }
@@ -64,10 +70,41 @@ export const LessonProvider = ({ children }) => {
     setNextMentorLesson(data);
   });
 
+  const updateLesson = async (id, updates) => wrap(async () => {
+    await LessonAPI.updateLesson(id, updates);
+    await fetchMentorLessons(); // refresh lessons
+    Toast.show({
+      type: "success",
+      text1: "Lesson updated successfully!",
+      position: "bottom",
+    });
+  });
+  
+  const deleteLesson = async (id) => wrap(async () => {
+    await LessonAPI.deleteLesson(id);
+    setMentorLessons(prev => prev.filter(lesson => lesson.id !== id));
+    Toast.show({
+    type: "success",
+    text1: "Lesson deleted successfully!",
+    position: "bottom",
+  });
+  });
+
   const createNewLesson = async (lessonData) => wrap(async () => {
     const newLesson = await LessonAPI.createLesson(lessonData);
     setMentorLessons(prev => [...prev, newLesson]);
   });
+
+  const submitReview = async (lessonId, reviewData) =>
+    wrap(async () => {
+      await LessonAPI.submitMentorReview(lessonId, reviewData);
+    });
+
+  const fetchReviwes = async () =>
+    wrap(async () => {
+      await LessonAPI.fetchUnresolvedMentorReview();
+    });
+
 
   // ================= Student =================
   const fetchStudentLessons = async () => wrap(async () => {
@@ -126,6 +163,10 @@ export const LessonProvider = ({ children }) => {
     fetchLessonCount,
     fetchNextMentorLesson,
     createNewLesson,
+    updateLesson,
+    deleteLesson,
+    submitReview,
+    fetchReviwes,
     // Student
     studentLessons,
     studentNextLesson,

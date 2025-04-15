@@ -4,6 +4,7 @@ import CustomButton from "./CustomButton";
 import CloseButton from "./CloseButton";
 import RadioButtonGroup from "./RadioButtonGroup";
 import SelectField from "./SelectField";
+import { useLesson } from "@context/LessonContext";
 
 export default function LessonReviewMentor({
   visible,
@@ -21,6 +22,7 @@ export default function LessonReviewMentor({
   onSubmit,
   ...props
 }) {
+  const { submitReview } = useLesson();
   // State for student attendance
   const [studentAttendance, setStudentAttendance] = useState({});
   
@@ -67,16 +69,21 @@ export default function LessonReviewMentor({
   };
   
   // Handle form submission
-  const handleSubmit = () => {
-    if (onSubmit) {
-      onSubmit({
-        studentAttendance,
-        rating,
-        selectedDescriptions
-      });
-    }
+  const handleSubmit = async () => {
+    await submitReview( id, {
+      studentAttendance,
+      rating,
+      selectedDescriptions,
+    });
+  
+    Toast.show({
+      type: "success",
+      text1: "Review submitted!",
+      position: "bottom",
+    });
+  
     onClose();
-  };
+  }
   
   // Check if form is valid
   const isFormValid = () => {

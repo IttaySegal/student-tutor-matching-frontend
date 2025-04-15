@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
 import LessonEditModal from "./LessonEditModal";
 import CloseButton from "../components/CloseButton";
+import { useLesson } from "@context/LessonContext";
 
 export default function LessonDetailsModal({
   visible,
@@ -18,11 +19,44 @@ export default function LessonDetailsModal({
   description,
   students = [],
   lessonLocation,
+  id,
 }) {
   const { user } = useAuth();
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const isStudent = user?.role === "student";
   const isMentor = user?.role === "mentor";
+  const {
+    registerLesson,
+    unregisterLesson,
+    updateLesson,
+    deleteLesson,
+    fetchMentorLessons,
+  } = useLesson();
+
+  const handleRegister = async () => {
+    await registerLesson(id); // id is passed via modalProps from LessonCard
+    onClose(); //close modal after success
+  };
+  
+  const handleUnregister = async () => {
+    await unregisterLesson(id);
+    onClose();
+  };
+
+  const handleSaveChanges = async (newDescription, newLocation) => {
+    await updateLesson(id, {
+      description: newDescription,
+      location: newLocation,
+    });
+    setIsEditModalVisible(false);
+    onClose();
+  };
+  
+  const handleDeleteLesson  = async () => {
+    await deleteLesson(id);
+    setIsEditModalVisible(false);
+    onClose();
+  };
 
   const handleManageLesson = () => {
     setIsEditModalVisible(true);
@@ -75,7 +109,7 @@ export default function LessonDetailsModal({
               isStudentRegistered ? (
                 <CustomButton
                   title="Cancel Registration"
-                  handlePress={() => console.log("Cancel registration")}
+                  handlePress={handleUnregister}
                   containerStyles="w-4/5 bg-red-500"
                 />
               ) : students.length >= 3 ? (
@@ -83,7 +117,7 @@ export default function LessonDetailsModal({
               ) : (
                 <CustomButton
                   title="Register for Lesson"
-                  handlePress={() => console.log("Register for lesson")}
+                  handlePress={handleRegister}
                   containerStyles="w-4/5"
                 />
               )
@@ -107,6 +141,7 @@ export default function LessonDetailsModal({
         <LessonEditModal
           visible={isEditModalVisible}
           onClose={() => setIsEditModalVisible(false)}
+          id={id}
           subject={subject}
           grade={grade}
           date={date}
@@ -117,10 +152,8 @@ export default function LessonDetailsModal({
           description={description}
           students={students}
           lessonLocation={lessonLocation}
-          onSaveChanges={(newDescription, newLocation) => {
-          }}
-          onDeleteLesson={() => {
-          }}
+          onSaveChanges={handleSaveChanges}
+          onDeleteLesson={handleDeleteLesson}
         />
       )}
     </Modal>
