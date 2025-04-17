@@ -1,25 +1,30 @@
 import React, { useState } from "react";
-import { View, ScrollView, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native";
+import {
+  View,
+  ScrollView,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { FontAwesome5 } from "@expo/vector-icons";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import CustomButton from "../../components/CustomButton";
-import SelectField from "../../components/SelectField";
+import { SelectList } from "react-native-dropdown-select-list";
 import { useToast } from "@context/ToastContext";
-
-
 import {
   subjects,
   grades,
   subjectsWithGroups,
   lessonTypes,
 } from "../../constants/lessonOptions";
-import { useLesson } from "@context/LessonContext"; 
+import { useLesson } from "@context/LessonContext";
 
 export default function CreateLesson() {
-  const { createNewLesson } = useLesson(); 
+  const { createNewLesson } = useLesson();
   const { showToast } = useToast();
 
-  
   const [subject, setSubject] = useState("");
   const [grade, setGrade] = useState("");
   const [group, setGroup] = useState("");
@@ -31,43 +36,32 @@ export default function CreateLesson() {
   const [lessonType, setLessonType] = useState("");
   const [lessonLocation, setLessonLocation] = useState("");
 
-  // Get group options based on selected subject
   const groupOptions = subjectsWithGroups[subject] || [];
 
-  // Handle date change
   const handleDateChange = (event, selectedDate) => {
     setShowDatePicker(false);
-    if (selectedDate) {
-      setDate(selectedDate);
-    }
+    if (selectedDate) setDate(selectedDate);
   };
 
-  // Handle time change
   const handleTimeChange = (event, selectedTime) => {
     setShowTimePicker(false);
-    if (selectedTime) {
-      setTime(selectedTime);
-    }
+    if (selectedTime) setTime(selectedTime);
   };
 
-  // Format date for display
-  const formatDate = (date) => {
-    return date.toLocaleDateString('en-US', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+  const formatDate = (date) =>
+    date.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
-  };
 
-  // Format time for display
-  const formatTime = (time) => {
-    return time.toLocaleTimeString('en-US', { 
-      hour: '2-digit', 
-      minute: '2-digit',
-      hour12: true 
+  const formatTime = (time) =>
+    time.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
     });
-  };
 
   const handleCreateLesson = async () => {
     try {
@@ -82,64 +76,70 @@ export default function CreateLesson() {
         location: lessonLocation,
       };
 
-      console.log("📦 Sending new lesson data:", lessonData);
       await createNewLesson(lessonData);
       showToast({
-        message: 'Lesson created successfully!',
-        subMessage: 'Your lesson has been posted successfully',
-        type: "success"
+        message: "Lesson created successfully!",
+        subMessage: "Your lesson has been posted successfully",
+        type: "success",
       });
-      } catch (err) {
-      console.error("❌ Failed to create lesson:", err);
+    } catch (err) {
       showToast({
-        message: 'Error created successfully!',
-        subMessage: 'err.message || "Something went wrong',
-        type: "error"
+        message: "Error creating lesson",
+        subMessage: err.message || "Something went wrong",
+        type: "error",
       });
     }
   };
+
+  const sharedStyles = {
+    boxStyles: {
+      backgroundColor: "#fff",
+      borderRadius: 8,
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+    },
+    inputStyles: { textAlign: "left", fontSize: 16 },
+    dropdownStyles: { backgroundColor: "#fff" },
+    dropdownTextStyles: { textAlign: "left", fontSize: 16 },
+    arrowicon: <Ionicons name="chevron-down-outline" size={20} color="gray" />,
+  };
+
+  const isFormValid = subject && grade && (group || groupOptions.length === 0) && lessonDescription && lessonType && date && time;
 
 
   return (
     <ScrollView className="flex-1 bg-primary">
       <View className="px-5 py-6">
-        <Text className="text-white font-bold text-lg mb-4">
-          Create New Lesson
-        </Text>
-
-        {/* Subject Selection */}
-        <SelectField
-          label="📚 Subject"
-          selectedValue={subject}
-          onValueChange={setSubject}
-          options={subjects.map((s) => ({ key: s.value, value: s.value }))}
-        />
-
-        {/* Grade Selection */}
-        <SelectField
-          label="🎓 Grade"
-          selectedValue={grade}
-          onValueChange={setGrade}
-          options={grades}
-        />
-
-        {/* Group Selection (if applicable) */}
-        {groupOptions.length > 0 ? (
-          <SelectField
-            label="🧑‍🏫 Group"
-            selectedValue={group}
-            onValueChange={setGroup}
-            options={groupOptions.map((g) => ({ key: g, value: g }))}
+        <View className="w-full gap-4 mb-6">
+          <SelectList
+            setSelected={setSubject}
+            data={subjects.map((s) => ({ key: s.value, value: s.value }))}
+            placeholder="Select Subject"
+            {...sharedStyles}
           />
-        ) : (
-          <Text className="text-white text-base mb-4">
-            Group: General
-          </Text>
-        )}
 
-        {/* Lesson Description */}
-        <View className="mb-4">
-          <Text className="text-white text-base mb-2">📝 Lesson Description</Text>
+          <SelectList
+            setSelected={setGrade}
+            data={grades}
+            placeholder="Select Grade"
+            {...sharedStyles}
+          />
+
+          {groupOptions.length > 0 ? (
+            <SelectList
+              setSelected={setGroup}
+              data={groupOptions.map((g) => ({ key: g, value: g }))}
+              placeholder="Select Group"
+              {...sharedStyles}
+            />
+          ) : (
+            <Text className="text-white text-base mt-1">Group: General</Text>
+          )}
+        </View>
+
+        <View className="mb-4 mt-4">
+          <Text className="text-white text-base mb-2">Lesson Description</Text>
           <View className="bg-white rounded-lg p-3">
             <TextInput
               className="text-gray-800 text-base"
@@ -154,9 +154,8 @@ export default function CreateLesson() {
           </View>
         </View>
 
-        {/* Lesson Type */}
         <View className="mb-4">
-          <Text className="text-white text-base mb-2">💻 Lesson Type</Text>
+          <Text className="text-white text-base mb-2">Lesson Type</Text>
           <View className="flex-row flex-wrap">
             {lessonTypes.map((type) => (
               <TouchableOpacity
@@ -169,7 +168,7 @@ export default function CreateLesson() {
                 onPress={() => setLessonType(type.value)}
               >
                 <Text
-                  className={`${
+                  className={`$ {
                     lessonType === type.value ? "text-white" : "text-gray-800"
                   }`}
                 >
@@ -180,9 +179,8 @@ export default function CreateLesson() {
           </View>
         </View>
 
-        {/* Lesson Location */}
         <View className="mb-4">
-          <Text className="text-white text-base mb-2">📍 Location</Text>
+          <Text className="text-white text-base mb-2">Location</Text>
           <View className="bg-white rounded-lg p-3">
             <TextInput
               className="text-gray-800 text-base"
@@ -194,9 +192,8 @@ export default function CreateLesson() {
           </View>
         </View>
 
-        {/* Date and Time Selection */}
         <View className="mb-4">
-          <Text className="text-white text-base mb-2">🕒 Date & Time</Text>
+          <Text className="text-white text-base mb-2">Date & Time</Text>
           <View className="flex-row flex-wrap">
             <TouchableOpacity
               className="bg-white rounded-lg p-3 mr-3 mb-3 flex-row items-center"
@@ -205,7 +202,7 @@ export default function CreateLesson() {
               <FontAwesome5 name="calendar" size={16} color="#6B7280" style={{ marginRight: 8 }} />
               <Text className="text-gray-800">{formatDate(date)}</Text>
             </TouchableOpacity>
-            
+
             <TouchableOpacity
               className="bg-white rounded-lg p-3 mb-3 flex-row items-center"
               onPress={() => setShowTimePicker(true)}
@@ -216,7 +213,6 @@ export default function CreateLesson() {
           </View>
         </View>
 
-        {/* Date Picker Modal */}
         {showDatePicker && (
           <DateTimePicker
             value={date}
@@ -224,11 +220,10 @@ export default function CreateLesson() {
             display="default"
             onChange={handleDateChange}
             minimumDate={new Date()}
-            maximumDate={new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)} // 1 week from now
+            maximumDate={new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)}
           />
         )}
 
-        {/* Time Picker Modal */}
         {showTimePicker && (
           <DateTimePicker
             value={time}
@@ -239,41 +234,13 @@ export default function CreateLesson() {
           />
         )}
 
-        {/* Create Lesson Button */}
         <CustomButton
           title="Create Lesson"
           handlePress={handleCreateLesson}
           containerStyles="mt-4 w-full"
+          disabled={!isFormValid}
         />
       </View>
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  selectBox: {
-    backgroundColor: "transparent",
-    borderRadius: 8,
-    borderWidth: 0,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-  },
-  selectInput: {
-    color: "#F9FAFB",
-    fontSize: 16,
-  },
-  dropdown: {
-    backgroundColor: "#1F2937",
-    borderWidth: 1,
-    borderColor: "#374151",
-    borderRadius: 8,
-  },
-  dropdownText: {
-    color: "#F9FAFB",
-    fontSize: 16,
-  },
-  searchInput: {
-    color: "#F9FAFB",
-    fontSize: 16,
-  },
-});
