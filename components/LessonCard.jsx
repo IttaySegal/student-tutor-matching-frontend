@@ -29,11 +29,8 @@ export default function LessonCard({
 
   return (
     <>
-      <TouchableOpacity
-        onPress={handlePress}
-        style={styles.lessonItem}
-      >
-        <View style={styles.lessonHeader}>
+      <TouchableOpacity onPress={handlePress} style={styles.lessonItem}>
+        {/* <View style={styles.lessonHeader}>
           <Text style={styles.subject}>{subject}</Text>
           <Text style={styles.grade}>Grade {grade}</Text>
         </View>
@@ -46,7 +43,23 @@ export default function LessonCard({
           </Text>
         </View>
         <Text style={styles.mentor}>Mentor: {mentor}</Text>
+        <Text style={styles.description}>{description}</Text> */}
+        <View style={styles.lessonHeader}>
+          <Text style={styles.subject}>{subject}</Text>
+          <Text style={styles.grade}>Grade {grade}</Text>
+        </View>
+
         <Text style={styles.description}>{description}</Text>
+
+        <View style={styles.lessonDetails}>
+          <Text style={styles.date}>
+            {day}, {date}
+          </Text>
+          <Text style={styles.time}>
+            {startTime} - {endTime}
+          </Text>
+          <Text style={styles.mentor}>Mentor: {mentor}</Text>
+        </View>
       </TouchableOpacity>
 
       {ModalComponent && (
@@ -110,13 +123,14 @@ const styles = StyleSheet.create({
   time: {
     fontSize: 16,
     color: "#444",
+    marginBottom: 6,
   },
-  mentor: {
+  description: {
     fontSize: 16,
     color: "#444",
     marginBottom: 5,
   },
-  description: {
+  mentor: {
     fontSize: 14,
     color: "#666",
   },
