@@ -116,6 +116,7 @@ import { useToast } from "@/context/ToastContext";
 import CloseButton from "./CloseButton";
 import ApproveButton from "./ApproveButton";
 import RejectButton from "./RejectButton";
+import CustomButton from "./CustomButton";
 
 export default function ReviewCard({ review, visible, onClose, onReviewComplete }) {
   const { approveLesson, rejectLesson } = useLesson();
@@ -182,14 +183,18 @@ export default function ReviewCard({ review, visible, onClose, onReviewComplete 
           <Text style={styles.sectionTitle}>Rating: ⭐ {review.rating}/5</Text>
 
           <View style={styles.actions}>
-            <RejectButton
-              onPress={handleReject}
-              isLoading={isSubmitting === "reject"}
+            <CustomButton
+              title="Approve"
+              handlePress={handleApprove}
+              containerStyles="w-1/2 mr-2 bg-green-500"
+              isLoading={isSubmitting === "approve"}
               disabled={isSubmitting !== null}
             />
-            <ApproveButton
-              onPress={handleApprove}
-              isLoading={isSubmitting === "approve"}
+            <CustomButton
+              title="Reject"
+              handlePress={handleReject}
+              containerStyles="w-1/2 bg-red-500"
+              isLoading={isSubmitting === "reject"}
               disabled={isSubmitting !== null}
             />
           </View>
@@ -222,6 +227,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     marginTop: 20,
-    gap: 30,
+    gap: 10,
   },
 });

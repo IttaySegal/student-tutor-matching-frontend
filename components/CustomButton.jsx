@@ -8,13 +8,16 @@ const CustomButton = ({
     containerStyles, // Additional styles for the button container
     textStyles, // Additional styles for the text inside the button
     isLoading, // Boolean to control whether the button shows a loading spinner
+    disabled, // Add disabled prop
 }) => {
     return (
         <TouchableOpacity
             onPress={handlePress} // Attach the press handler to the button
             activeOpacity={0.7} // Set opacity when the button is pressed (for visual feedback)
-            className={`bg-secondary rounded-xl min-h-[62px] flex flex-row justify-center items-center ${containerStyles} ${isLoading ? "opacity-50" : ""}`} // Style for the button container (dynamic classes based on props)
-            disabled={isLoading} // Disable the button when it's in the loading state
+            className={`bg-secondary rounded-xl min-h-[62px] flex flex-row justify-center items-center ${containerStyles} ${
+                isLoading || disabled ? "opacity-50" : ""
+            }`} // Style for the button container (dynamic classes based on props)
+            disabled={isLoading || disabled} // Add disabled to the condition
         >
             {/* Button title (text) */}
             <Text className={`text-primary font-psemibold text-lg ${textStyles}`}>
