@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { View, FlatList, Text, StyleSheet } from "react-native";
+import { View, FlatList, Text } from "react-native";
 import { useLesson } from "@context/LessonContext";
-import ReviewCard from "@components/ReviewCard"; // You’ll need to implement this
+import LessonCard from "@components/LessonCard";
+import ReviewCard from "@components/ReviewCard";
 
 export default function AdminPendings() {
   const { pendingReviews, fetchPendingReviews } = useLesson();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [selectedReview, setSelectedReview] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
@@ -13,17 +16,14 @@ export default function AdminPendings() {
     setIsRefreshing(false);
   };
 
-
   useEffect(() => {
-    handleRefresh();// Assume this fetches mentor-submitted reviews pending moderation
+    handleRefresh();
   }, []);
 
-  const renderItem = ({ item }) => (
-    <ReviewCard 
-      review={item} 
-      onReviewComplete={handleRefresh}
-    />
-  );
+  const handleLessonPress = (review) => {
+    setSelectedReview(review);
+    setModalVisible(true);
+  };
 
   return (
     <View className="flex-1 bg-primary px-5 py-6">
@@ -33,7 +33,12 @@ export default function AdminPendings() {
 
       <FlatList
         data={pendingReviews}
-        renderItem={renderItem}
+        renderItem={({ item }) => (
+          <LessonCard
+            {...item}
+            onPress={() => handleLessonPress(item)}
+          />
+        )}
         keyExtractor={(item) => item.id.toString()}
         onRefresh={handleRefresh}
         refreshing={isRefreshing}
@@ -41,8 +46,18 @@ export default function AdminPendings() {
           <Text className="text-white text-center mt-10">No pending reviews.</Text>
         }
       />
+
+      {modalVisible && selectedReview && (
+        <ReviewCard
+          visible={modalVisible}
+          review={selectedReview}
+          onClose={() => {
+            setModalVisible(false);
+            setSelectedReview(null);
+          }}
+          onReviewComplete={handleRefresh}
+        />
+      )}
     </View>
   );
 }
-
-const styles = StyleSheet.create({});
