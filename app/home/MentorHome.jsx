@@ -32,11 +32,19 @@ const MentorHome = () => {
     }, [user, loading]) // 🔁 rerun when auth state finishes loading
   );
 
-  if (!homeStats) {
+  // if (!homeStats) {
+  //   return (
+  //     <View style={styles.loadingContainer}>
+  //       <ActivityIndicator size="large" color="#000" />
+  //       <Text style={{ marginTop: 10 }}>Loading information...</Text>
+  //     </View>
+  //   );
+  // }
+  if (!homeStats || !homeStats.feedbackStats) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#000" />
-        <Text style={{ marginTop: 10 }}>Loading information...</Text>
+        <Text style={{ marginTop: 10, color: "#fff" }}>Loading information...</Text>
       </View>
     );
   }
