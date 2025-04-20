@@ -8,6 +8,7 @@ import { useLesson } from "@context/LessonContext";
 import { useToast } from "@context/ToastContext";
 import * as Clipboard from "expo-clipboard";
 import { TouchableOpacity } from "react-native";
+import { Feather } from "@expo/vector-icons";
 
 export default function LessonDetailsModal({
   visible,
@@ -150,9 +151,22 @@ export default function LessonDetailsModal({
                       type: "success",
                     });
                   }}
-                  style={{ marginLeft: 8 }}
+                  style={{
+                    marginLeft: 10,
+                    backgroundColor: "#e0e0e0",
+                    paddingVertical: 6,
+                    paddingHorizontal: 10,
+                    borderRadius: 8,
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
                 >
-                  <Text style={{ color: "#007AFF" }}>📋 Copy</Text>
+                  <Feather name="copy" size={16} color="#333" />
+                  <Text
+                    style={{ marginLeft: 6, color: "#333", fontWeight: "500" }}
+                  >
+                    Copy
+                  </Text>
                 </TouchableOpacity>
               )}
             </View>
