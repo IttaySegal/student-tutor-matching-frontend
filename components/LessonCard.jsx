@@ -35,7 +35,6 @@ export default function LessonCard({
         <View style={styles.lessonHeader}>
           <Text style={styles.subject}>{subject}</Text>
           <Text style={styles.grade}>Grade {grade}</Text>
-          <Text style={styles.format}>{format}</Text>
         </View>
 
         <Text style={styles.description}>{description}</Text>
@@ -49,6 +48,11 @@ export default function LessonCard({
           </Text>
           <Text style={styles.mentor}>Mentor: {mentor}</Text>
         </View>
+        {format && (
+          <View style={styles.bottomRight}>
+            <Text style={styles.format}>{format}</Text>
+          </View>
+        )}
       </TouchableOpacity>
 
       {ModalComponent && (
@@ -64,6 +68,7 @@ export default function LessonCard({
           mentor={mentor}
           description={description}
           students={students}
+          format={format}
           lessonLocation={lessonLocation}
           {...props}
           {...modalProps}
@@ -124,11 +129,18 @@ const styles = StyleSheet.create({
     color: "#666",
   },
   format: {
-    fontSize: 14,
-    color: "#666",
-    backgroundColor: "#f0f0f0",
+    fontSize: 12,
+    color: "#333",
+    backgroundColor: "#e0e0e0",
     paddingHorizontal: 8,
     paddingVertical: 4,
-    borderRadius: 12,
+    borderRadius: 10,
+    overflow: "hidden",
+  },
+  bottomRight: {
+    position: "absolute",
+    bottom: 10,
+    right: 10,
+    alignItems: "flex-end",
   },
 });

@@ -6,6 +6,8 @@ import LessonEditModal from "./LessonEditModal";
 import CloseButton from "../components/CloseButton";
 import { useLesson } from "@context/LessonContext";
 import { useToast } from "@context/ToastContext";
+import * as Clipboard from "expo-clipboard";
+import { TouchableOpacity } from "react-native";
 
 export default function LessonDetailsModal({
   visible,
@@ -19,6 +21,7 @@ export default function LessonDetailsModal({
   mentor,
   description,
   students = [],
+  format,
   lessonLocation,
   id,
   isMyLessons = false,
@@ -41,25 +44,25 @@ export default function LessonDetailsModal({
     try {
       await registerLesson(id);
       showToast({
-        message: 'Register to lesson successfully!',
-        type: "success"
+        message: "Register to lesson successfully!",
+        type: "success",
       });
       onClose();
     } catch (error) {
       showToast({
-        message: 'Registration Failed',
-        subMessage: error.message || 'Failed to register for the lesson',
-        type: "error"
+        message: "Registration Failed",
+        subMessage: error.message || "Failed to register for the lesson",
+        type: "error",
       });
     }
   };
-  
+
   const handleUnregister = async () => {
     try {
       await unregisterLesson(id);
       showToast({
-        message: 'You unRegister to lesson successfully',
-        type: "success"
+        message: "You unRegister to lesson successfully",
+        type: "success",
       });
       onClose();
       if (onUnregisterSuccess) {
@@ -67,9 +70,9 @@ export default function LessonDetailsModal({
       }
     } catch (error) {
       showToast({
-        message: 'Registration Failed',
-        subMessage: error.message || 'Failed to register for the lesson',
-        type: "erro r" 
+        message: "Registration Failed",
+        subMessage: error.message || "Failed to register for the lesson",
+        type: "erro r",
       });
     }
   };
@@ -82,8 +85,8 @@ export default function LessonDetailsModal({
     setIsEditModalVisible(false);
     onClose();
   };
-  
-  const handleDeleteLesson  = async () => {
+
+  const handleDeleteLesson = async () => {
     await deleteLesson(id);
     setIsEditModalVisible(false);
     onClose();
@@ -94,7 +97,8 @@ export default function LessonDetailsModal({
   };
 
   const isStudentRegistered =
-    isStudent && (isMyLessons || students.some((student) => student._id === user?._id));
+    isStudent &&
+    (isMyLessons || students.some((student) => student._id === user?._id));
 
   return (
     <Modal visible={visible} transparent animationType="slide">
@@ -116,6 +120,49 @@ export default function LessonDetailsModal({
           <Text>
             {isMentor ? "Mentor" : "Mentor"}: {mentor}
           </Text>
+          <Text style={{ marginTop: 10, fontWeight: "bold" }}>
+            Lesson Format:
+          </Text>
+          <Text>
+            {format === "online" ? "Online Lesson" : "In-person Lesson"}
+          </Text>
+
+          <Text style={{ marginTop: 10, fontWeight: "bold" }}>
+            Lesson Location:
+          </Text>
+          {lessonLocation ? (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                flexWrap: "wrap",
+              }}
+            >
+              <Text selectable style={{ color: "blue", flexShrink: 1 }}>
+                {lessonLocation}
+              </Text>
+              {format === "online" && (
+                <TouchableOpacity
+                  onPress={() => {
+                    Clipboard.setStringAsync(lessonLocation);
+                    showToast?.({
+                      message: "Link copied to clipboard!",
+                      type: "success",
+                    });
+                  }}
+                  style={{ marginLeft: 8 }}
+                >
+                  <Text style={{ color: "#007AFF" }}>📋 Copy</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          ) : (
+            <Text>
+              {format === "online"
+                ? "A link will be shared soon"
+                : "Location will be provided soon"}
+            </Text>
+          )}
 
           <Text style={{ marginTop: 10, fontWeight: "bold" }}>
             Lesson Description:
