@@ -12,11 +12,13 @@ export default function LessonCard({
   description,
   students,
   lessonLocation,
+  format,
   ModalComponent,
   modalProps = {},
   onPress,
   ...props
 }) {
+  console.log("LessonCard props:", { format, ...props }); // כאן!
   const [visible, setVisible] = useState(false);
 
   const handlePress = () => {
@@ -30,23 +32,10 @@ export default function LessonCard({
   return (
     <>
       <TouchableOpacity onPress={handlePress} style={styles.lessonItem}>
-        {/* <View style={styles.lessonHeader}>
-          <Text style={styles.subject}>{subject}</Text>
-          <Text style={styles.grade}>Grade {grade}</Text>
-        </View>
-        <View style={styles.lessonDetails}>
-          <Text style={styles.date}>
-            {day}, {date}
-          </Text>
-          <Text style={styles.time}>
-            {startTime} - {endTime}
-          </Text>
-        </View>
-        <Text style={styles.mentor}>Mentor: {mentor}</Text>
-        <Text style={styles.description}>{description}</Text> */}
         <View style={styles.lessonHeader}>
           <Text style={styles.subject}>{subject}</Text>
           <Text style={styles.grade}>Grade {grade}</Text>
+          <Text style={styles.format}>{format}</Text>
         </View>
 
         <Text style={styles.description}>{description}</Text>
@@ -133,5 +122,13 @@ const styles = StyleSheet.create({
   mentor: {
     fontSize: 14,
     color: "#666",
+  },
+  format: {
+    fontSize: 14,
+    color: "#666",
+    backgroundColor: "#f0f0f0",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
   },
 });
