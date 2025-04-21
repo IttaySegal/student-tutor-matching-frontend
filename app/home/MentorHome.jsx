@@ -6,19 +6,18 @@ import { useHome } from "@context/HomeContext";
 import LessonCard from "../../components/LessonCard";
 import { getGreeting } from "./utils/timeUtils";
 import { useAuth } from "../../context/AuthContext";
-import { mockNextLesson } from "../mocks/mockLessons";
 import LessonDetailsModal from "../../components/LessonDetailsModal";
 import { useFocusEffect } from "@react-navigation/native";
 
 const MentorHome = () => {
-  const { user, loading, isAuthenticated  } = useAuth();
-  const { homeStats, fetchHomeStats  } = useHome();
-  
+  const { user, loading, isAuthenticated } = useAuth();
+  const { homeStats, fetchHomeStats } = useHome();
+
   useFocusEffect(
     useCallback(() => {
       const tryFetchStats = async () => {
         if (!user || loading) return; // ❗ Wait for user and auth loading to complete
-  
+
         const token = await AsyncStorage.getItem("accessToken");
         if (token) {
           console.log("🏠 MentorHome → valid token, fetching home stats");
@@ -27,7 +26,7 @@ const MentorHome = () => {
           console.log("🛑 MentorHome → no token found, skipping fetch");
         }
       };
-  
+
       tryFetchStats();
     }, [user, loading]) // 🔁 rerun when auth state finishes loading
   );
@@ -44,7 +43,9 @@ const MentorHome = () => {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#000" />
-        <Text style={{ marginTop: 10, color: "#fff" }}>Loading information...</Text>
+        <Text style={{ marginTop: 10, color: "#fff" }}>
+          Loading information...
+        </Text>
       </View>
     );
   }
@@ -65,18 +66,26 @@ const MentorHome = () => {
 
       {/* Stats Section */}
       <View className="bg-white rounded-2xl p-6 shadow-lg">
-        <Text className="text-xl font-bold text-center mb-4">📊 Your Mentoring Stats</Text>
+        <Text className="text-xl font-bold text-center mb-4">
+          📊 Your Mentoring Stats
+        </Text>
         <View className="flex-row justify-between mt-2">
           <View className="items-center">
-            <Text className="text-3xl font-bold text-primary">{homeStats.totalHours}</Text>
+            <Text className="text-3xl font-bold text-primary">
+              {homeStats.totalHours}
+            </Text>
             <Text className="text-gray-600">Teaching Hours</Text>
           </View>
           <View className="items-center">
-            <Text className="text-3xl font-bold text-primary">{homeStats.feedbackStats.averageScore}</Text>
-            <Text className="text-gray-600">Average Rating</Text> 
+            <Text className="text-3xl font-bold text-primary">
+              {homeStats.feedbackStats.averageScore}
+            </Text>
+            <Text className="text-gray-600">Average Rating</Text>
           </View>
           <View className="items-center">
-            <Text className="text-3xl font-bold text-primary">{homeStats.feedbackStats.totalFeedbacks}</Text>
+            <Text className="text-3xl font-bold text-primary">
+              {homeStats.feedbackStats.totalFeedbacks}
+            </Text>
             <Text className="text-gray-600">Total Reviews</Text>
           </View>
         </View>
@@ -84,16 +93,20 @@ const MentorHome = () => {
 
       {/* Next Lesson Section */}
       <View className="mt-8">
-        <Text className="text-2xl font-bold text-white mb-4">📚 Your Next Lesson</Text>
+        <Text className="text-2xl font-bold text-white mb-4">
+          📚 Your Next Lesson
+        </Text>
         {homeStats.nextLesson ? (
-          <LessonCard 
-            {...homeStats.nextLesson} 
+          <LessonCard
+            {...homeStats.nextLesson}
             ModalComponent={LessonDetailsModal}
             modalProps={{ isMyLessons: true }}
           />
         ) : (
           <View className="bg-white rounded-2xl p-6">
-            <Text className="text-center text-gray-600">No upcoming lessons scheduled</Text>
+            <Text className="text-center text-gray-600">
+              No upcoming lessons scheduled
+            </Text>
           </View>
         )}
       </View>

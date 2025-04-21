@@ -7,7 +7,6 @@ import { useHome } from "@context/HomeContext";
 import LessonCard from "../../components/LessonCard";
 import { getGreeting } from "./utils/timeUtils";
 import { useAuth } from "../../context/AuthContext";
-import { mockPrevLesson, mockNextLesson } from "../mocks/mockLessons";
 import LessonDetailsModal from "../../components/LessonDetailsModal";
 
 const StudentHome = () => {
@@ -26,7 +25,7 @@ const StudentHome = () => {
         } else {
           console.log("🛑 StudentHome → no token found, skipping fetch");
         }
-      }; 
+      };
 
       tryFetchStats();
     }, [user, loading])
@@ -57,25 +56,31 @@ const StudentHome = () => {
 
       {/* Next Lesson Section */}
       <View className="mt-6">
-        <Text className="text-2xl font-bold text-white mb-4">📚 Your Next Lesson</Text>
+        <Text className="text-2xl font-bold text-white mb-4">
+          📚 Your Next Lesson
+        </Text>
         {homeStats.nextLesson ? (
-          <LessonCard 
-            {...homeStats.nextLesson} 
+          <LessonCard
+            {...homeStats.nextLesson}
             ModalComponent={LessonDetailsModal}
             modalProps={{ isMyLessons: true }}
           />
         ) : (
           <View className="bg-white rounded-2xl p-6">
-            <Text className="text-center text-gray-600">No upcoming lessons scheduled</Text>
+            <Text className="text-center text-gray-600">
+              No upcoming lessons scheduled
+            </Text>
           </View>
         )}
       </View>
 
       {/* Motivation Section */}
       <View className="bg-white rounded-2xl p-6 mt-6 shadow-lg">
-        <Text className="text-xl font-bold text-center mb-2">✨ Daily Inspiration</Text>
+        <Text className="text-xl font-bold text-center mb-2">
+          ✨ Daily Inspiration
+        </Text>
         <Text className="text-center text-lg text-gray-700 italic">
-          "{homeStats.motivationSentence}"
+          {homeStats.motivationSentence}
         </Text>
       </View>
     </View>
