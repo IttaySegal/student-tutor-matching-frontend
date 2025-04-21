@@ -9,12 +9,13 @@ export const mockPrevLesson = {
   endTime: "12:00",
   mentor: "Galit Bar",
   description: "Review of function analysis",
+  format: "online",
   students: [
     { _id: "s8", first_name: "Omer", last_name: "Golan" },
-    { _id: "s9", first_name: "Roni", last_name: "Chen" }
+    { _id: "s9", first_name: "Roni", last_name: "Chen" },
   ],
   lessonLocation: "Classroom 4",
-  hasReview: false
+  hasReview: false,
 };
 
 // Next lesson for dashboard (next lesson for mentor or student)
@@ -28,12 +29,13 @@ export const mockNextLesson = {
   endTime: "14:00",
   mentor: "Ido Caspi",
   description: "Practice quadratic equations",
+  format: "online",
   students: [
     { _id: "s10", first_name: "Lihi", last_name: "Shapira" },
-    { _id: "s11", first_name: "Uri", last_name: "Barak" }
+    { _id: "s11", first_name: "Uri", last_name: "Barak" },
   ],
   lessonLocation: "Classroom 2",
-  hasReview: false
+  hasReview: false,
 };
 
 // List of lessons for search (lesson registration) - all under the same subject, grade and group
@@ -49,7 +51,9 @@ export const mockSearchResults = [
     startTime: "14:00",
     endTime: "15:00",
     mentor: "Yossi Cohen",
-    description: "Test preparation on powers and roots. Check: Registered and space available",
+    description:
+      "Test preparation on powers and roots. Check: Registered and space available",
+    format: "online",
     students: [
       { _id: "studentId3", first_name: "Daniel", last_name: "Levi" },
       { _id: "studentId4", first_name: "Noam", last_name: "Katz" },
@@ -73,7 +77,9 @@ export const mockSearchResults = [
     startTime: "15:00",
     endTime: "16:00",
     mentor: "Noa Barak",
-    description: "Review of topics for final exam. Check: Registered and no space",
+    description:
+      "Review of topics for final exam. Check: Registered and no space",
+    format: "online",
     students: [
       { _id: "studentId6", first_name: "Tamar", last_name: "David" },
       { _id: "studentId7", first_name: "Roi", last_name: "Shalom" },
@@ -96,7 +102,9 @@ export const mockSearchResults = [
     startTime: "12:00",
     endTime: "13:00",
     mentor: "Yoav Levi",
-    description: "Practice on topics from previous lesson. Check: Not registered and space available",
+    description:
+      "Practice on topics from previous lesson. Check: Not registered and space available",
+    format: "online",
     students: [
       { _id: "studentId8", first_name: "Yuval", last_name: "Mizrahi" },
       { _id: "studentId9", first_name: "Lia", last_name: "Ashkenazi" },
@@ -115,6 +123,7 @@ export const mockSearchResults = [
     endTime: "11:00",
     mentor: "Galit Bar",
     description: "Summary before the test. Check: Not registered and no space",
+    format: "online",
     students: [
       { _id: "studentId1", first_name: "Tamar", last_name: "Cohen" },
       { _id: "studentId2", first_name: "Yonatan", last_name: "Levi" },
@@ -135,6 +144,7 @@ export const mockMyLessons = [
     endTime: "13:00",
     mentor: "Yoav Levi",
     description: "Practice lesson in trigonometry module",
+    format: "online",
     students: [
       { _id: "studentId8", first_name: "Yuval", last_name: "Mizrahi" },
       { _id: "studentId9", first_name: "Lia", last_name: "Ashkenazi" },
@@ -150,6 +160,7 @@ export const mockMyLessons = [
     endTime: "12:00",
     mentor: "Galit Bar",
     description: "Review of function analysis",
+    format: "online",
     students: [
       { _id: "studentId10", first_name: "Omer", last_name: "Golan" },
       { _id: "studentId11", first_name: "Roni", last_name: "Chen" },
@@ -197,13 +208,14 @@ export const mockLessons = [
     endTime: "15:00",
     mentor: "Yossi Cohen",
     description: "Test preparation on powers and roots",
+    format: "online",
     students: [
       { _id: "s1", first_name: "Daniel", last_name: "Levi" },
       { _id: "s2", first_name: "Noam", last_name: "Cohen" },
-      { _id: "s3", first_name: "Shira", last_name: "Abraham" }
+      { _id: "s3", first_name: "Shira", last_name: "Abraham" },
     ],
     lessonLocation: "Classroom 3",
-    hasReview: false
+    hasReview: false,
   },
   {
     id: 2,
@@ -215,12 +227,13 @@ export const mockLessons = [
     endTime: "16:00",
     mentor: "Noa Barak",
     description: "Review of topics for final exam",
+    format: "online",
     students: [
       { _id: "s4", first_name: "Tamar", last_name: "David" },
-      { _id: "s5", first_name: "Roi", last_name: "Shalom" }
+      { _id: "s5", first_name: "Roi", last_name: "Shalom" },
     ],
     lessonLocation: "Classroom 5",
-    hasReview: false
+    hasReview: false,
   },
   {
     id: 3,
@@ -232,11 +245,12 @@ export const mockLessons = [
     endTime: "13:00",
     mentor: "Yoav Levi",
     description: "Practice lesson in trigonometry module",
+    format: "online",
     students: [
       { _id: "s6", first_name: "Yuval", last_name: "Mizrahi" },
-      { _id: "s7", first_name: "Lia", last_name: "Ashkenazi" }
+      { _id: "s7", first_name: "Lia", last_name: "Ashkenazi" },
     ],
     lessonLocation: "Lab 2",
-    hasReview: true
-  }
+    hasReview: true,
+  },
 ];

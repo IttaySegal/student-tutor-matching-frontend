@@ -1,5 +1,5 @@
 import axios from "@services/axiosInstance";
-import { EXPO_PUBLIC_SERVER_URL } from '@env';
+import { EXPO_PUBLIC_SERVER_URL } from "@env";
 
 const BASE_URL = `${EXPO_PUBLIC_SERVER_URL}/lessons`;
 
@@ -7,15 +7,20 @@ const authHeaders = (token) => ({
   headers: { Authorization: `Bearer ${token}` },
 });
 
-
 // Helper function to convert ISO to our frontend format
 const convertFromISO = (isoDate) => {
   const date = new Date(isoDate);
   return {
-    date: date.toLocaleDateString('en-GB'), // YYYY-MM-DD format
-    day: date.toLocaleDateString('en-US', { weekday: 'long' }),
-    startTime: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    endTime: new Date(date.getTime() + 60 * 60 * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    date: date.toLocaleDateString("en-GB"), // YYYY-MM-DD format
+    day: date.toLocaleDateString("en-US", { weekday: "long" }),
+    startTime: date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
+    endTime: new Date(date.getTime() + 60 * 60 * 1000).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
   };
 };
 
@@ -26,7 +31,7 @@ const convertToISO = (date, startTime) => {
 
 // Helper function to transform frontend payload to backend format
 const transformToBackendFormat = (lessonData) => {
-  const { 
+  const {
     subject,
     grade,
     description,
@@ -41,7 +46,7 @@ const transformToBackendFormat = (lessonData) => {
     grade,
     description,
     location,
-    dateTime: convertToISO(date, startTime)
+    dateTime: convertToISO(date, startTime),
   };
 };
 
@@ -57,6 +62,8 @@ const transformToFrontendFormat = (lessonData) => {
     status,
     student,
     mentor,
+    format,
+    lessonLocation,
     // ... any other fields we want to keep
   } = lessonData;
 
@@ -69,7 +76,9 @@ const transformToFrontendFormat = (lessonData) => {
     status,
     student,
     mentor,
-    ...convertFromISO(dateTime)
+    format,
+    lessonLocation,
+    ...convertFromISO(dateTime),
   };
 };
 
@@ -80,7 +89,7 @@ const transformToFrontendFormat = (lessonData) => {
 export const searchLessons = async (filters) => {
   try {
     const res = await axios.post(`${BASE_URL}/search`, filters);
-    return res.data.map(lesson => transformToFrontendFormat(lesson));
+    return res.data.map((lesson) => transformToFrontendFormat(lesson));
     // return res.data;
   } catch (err) {
     console.error("Error searching lessons:", err);
@@ -106,7 +115,7 @@ export const getLessonById = async (id) => {
 export const getLessonsByUser = async () => {
   try {
     const res = await axios.get(`${BASE_URL}/mentor/my-lessons`);
-    return res.data.map(lesson => transformToFrontendFormat(lesson));
+    return res.data.map((lesson) => transformToFrontendFormat(lesson));
     // return res.data;
   } catch (err) {
     console.error("Error fetching mentor lessons:", err);
@@ -153,7 +162,7 @@ export const deleteLesson = async (id) => {
 export const getUpcomingLessons = async () => {
   try {
     const res = await axios.get(`${BASE_URL}/mentor/upcoming`);
-    return res.data.map(lesson => transformToFrontendFormat(lesson));
+    return res.data.map((lesson) => transformToFrontendFormat(lesson));
 
     // return res.data;
   } catch (err) {
@@ -177,7 +186,6 @@ export const getNextLesson = async () => {
     const res = await axios.get(`${BASE_URL}/mentor/next`);
     // return res.data;
     return transformToFrontendFormat(res.data);
-
   } catch (err) {
     console.error("Error fetching next lesson:", err);
     throw new Error("Failed to fetch next lesson.");
@@ -186,7 +194,10 @@ export const getNextLesson = async () => {
 
 export const submitMentorReview = async (lessonId, reviewData) => {
   try {
-    const res = await axios.post(`${BASE_URL}/mentor/review/${lessonId}`, reviewData);
+    const res = await axios.post(
+      `${BASE_URL}/mentor/review/${lessonId}`,
+      reviewData
+    );
     return res.data;
   } catch (err) {
     console.error("Error submitting mentor review:", err);
@@ -212,8 +223,7 @@ export const getStudentLessons = async () => {
   try {
     const res = await axios.get(`${BASE_URL}/student/my-lessons`);
     // return res.data;
-    return res.data.map(lesson => transformToFrontendFormat(lesson));
-
+    return res.data.map((lesson) => transformToFrontendFormat(lesson));
   } catch (err) {
     console.error("Error fetching student lessons:", err);
     throw new Error("Failed to fetch student lessons.");
@@ -225,7 +235,6 @@ export const getStudentNextLesson = async () => {
     const res = await axios.get(`${BASE_URL}/student/next`, authHeaders(token));
     // return res.data;
     return transformToFrontendFormat(res.data);
-
   } catch (err) {
     console.error("Error fetching next student lesson:", err);
     throw new Error("Failed to fetch next student lesson.");
@@ -237,16 +246,19 @@ export const getStudentLastLesson = async () => {
     const res = await axios.get(`${BASE_URL}/student/last`);
     // return res.data;
     return transformToFrontendFormat(res.data);
-
   } catch (err) {
     console.error("Error fetching last student lesson:", err);
     throw new Error("Failed to fetch last student lesson.");
   }
 };
 
-export const registerToLesson = async (lessonId) => {//TODO
+export const registerToLesson = async (lessonId) => {
+  //TODO
   try {
-    const res = await axios.post(`${BASE_URL}/student/register/${lessonId}`, {});
+    const res = await axios.post(
+      `${BASE_URL}/student/register/${lessonId}`,
+      {}
+    );
     return res.data;
   } catch (err) {
     console.error("Error registering to lesson:", err);
@@ -256,7 +268,10 @@ export const registerToLesson = async (lessonId) => {//TODO
 
 export const unregisterFromLesson = async (lessonId) => {
   try {
-    const res = await axios.post(`${BASE_URL}/student/unregister/${lessonId}`, {});
+    const res = await axios.post(
+      `${BASE_URL}/student/unregister/${lessonId}`,
+      {}
+    );
     return res.data;
   } catch (err) {
     console.error("Error unregistering from lesson:", err);
@@ -267,7 +282,10 @@ export const unregisterFromLesson = async (lessonId) => {
 export const submitStudentReview = async (lessonId, reviewData) => {
   try {
     console.log("📝 Submitting student review:", { lessonId, reviewData });
-    const res = await axios.post(`${BASE_URL}/lessons/${lessonId}/student-review`, reviewData);
+    const res = await axios.post(
+      `${BASE_URL}/lessons/${lessonId}/student-review`,
+      reviewData
+    );
     return res.data;
   } catch (err) {
     console.error("Error submitting student review:", err);
@@ -283,7 +301,7 @@ export const getAllLessons = async () => {
   try {
     const res = await axios.get(`${BASE_URL}/admin/all`);
     // return res.data;
-    return res.data.map(lesson => transformToFrontendFormat(lesson));
+    return res.data.map((lesson) => transformToFrontendFormat(lesson));
   } catch (err) {
     console.error("Error fetching all lessons:", err);
     throw new Error("Failed to fetch all lessons.");

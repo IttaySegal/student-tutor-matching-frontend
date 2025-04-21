@@ -3,12 +3,12 @@ import axios from "@services/axiosInstance";
 import { EXPO_PUBLIC_SERVER_URL } from "@env";
 
 /**
- * @param {string} accessToken 
+ * @param {string} accessToken
  *  * @returns {Promise<Object>}
  */
 export const getAggregateHomeData = async (accessToken) => {
   console.log("📡 Fetching home data from /home/data");
- 
+
   try {
     // const response = await axios.get(`${REACT_APP_SERVER_DOMAIN}/home/data`, {
     const response = await axios.get(`${EXPO_PUBLIC_SERVER_URL}/home/data`);

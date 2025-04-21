@@ -12,11 +12,13 @@ export default function LessonCard({
   description,
   students,
   lessonLocation,
+  format,
   ModalComponent,
   modalProps = {},
   onPress,
   ...props
 }) {
+  console.log("LessonCard props:", { format, ...props }); // כאן!
   const [visible, setVisible] = useState(false);
 
   const handlePress = () => {
@@ -30,20 +32,6 @@ export default function LessonCard({
   return (
     <>
       <TouchableOpacity onPress={handlePress} style={styles.lessonItem}>
-        {/* <View style={styles.lessonHeader}>
-          <Text style={styles.subject}>{subject}</Text>
-          <Text style={styles.grade}>Grade {grade}</Text>
-        </View>
-        <View style={styles.lessonDetails}>
-          <Text style={styles.date}>
-            {day}, {date}
-          </Text>
-          <Text style={styles.time}>
-            {startTime} - {endTime}
-          </Text>
-        </View>
-        <Text style={styles.mentor}>Mentor: {mentor}</Text>
-        <Text style={styles.description}>{description}</Text> */}
         <View style={styles.lessonHeader}>
           <Text style={styles.subject}>{subject}</Text>
           <Text style={styles.grade}>Grade {grade}</Text>
@@ -60,6 +48,11 @@ export default function LessonCard({
           </Text>
           <Text style={styles.mentor}>Mentor: {mentor}</Text>
         </View>
+        {format && (
+          <View style={styles.bottomRight}>
+            <Text style={styles.format}>{format}</Text>
+          </View>
+        )}
       </TouchableOpacity>
 
       {ModalComponent && (
@@ -75,6 +68,7 @@ export default function LessonCard({
           mentor={mentor}
           description={description}
           students={students}
+          format={format}
           lessonLocation={lessonLocation}
           {...props}
           {...modalProps}
@@ -133,5 +127,20 @@ const styles = StyleSheet.create({
   mentor: {
     fontSize: 14,
     color: "#666",
+  },
+  format: {
+    fontSize: 12,
+    color: "#333",
+    backgroundColor: "#e0e0e0",
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 10,
+    overflow: "hidden",
+  },
+  bottomRight: {
+    position: "absolute",
+    bottom: 10,
+    right: 10,
+    alignItems: "flex-end",
   },
 });
