@@ -38,6 +38,8 @@ const transformToBackendFormat = (lessonData) => {
     location,
     date,
     startTime,
+    type,
+    group,
     // ... any other fields we want to keep
   } = lessonData;
 
@@ -46,6 +48,8 @@ const transformToBackendFormat = (lessonData) => {
     grade,
     description,
     location,
+    group,
+    format: type,
     dateTime: convertToISO(date, startTime),
   };
 };

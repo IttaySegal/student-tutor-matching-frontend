@@ -1,11 +1,10 @@
 import React from "react";
 import { Text, StyleSheet, View } from "react-native";
-import RTLText from "./RTLText"; // לוודא שיש לך את RTLText
 
 const PageHeader = ({ title }) => {
   return (
     <View style={styles.container}>
-      <RTLText style={styles.title}>{title}</RTLText>
+      <Text style={styles.title}>{title}</Text>
     </View>
   );
 };
@@ -13,16 +12,16 @@ const PageHeader = ({ title }) => {
 const styles = StyleSheet.create({
   container: {
     marginBottom: 20,
-    alignItems: "flex-end", // הכותרת תתיישב לימין בתוך ה-View
-    width: "100%", // לוודא שהקונטיינר תופס את כל רוחב המסך
+    alignItems: "flex-end", // Align the title to the right within the container
+    width: "100%", // Ensure the container takes the full screen width
   },
   title: {
-    fontSize: 24, // גודל אחיד לכותרת
-    fontWeight: "600", // עיבוי קל
-    color: "#fff", // צבע לבן לכותרת
-    marginBottom: 10, // רווח למטה מהכותרת
-    fontFamily: "Roboto", // פונט יפה (אם יש לך פונט אחר, תוכל להוסיף אותו כאן)
-    textAlign: "right", // לוודא שהטקסט יהיה מימין לשמאל
+    fontSize: 24, // Consistent font size for the header
+    fontWeight: "600", // Semi-bold text
+    color: "#fff", // White color for the title
+    marginBottom: 10, // Space below the title
+    fontFamily: "Roboto", // Optional: replace with a different font if needed
+    textAlign: "right", // Align the text to the right
   },
 });
 

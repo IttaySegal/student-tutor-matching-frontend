@@ -2,37 +2,32 @@ import React, { useState } from "react";
 import { View, FlatList, Text, StyleSheet } from "react-native";
 import LessonCard from "@/components/LessonCard";
 import LessonReviewMentor from "@/components/LessonReviewMentor";
-import RTLText from "@/components/RTLText";
 import PageHeader from "@/components/PageHeader";
 import { mockLessons } from "@/app/mocks/mockLessons";
 
 const LessonReviewPage = () => {
   const [lessons, setLessons] = useState(mockLessons);
-  
+
   const handleSubmitReview = (lessonId, reviewData) => {
-    console.log("שיעור:", lessonId);
-    console.log("סקירה:", reviewData);
-    
-    // כאן תוכל לשלוח את הסקירה לשרת
-    // לדוגמה: submitLessonReview(lessonId, reviewData);
-    
-    // עדכון מקומי של השיעורים (לצורך הדגמה)
-    setLessons(prevLessons => 
-      prevLessons.map(lesson => 
-        lesson.id === lessonId 
-          ? { ...lesson, hasReview: true } 
-          : lesson
+    console.log("Lesson:", lessonId);
+    console.log("Review:", reviewData);
+
+    // Example: send the review to the server
+    // submitLessonReview(lessonId, reviewData);
+
+    // Local update of lesson state (for demonstration)
+    setLessons((prevLessons) =>
+      prevLessons.map((lesson) =>
+        lesson.id === lessonId ? { ...lesson, hasReview: true } : lesson
       )
     );
   };
 
   return (
     <View style={styles.container}>
-      <PageHeader title="סקירת שיעורים" />
-      
-      <RTLText style={styles.headerText}>
-        בחר שיעור כדי להוסיף סקירה
-      </RTLText>
+      <PageHeader title="Lesson Reviews" />
+
+      <Text style={styles.headerText}>Select a lesson to add a review</Text>
 
       {lessons.length > 0 ? (
         <FlatList
@@ -40,20 +35,19 @@ const LessonReviewPage = () => {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <View style={styles.cardContainer}>
-              <LessonCard 
-                {...item} 
+              <LessonCard
+                {...item}
                 ModalComponent={LessonReviewMentor}
                 modalProps={{
-                  onSubmit: (reviewData) => handleSubmitReview(item.id, reviewData)
+                  onSubmit: (reviewData) =>
+                    handleSubmitReview(item.id, reviewData),
                 }}
               />
             </View>
           )}
         />
       ) : (
-        <Text style={styles.emptyText}>
-          אין שיעורים להצגה
-        </Text>
+        <Text style={styles.emptyText}>No lessons to display</Text>
       )}
     </View>
   );
@@ -81,4 +75,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LessonReviewPage; 
+export default LessonReviewPage;

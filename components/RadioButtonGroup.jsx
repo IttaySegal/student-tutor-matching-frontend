@@ -1,6 +1,5 @@
 import React from "react";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
-import RTLText from "./RTLText";
+import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
 
 export default function RadioButtonGroup({
   label,
@@ -11,7 +10,7 @@ export default function RadioButtonGroup({
 }) {
   return (
     <View style={[styles.container, containerStyle]}>
-      {label && <RTLText style={styles.label}>{label}</RTLText>}
+      {label && <Text style={styles.label}>{label}</Text>}
       <View style={styles.optionsContainer}>
         {options.map((option) => (
           <TouchableOpacity
@@ -20,9 +19,11 @@ export default function RadioButtonGroup({
             onPress={() => onValueChange(option.value)}
           >
             <View style={styles.radioButton}>
-              {selectedValue === option.value && <View style={styles.selected} />}
+              {selectedValue === option.value && (
+                <View style={styles.selected} />
+              )}
             </View>
-            <RTLText style={styles.optionLabel}>{option.label}</RTLText>
+            <Text style={styles.optionLabel}>{option.label}</Text>
           </TouchableOpacity>
         ))}
       </View>

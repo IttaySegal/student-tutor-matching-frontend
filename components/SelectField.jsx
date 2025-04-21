@@ -1,28 +1,15 @@
-// import React from "react";
-// import { View, Text } from "react-native";
-// import RNPickerSelect from "react-native-picker-select"; // ייבוא של picker מ-`react-native-picker-select`
-// import RTLText from "./RTLText";
-
-// const SelectField = ({ label, selectedValue, onValueChange, options }) => (
-//   <View style={{ marginBottom: 20 }}>
-//     <RTLText>{label}</RTLText>
-//     <RNPickerSelect
-//       onValueChange={onValueChange} // עדכון ערך הבחירה
-//       items={options} // רשימת האופציות לבחירה
-//       value={selectedValue} // הערך הנבחר
-//       placeholder={{ label: "בחר...", value: null }} // Placeholder שמופיע אם לא נבחר ערך
-//     />
-//   </View>
-// );
-
-// export default SelectField;
-
 import React from "react";
 import { View, Text } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-const SelectField = ({ label, selectedValue, onValueChange, options, multiple = false }) => {
+const SelectField = ({
+  label,
+  selectedValue,
+  onValueChange,
+  options,
+  multiple = false,
+}) => {
   const sharedStyles = {
     boxStyles: {
       backgroundColor: "#fff",
@@ -36,20 +23,20 @@ const SelectField = ({ label, selectedValue, onValueChange, options, multiple = 
       paddingHorizontal: 10,
       paddingVertical: 8,
     },
-    inputStyles: { 
-      textAlign: "left", 
+    inputStyles: {
+      textAlign: "left",
       fontSize: 16,
       color: "#000",
     },
-    dropdownStyles: { 
+    dropdownStyles: {
       backgroundColor: "#fff",
       width: "100%",
       borderWidth: 1,
       borderColor: "#ccc",
       borderRadius: 8,
     },
-    dropdownTextStyles: { 
-      textAlign: "left", 
+    dropdownTextStyles: {
+      textAlign: "left",
       fontSize: 16,
       color: "#000",
     },
@@ -63,12 +50,25 @@ const SelectField = ({ label, selectedValue, onValueChange, options, multiple = 
 
   return (
     <View style={{ marginBottom: 20, width: "100%" }}>
-      {label && <Text style={{ textAlign: "left", marginBottom: 10, fontWeight: "bold", color: "#fff" }}>{label}</Text>}
+      {label && (
+        <Text
+          style={{
+            textAlign: "left",
+            marginBottom: 10,
+            fontWeight: "bold",
+            color: "#fff",
+          }}
+        >
+          {label}
+        </Text>
+      )}
       <SelectList
         setSelected={onValueChange}
         data={options}
         placeholder="Select..."
-        defaultOption={selectedValue ? { key: selectedValue, value: selectedValue } : null}
+        defaultOption={
+          selectedValue ? { key: selectedValue, value: selectedValue } : null
+        }
         multiple={multiple}
         {...sharedStyles}
       />

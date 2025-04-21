@@ -105,8 +105,14 @@ export default function CreateLesson() {
     arrowicon: <Ionicons name="chevron-down-outline" size={20} color="gray" />,
   };
 
-  const isFormValid = subject && grade && (group || groupOptions.length === 0) && lessonDescription && lessonType && date && time;
-
+  const isFormValid =
+    subject &&
+    grade &&
+    (group || groupOptions.length === 0) &&
+    lessonDescription &&
+    lessonType &&
+    date &&
+    time;
 
   return (
     <ScrollView className="flex-1 bg-primary">
@@ -116,6 +122,7 @@ export default function CreateLesson() {
             setSelected={setSubject}
             data={subjects.map((s) => ({ key: s.value, value: s.value }))}
             placeholder="Select Subject"
+            testID="subject-select"
             {...sharedStyles}
           />
 
@@ -123,6 +130,7 @@ export default function CreateLesson() {
             setSelected={setGrade}
             data={grades}
             placeholder="Select Grade"
+            testID="grade-select"
             {...sharedStyles}
           />
 
@@ -131,6 +139,7 @@ export default function CreateLesson() {
               setSelected={setGroup}
               data={groupOptions.map((g) => ({ key: g, value: g }))}
               placeholder="Select Group"
+              testID="group-select"
               {...sharedStyles}
             />
           ) : (
@@ -147,6 +156,7 @@ export default function CreateLesson() {
               placeholderTextColor="#9CA3AF"
               value={lessonDescription}
               onChangeText={setLessonDescription}
+              testID="description-input"
               multiline={true}
               numberOfLines={4}
               textAlignVertical="top"
@@ -187,6 +197,7 @@ export default function CreateLesson() {
               placeholder="Enter location"
               placeholderTextColor="#9CA3AF"
               value={lessonLocation}
+              testID="location-input"
               onChangeText={setLessonLocation}
             />
           </View>
@@ -199,7 +210,12 @@ export default function CreateLesson() {
               className="bg-white rounded-lg p-3 mr-3 mb-3 flex-row items-center"
               onPress={() => setShowDatePicker(true)}
             >
-              <FontAwesome5 name="calendar" size={16} color="#6B7280" style={{ marginRight: 8 }} />
+              <FontAwesome5
+                name="calendar"
+                size={16}
+                color="#6B7280"
+                style={{ marginRight: 8 }}
+              />
               <Text className="text-gray-800">{formatDate(date)}</Text>
             </TouchableOpacity>
 
@@ -207,7 +223,12 @@ export default function CreateLesson() {
               className="bg-white rounded-lg p-3 mb-3 flex-row items-center"
               onPress={() => setShowTimePicker(true)}
             >
-              <FontAwesome5 name="clock" size={16} color="#6B7280" style={{ marginRight: 8 }} />
+              <FontAwesome5
+                name="clock"
+                size={16}
+                color="#6B7280"
+                style={{ marginRight: 8 }}
+              />
               <Text className="text-gray-800">{formatTime(time)}</Text>
             </TouchableOpacity>
           </View>
@@ -239,6 +260,7 @@ export default function CreateLesson() {
           handlePress={handleCreateLesson}
           containerStyles="mt-4 w-full"
           disabled={!isFormValid}
+          testID="create-button"
         />
       </View>
     </ScrollView>
