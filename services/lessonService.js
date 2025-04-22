@@ -25,75 +25,50 @@ const convertFromISO = (isoDate) => {
 };
 
 // Helper function to convert our frontend format to ISO
-const convertToISO = (date, startTime) => {
-  return new Date(`${date}T${startTime}`).toISOString();
+const convertToISO = (date, time) => {
+  return new Date(`${date}T${time}`).toISOString();
 };
 
-// Helper function to transform frontend payload to backend format
+// Frontend to Backend transformation
 const transformToBackendFormat = (lessonData) => {
-  const {
-    subject,
-    grade,
-    description,
-    location,
-    date,
-    startTime,
-    type,
-    group,
-    // ... any other fields we want to keep
-  } = lessonData;
-
   return {
-    subject,
-    grade,
-    description,
-    location,
-    group,
-    format: type,
-    dateTime: convertToISO(date, startTime),
+    subjectName: lessonData.subject,
+    grade: lessonData.grade,
+    level: lessonData.group, // Map group to level
+    description: lessonData.description,
+    appointedDateTime: convertToISO(lessonData.date, lessonData.time),
+    format: lessonData.type.toLowerCase(), // Convert to lowercase
+    locationOrLink: lessonData.location,
   };
 };
 
-// Helper function to transform backend response to frontend format
+// Backend to Frontend transformation
 const transformToFrontendFormat = (lessonData) => {
-  const {
-    id,
-    subject,
-    grade,
-    description,
-    location,
-    dateTime,
-    status,
-    student,
-    mentor,
-    format,
-    lessonLocation,
-    // ... any other fields we want to keep
-  } = lessonData;
-
   return {
-    id,
-    subject,
-    grade,
-    description,
-    location,
-    status,
-    student,
-    mentor,
-    format,
-    lessonLocation,
-    ...convertFromISO(dateTime),
+    id: lessonData.lessonId,   // ✅ Add this line
+    subject: lessonData.subjectName,
+    grade: lessonData.grade,
+    level: lessonData.level,
+    description: lessonData.description,
+    format: lessonData.format,
+    lessonLocation: lessonData.locationOrLink,
+    mentor: lessonData.tutorFullName,
+    students: lessonData.enrolledTutees || [],
+    ...convertFromISO(lessonData.appointedDateTime),
   };
 };
 
 /* =========================
    Search & Discovery
 ========================= */
-
+//TODO
 export const searchLessons = async (filters) => {
   try {
-    const res = await axios.post(`${BASE_URL}/search`, filters);
-    return res.data.map((lesson) => transformToFrontendFormat(lesson));
+    const res = await axios.post(`${BASE_URL}/available`, filters);
+    const lessons = res.data.data.lessons;
+    console.log("=========return data from back=====================");
+    console.log(lessons);
+    return lessons.map(transformToFrontendFormat);
     // return res.data;
   } catch (err) {
     console.error("Error searching lessons:", err);
@@ -101,118 +76,157 @@ export const searchLessons = async (filters) => {
   }
 };
 
-export const getLessonById = async (id) => {
-  try {
-    const res = await axios.get(`${BASE_URL}/${id}`);
-    // return res.data;
-    return transformToFrontendFormat(res.data);
-  } catch (err) {
-    console.error("Error fetching lesson:", err);
-    throw new Error("Failed to get lesson.");
-  }
-};
+// export const getLessonById = async (id) => { //not exist!!!
+//   try {
+//     const res = await axios.get(`${BASE_URL}/${id}`);
+//     // return res.data;
+//     return transformToFrontendFormat(res.data);
+//   } catch (err) {
+//     console.error("Error fetching lesson:", err);
+//     throw new Error("Failed to get lesson.");
+//   }
+// };
 
 /* =========================
    Mentor Actions
 ========================= */
 
-export const getLessonsByUser = async () => {
+export const getLessonsByUser = async () => { ////DONE
   try {
-    const res = await axios.get(`${BASE_URL}/mentor/my-lessons`);
-    return res.data.map((lesson) => transformToFrontendFormat(lesson));
-    // return res.data;
+    // const res = await axios.get(`${BASE_URL}/mentor/my-lessons`);
+    // return res.data.map((lesson) => transformToFrontendFormat(lesson));
+    // // return res.data;
+    const res = await axios.get(`${BASE_URL}/tutor-upcoming-lessons`);
+    return res.data.data.lessonsWithEnrolledTutees.map(transformToFrontendFormat);
   } catch (err) {
     console.error("Error fetching mentor lessons:", err);
     throw new Error("Failed to fetch mentor lessons.");
   }
 };
-
+//DONE
 export const createLesson = async (lessonData) => {
   try {
+    console.log("==============================");
+    console.log(lessonData);
+    console.log("==============================");
+
     const payload = transformToBackendFormat(lessonData);
+    console.log(payload);
     const res = await axios.post(`${BASE_URL}/create`, payload);
     // const res = await axios.post(`${BASE_URL}/create`, lessonData);
+    const lesson = res.data.data.lesson;
+    console.log("=========return data from back=====================");
 
-    return transformToFrontendFormat(res.data);
+    console.log(lesson);
+    return transformToFrontendFormat(lesson);
     // return res.data;
   } catch (err) {
     console.error("Error creating lesson:", err);
     throw new Error("Failed to create lesson.");
   }
 };
-
-export const updateLesson = async (id, lessonData) => {
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//TODO -- verify the full lesson object is pass - check is students pass in the lesson object
+export const updateLesson = async (lessonId, lessonData) => {
   try {
     // const res = await axios.put(`${BASE_URL}/update/${id}`, lessonData);
     // return res.data;
+    console.log(lessonData);
+
     const payload = transformToBackendFormat(lessonData);
-    const res = await axios.put(`${BASE_URL}/update/${id}`, payload);
-    return transformToFrontendFormat(res.data);
+    console.log("=========lesson to back=====================");
+
+    console.log(payload);
+
+    const res = await axios.patch(`${BASE_URL}/edit`, { lessonId, ...payload });    
+    const update_lesson = res.data.data.lesson;
+    console.log(update_lesson);
+
+    return transformToFrontendFormat(res.data.data.lesson);
+
   } catch (err) {
     console.error("Error updating lesson:", err);
     throw new Error("Failed to update lesson.");
   }
 };
-
-export const deleteLesson = async (id) => {
+//DONE
+export const deleteLesson = async (lessonId) => {
   try {
-    await axios.delete(`${BASE_URL}/delete/${id}`);
+    // const res = await axios.patch(`${BASE_URL}/cancel`, { lessonId });
+    // return transformToFrontendFormat(res.data.data.lesson);
+    await axios.patch(`${BASE_URL}/cancel`, { lessonId });
+
+    // await axios.delete(`${BASE_URL}/delete/${id}`);
   } catch (err) {
     console.error("Error deleting lesson:", err);
     throw new Error("Failed to delete lesson.");
   }
 };
-
-export const getUpcomingLessons = async () => {
-  try {
-    const res = await axios.get(`${BASE_URL}/mentor/upcoming`);
-    return res.data.map((lesson) => transformToFrontendFormat(lesson));
-
-    // return res.data;
-  } catch (err) {
-    console.error("Error fetching upcoming lessons:", err);
-    throw new Error("Failed to fetch upcoming lessons.");
-  }
-};
-
+// //DONE
+// export const getUpcomingLessons = async () => {
+//   try {
+//     // const res = await axios.get(`${BASE_URL}/mentor/upcoming`);
+//     // return res.data.map((lesson) => transformToFrontendFormat(lesson));
+//     const res = await axios.get(`${BASE_URL}/tutor-upcoming-lessons`);
+//     return res.data.data.lessonsWithEnrolledTutees.map(transformToFrontendFormat);
+ 
+//     // return res.data;
+//   } catch (err) {
+//     console.error("Error fetching upcoming lessons:", err);
+//     throw new Error("Failed to fetch upcoming lessons.");
+//   }
+// };
+//DONE
 export const getLessonCount = async () => {
   try {
-    const res = await axios.get(`${BASE_URL}/mentor/lesson-count`);
-    return res.data;
+    // const res = await axios.get(`${BASE_URL}/mentor/lesson-count`);
+    // return res.data;
+    const res = await axios.get(`${BASE_URL}/approved-lessons-amount`);
+    return res.data.data.amountOfApprovedLessons;
   } catch (err) {
     console.error("Error fetching lesson count:", err);
     throw new Error("Failed to fetch lesson count.");
   }
 };
 
-export const getNextLesson = async () => {
-  try {
-    const res = await axios.get(`${BASE_URL}/mentor/next`);
-    // return res.data;
-    return transformToFrontendFormat(res.data);
-  } catch (err) {
-    console.error("Error fetching next lesson:", err);
-    throw new Error("Failed to fetch next lesson.");
-  }
-};
+// export const getNextLesson = async () => {// DELETE THIS API!!!
+//   try {
+//     const res = await axios.get(`${BASE_URL}/mentor/next`);
+//     // return res.data;
+//     return transformToFrontendFormat(res.data);
+//   } catch (err) {
+//     console.error("Error fetching next lesson:", err);
+//     throw new Error("Failed to fetch next lesson.");
+//   }
+// };
 
+//TODO
 export const submitMentorReview = async (lessonId, reviewData) => {
   try {
-    const res = await axios.post(
-      `${BASE_URL}/mentor/review/${lessonId}`,
-      reviewData
-    );
-    return res.data;
+    // const res = await axios.post(
+    //   `${BASE_URL}/mentor/review/${lessonId}`,
+    //   reviewData
+    // );
+    // return res.data;
+
+    const res = await axios.patch(`${BASE_URL}/upload-lesson-report`, {
+      lessonId,
+      lessonSummary: reviewData.summary,
+      tuteesPresence: reviewData.presence
+    });
+    return transformToFrontendFormat(res.data.updatedLesson);
   } catch (err) {
     console.error("Error submitting mentor review:", err);
     throw new Error("Failed to submit mentor review.");
   }
 };
 
-export const fetchUnresolvedMentorReview = async () => {
+export const fetchUnresolvedMentorReview = async () => { //DONE
   try {
-    const res = await axios.get(`${BASE_URL}/mentor/review`);
-    return res.data;
+    const res = await axios.get(`${BASE_URL}/tutor-summary-pending-lessons`);
+    return res.data.data.lessonsWithEnrolledTutees.map(transformToFrontendFormat);
+    // const res = await axios.get(`${BASE_URL}/mentor/review`);
+    // return res.data;
   } catch (err) {
     console.error("Error getting mentor review:", err);
     throw new Error("Failed to get mentor review.");
@@ -223,29 +237,31 @@ export const fetchUnresolvedMentorReview = async () => {
   Student Actions
 ========================= */
 
-export const getStudentLessons = async () => {
+export const getStudentLessons = async () => { //DONE
   try {
-    const res = await axios.get(`${BASE_URL}/student/my-lessons`);
-    // return res.data;
-    return res.data.map((lesson) => transformToFrontendFormat(lesson));
+  //   const res = await axios.get(`${BASE_URL}/student/my-lessons`);
+  //   // return res.data;
+  //   return res.data.data.map((lesson) => transformToFrontendFormat(lesson));
+  const res = await axios.get(`${BASE_URL}/tutee-upcoming-lessons`);
+    return res.data.data.lessonsWithEnrolledTutees.map(transformToFrontendFormat);
   } catch (err) {
     console.error("Error fetching student lessons:", err);
     throw new Error("Failed to fetch student lessons.");
   }
 };
 
-export const getStudentNextLesson = async () => {
-  try {
-    const res = await axios.get(`${BASE_URL}/student/next`, authHeaders(token));
-    // return res.data;
-    return transformToFrontendFormat(res.data);
-  } catch (err) {
-    console.error("Error fetching next student lesson:", err);
-    throw new Error("Failed to fetch next student lesson.");
-  }
-};
+// export const getStudentNextLesson = async () => { //DELELTE!!!
+//   try {
+//     const res = await axios.get(`${BASE_URL}/student/next`, authHeaders(token));
+//     // return res.data;
+//     return transformToFrontendFormat(res.data);
+//   } catch (err) {
+//     console.error("Error fetching next student lesson:", err);
+//     throw new Error("Failed to fetch next student lesson.");
+//   }
+// };
 
-export const getStudentLastLesson = async () => {
+export const getStudentLastLesson = async () => { ///HANDLE OUR OUR OWN - STUPID SOLUTION!!
   try {
     const res = await axios.get(`${BASE_URL}/student/last`);
     // return res.data;
@@ -257,13 +273,14 @@ export const getStudentLastLesson = async () => {
 };
 
 export const registerToLesson = async (lessonId) => {
-  //TODO
   try {
-    const res = await axios.post(
-      `${BASE_URL}/student/register/${lessonId}`,
-      {}
-    );
-    return res.data;
+    // const res = await axios.post(
+    //   `${BASE_URL}/student/register/${lessonId}`,
+    //   {}
+    // );
+    // return res.data;
+    const res = await axios.post(`${BASE_URL}/enroll`, { lessonId });
+    return transformToFrontendFormat(res.data.data.lesson);
   } catch (err) {
     console.error("Error registering to lesson:", err);
     throw new Error("Failed to register to lesson.");
@@ -272,18 +289,20 @@ export const registerToLesson = async (lessonId) => {
 
 export const unregisterFromLesson = async (lessonId) => {
   try {
-    const res = await axios.post(
-      `${BASE_URL}/student/unregister/${lessonId}`,
-      {}
-    );
-    return res.data;
+    // const res = await axios.post(
+    //   `${BASE_URL}/student/unregister/${lessonId}`,
+    //   {}
+    // );
+    // return res.data;
+    const res = await axios.delete(`${BASE_URL}/withdraw`, { data: { lessonId } });
+    return transformToFrontendFormat(res.data.lesson);
   } catch (err) {
     console.error("Error unregistering from lesson:", err);
     throw new Error("Failed to unregister from lesson.");
   }
 };
 
-export const submitStudentReview = async (lessonId, reviewData) => {
+export const submitStudentReview = async (lessonId, reviewData) => { //WHAT???
   try {
     console.log("📝 Submitting student review:", { lessonId, reviewData });
     const res = await axios.post(
@@ -294,6 +313,16 @@ export const submitStudentReview = async (lessonId, reviewData) => {
   } catch (err) {
     console.error("Error submitting student review:", err);
     throw new Error("Failed to submit student review.");
+  }
+};
+
+export const fetchUnresolvedStudentReview = async () => {
+  try {
+    const res = await axios.get(`${BASE_URL}/tutee-review-pending-lessons`);
+    return res.data.data.lessonsWithEnrolledTutees.map(transformToFrontendFormat);
+  } catch (err) {
+    console.error("Error getting student review:", err);
+    throw new Error("Failed to get student review.");
   }
 };
 

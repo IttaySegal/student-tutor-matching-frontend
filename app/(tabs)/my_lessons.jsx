@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { View, FlatList, StyleSheet, Text } from "react-native";
 import { useAuth } from "../../context/AuthContext";
 import { useLesson } from "@context/LessonContext";
@@ -15,6 +15,7 @@ export default function MyLessonSscreen() {
   } = useLesson();
   const [selectedLesson, setSelectedLesson] = React.useState(null);
   const [isDetailsModalVisible, setIsDetailsModalVisible] = React.useState(false);
+  const [refreshing, setRefreshing] = useState(false);  
 
   const fetchLessons = async () => {
     if (user?.role === "mentor") {
@@ -31,6 +32,13 @@ export default function MyLessonSscreen() {
   useEffect(() => {
     fetchLessons();
   }, []);
+
+    // 🆕 Pull-to-Refresh handler
+  const handleRefresh = useCallback(async () => {
+      setRefreshing(true);
+      await fetchLessons();
+      setRefreshing(false);
+    }, [user]);
 
   const handleLessonPress = (lesson) => {
     setSelectedLesson(lesson);
@@ -65,6 +73,8 @@ export default function MyLessonSscreen() {
         ListEmptyComponent={
           <Text className="text-white text-center mt-10">No lessons found.</Text>
         }
+        refreshing={refreshing}       
+        onRefresh={handleRefresh}  
       />
       {selectedLesson && (
         <LessonDetailsModal

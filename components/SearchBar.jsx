@@ -14,7 +14,7 @@ const SearchBar = ({ onSearch, isLoading }) => {
     onSearch({
       subject: selectedSubject,
       grade: selectedGrade,
-      group: selectedGroup || "General",
+      level: selectedGroup || "General",
     });
   };
 

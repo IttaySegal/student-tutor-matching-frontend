@@ -69,10 +69,10 @@ export const LessonProvider = ({ children }) => {
     setMentorLessons(data);
   });
 
-  const fetchUpcomingLessons = async () => wrap(async () => {
-    const data = await LessonAPI.getUpcomingLessons();
-    setUpcomingLessons(data);
-  });
+  // const fetchUpcomingLessons = async () => wrap(async () => {
+  //   const data = await LessonAPI.getUpcomingLessons();
+  //   setUpcomingLessons(data);
+  // });
 
   const fetchLessonCount = async () => wrap(async () => {
     const data = await LessonAPI.getLessonCount();
@@ -112,7 +112,7 @@ export const LessonProvider = ({ children }) => {
       await LessonAPI.submitMentorReview(lessonId, reviewData);
     });
 
-  const fetchReviwes = async () =>
+  const fetchMentorReviwes = async () =>
     wrap(async () => {
       await LessonAPI.fetchUnresolvedMentorReview();
     });
@@ -124,10 +124,10 @@ export const LessonProvider = ({ children }) => {
     setStudentLessons(data);
   });
 
-  const fetchStudentNextLesson = async () => wrap(async () => {
-    const data = await LessonAPI.getStudentNextLesson();
-    setStudentNextLesson(data);
-  });
+  // const fetchStudentNextLesson = async () => wrap(async () => {
+  //   const data = await LessonAPI.getStudentNextLesson();
+  //   setStudentNextLesson(data);
+  // });
 
   const fetchStudentLastLesson = async () => wrap(async () => {
     const data = await LessonAPI.getStudentLastLesson();
@@ -143,7 +143,7 @@ export const LessonProvider = ({ children }) => {
   });
 
   const submitStudentReview = async (lessonId, reviewData) => wrap(async () => {
-    console.log("📝 Context: Submitting student review");
+    console.log(" Context: Submitting student review");
     await LessonAPI.submitStudentReview(lessonId, reviewData);
     await fetchStudentLessons();
     showToast({
@@ -151,6 +151,12 @@ export const LessonProvider = ({ children }) => {
       type: "success"
     });
   });
+
+  const fetchStudentReview = async () =>
+    wrap(async () => {
+      await LessonAPI.fetchUnresolvedStudentReview();
+    });
+
   // ================= Admin =================
   const fetchAllLessons = async () => wrap(async () => {
     const data = await LessonAPI.getAllLessons();
@@ -189,23 +195,24 @@ export const LessonProvider = ({ children }) => {
     lessonCount,
     nextMentorLesson,
     fetchMentorLessons,
-    fetchUpcomingLessons,
+    // fetchUpcomingLessons,
     fetchLessonCount,
     fetchNextMentorLesson,
     createNewLesson,
     updateLesson,
     deleteLesson,
     submitReview,
-    fetchReviwes,
+    fetchMentorReviwes,
     // Student
     studentLessons,
     studentNextLesson,
     studentLastLesson,
     fetchStudentLessons,
-    fetchStudentNextLesson,
+    // fetchStudentNextLesson,
     fetchStudentLastLesson,
     registerLesson,
     unregisterLesson,
+    fetchStudentReview,
     // Admin
     allLessons,
     fetchAllLessons,

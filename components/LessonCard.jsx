@@ -13,6 +13,7 @@ export default function LessonCard({
   students,
   lessonLocation,
   format,
+  level,
   ModalComponent,
   modalProps = {},
   onPress,
@@ -61,7 +62,7 @@ export default function LessonCard({
           onClose={() => setVisible(false)}
           subject={subject}
           grade={grade}
-          date={date}
+          level={level} 
           day={day}
           startTime={startTime}
           endTime={endTime}

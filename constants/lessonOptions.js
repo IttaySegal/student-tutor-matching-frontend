@@ -14,9 +14,9 @@ export const subjectsWithGroups = {
   ];
   
   export const grades = [
-    { label: "Grade 7", value: "Grade 7" },
-    { label: "Grade 8", value: "Grade 8" },
-    { label: "Grade 9", value: "Grade 9" },
+    { label: "7", value: "Grade 7" },
+    { label: "8", value: "Grade 8" },
+    { label: "9", value: "Grade 9" },
   ];
   
   export const lessonTypes = [

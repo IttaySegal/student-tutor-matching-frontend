@@ -19,10 +19,25 @@ const RegisterLesson = () => {
 
   const [isSearching, setIsSearching] = useState(false);
 
-  const handleSearch = async ({ subject, grade, group }) => {
+  const handleSearch = async ({ subject, grade, level }) => { ///TODO - i dont understand why need to pass user id
+    console.log("🔍 Search button clicked!");
+
+    if (!subject|| !grade) {
+      console.log("❗ Please select both subject and grade before searching.");
+      return;
+    }
+  
+    const transformedData = {
+      subjectName: subject,
+      grade: grade,
+      level: level || "General",
+    };
+  
+    console.log("🔎 Sending filters:", transformedData);
+  
     setIsSearching(true);
     try {
-      await searchLessons({ subject, grade, group });
+      await searchLessons(transformedData);
     } catch (error) {
       console.error("Search failed:", error);
     } finally {

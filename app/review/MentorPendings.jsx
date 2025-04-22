@@ -6,15 +6,19 @@ import LessonReviewMentor from "@components/LessonReviewMentor";
 
 // In MentorPendings.jsx
 export default function MentorPendings() {
-    const { mentorLessons, fetchMentorLessons } = useLesson();
+  const { fetchMentorReviwes, mentorLessons } = useLesson(); // Add fetchMentorReviwes
+    // const { mentorLessons, fetchMentorLessons } = useLesson();
     const [selectedLesson, setSelectedLesson] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false);
+    const [pendingLessons, setPendingLessons] = useState([]); // Add state for pending lessons
+
   
     const handleRefresh = async () => {
       setIsRefreshing(true);
       try {
-        await fetchMentorLessons();
+        const reviews = await fetchMentorReviwes(); // Use fetchMentorReviwes instead
+        setPendingLessons(reviews); // Set the pending lessons from the response
       } catch (error) {
         console.error('Error refreshing lessons:', error);
       }
@@ -25,9 +29,9 @@ export default function MentorPendings() {
       handleRefresh();
     }, []);
   
-    const pendingLessons = mentorLessons.filter(
-      (lesson) => lesson.status === "completed" && !lesson.mentorReview
-    );
+    // const pendingLessons = mentorLessons.filter(
+    //   (lesson) => lesson.status === "completed" && !lesson.mentorReview
+    // );
   
     const handleLessonPress = (lesson) => {
       setSelectedLesson(lesson);

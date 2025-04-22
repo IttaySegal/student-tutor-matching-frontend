@@ -6,15 +6,20 @@ import LessonReviewStudent from "@components/LessonReviewStudent";
 
 
 export default function StudentPendings() {
-    const { studentLessons, fetchStudentLessons, submitStudentReview } = useLesson();
+    const { fetchStudentReview, studentLessons, submitStudentReview } = useLesson(); // Add fetchMentorReviwes
+  
+    // const { studentLessons, fetchStudentLessons, submitStudentReview } = useLesson();
     const [selectedLesson, setSelectedLesson] = useState(null);
     const [modalVisible, setModalVisible] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false);
+    const [pendingLessons, setPendingLessons] = useState([]); // Add state for pending lessons
+    
   
     const handleRefresh = async () => {
       setIsRefreshing(true);
       try {
-        await fetchStudentLessons();
+        const reviews = await fetchStudentReview(); // Use fetchMentorReviwes instead
+        setPendingLessons(reviews); // Set the pending lessons from the response;
       } catch (error) {
         console.error('Error refreshing lessons:', error);
       }
@@ -25,9 +30,9 @@ export default function StudentPendings() {
       handleRefresh();
     }, []);
   
-    const pendingLessons = studentLessons.filter(
-      (lesson) => lesson.status === "completed" && !lesson.studentReview
-    );
+    // const pendingLessons = studentLessons.filter(
+    //   (lesson) => lesson.status === "completed" && !lesson.studentReview
+    // );
   
     const handleLessonPress = (lesson) => {
       setSelectedLesson(lesson);

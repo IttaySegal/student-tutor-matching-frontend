@@ -78,11 +78,36 @@ export default function LessonDetailsModal({
     }
   };
 
+  // const handleSaveChanges = async (newDescription, newLocation) => {
+  //   await updateLesson(id, {
+  //     description: newDescription,
+  //     location: newLocation,
+  //   });
+  //   setIsEditModalVisible(false);
+  //   onClose();
+  // };
   const handleSaveChanges = async (newDescription, newLocation) => {
-    await updateLesson(id, {
+    // Get the current lesson data
+    const currentLesson = {
+      subject,
+      grade,
+      level,  // This should be passed as a prop if needed
+      description,
+      date,
+      time: startTime,  // Using startTime as the time
+      format,
+      location: lessonLocation,
+    };
+  
+    // Update only the changed fields
+    const updatedLesson = {
+      ...currentLesson,
       description: newDescription,
-      location: newLocation,
-    });
+      location: newLocation
+    };
+  
+    // Send the complete lesson object
+    await updateLesson(id, updatedLesson);
     setIsEditModalVisible(false);
     onClose();
   };
