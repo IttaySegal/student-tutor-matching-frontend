@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
 
 export default function LessonCard({
+  id,
   subject,
   grade,
   date,
@@ -60,6 +61,7 @@ export default function LessonCard({
         <ModalComponent
           visible={visible}
           onClose={() => setVisible(false)}
+          id={id}
           subject={subject}
           grade={grade}
           level={level} 

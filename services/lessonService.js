@@ -32,6 +32,7 @@ const convertToISO = (date, time) => {
 // Frontend to Backend transformation
 const transformToBackendFormat = (lessonData) => {
   return {
+    lessonId: lessonData.id,
     subjectName: lessonData.subject,
     grade: lessonData.grade,
     level: lessonData.group, // Map group to level
@@ -45,7 +46,7 @@ const transformToBackendFormat = (lessonData) => {
 // Backend to Frontend transformation
 const transformToFrontendFormat = (lessonData) => {
   return {
-    id: lessonData.lessonId,   // ✅ Add this line
+    id: lessonData.lessonId,   
     subject: lessonData.subjectName,
     grade: lessonData.grade,
     level: lessonData.level,
@@ -279,8 +280,10 @@ export const registerToLesson = async (lessonId) => {
     //   {}
     // );
     // return res.data;
+    console.log("📝 Attempting to register for lesson:", lessonId);
     const res = await axios.post(`${BASE_URL}/enroll`, { lessonId });
-    return transformToFrontendFormat(res.data.data.lesson);
+    console.log("✅ Registration response:", res.data.data.enrollment);
+    return transformToFrontendFormat(res.data.data.enrollment);
   } catch (err) {
     console.error("Error registering to lesson:", err);
     throw new Error("Failed to register to lesson.");
@@ -295,7 +298,7 @@ export const unregisterFromLesson = async (lessonId) => {
     // );
     // return res.data;
     const res = await axios.delete(`${BASE_URL}/withdraw`, { data: { lessonId } });
-    return transformToFrontendFormat(res.data.lesson);
+    return transformToFrontendFormat(res.data.data.lesson);
   } catch (err) {
     console.error("Error unregistering from lesson:", err);
     throw new Error("Failed to unregister from lesson.");

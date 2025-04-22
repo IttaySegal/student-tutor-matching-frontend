@@ -8,6 +8,7 @@ import CloseButton from "./CloseButton";
 export default function LessonEditModal({
   visible,
   onClose,
+  id,
   subject,
   grade,
   date,

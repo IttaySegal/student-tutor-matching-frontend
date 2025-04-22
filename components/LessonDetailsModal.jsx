@@ -13,6 +13,7 @@ import { Feather } from "@expo/vector-icons";
 export default function LessonDetailsModal({
   visible,
   onClose,
+  id,
   subject,
   grade,
   date,
@@ -24,7 +25,6 @@ export default function LessonDetailsModal({
   students = [],
   format,
   lessonLocation,
-  id,
   isMyLessons = false,
   onUnregisterSuccess,
 }) {
@@ -89,6 +89,7 @@ export default function LessonDetailsModal({
   const handleSaveChanges = async (newDescription, newLocation) => {
     // Get the current lesson data
     const currentLesson = {
+      id,
       subject,
       grade,
       level,  // This should be passed as a prop if needed
@@ -98,6 +99,8 @@ export default function LessonDetailsModal({
       format,
       location: lessonLocation,
     };
+    console.log("=========currentLesson===========");
+    console.log(currentLesson);
   
     // Update only the changed fields
     const updatedLesson = {
@@ -105,6 +108,8 @@ export default function LessonDetailsModal({
       description: newDescription,
       location: newLocation
     };
+    console.log("=========updateLesson===========");
+    console.log(currentLesson);
   
     // Send the complete lesson object
     await updateLesson(id, updatedLesson);
