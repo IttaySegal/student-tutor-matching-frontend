@@ -20,11 +20,13 @@ import {
   lessonTypes,
 } from "../../constants/lessonOptions";
 import { useLesson } from "@context/LessonContext";
+import { useAuth } from "@context/AuthContext";
 
 export default function CreateLesson() {
   const { createNewLesson } = useLesson();
   const { showToast } = useToast();
-
+  const { user } = useAuth();
+  const availableSubjects = user?.subjects || [];
   const [subject, setSubject] = useState("");
   const [grade, setGrade] = useState("");
   const [group, setGroup] = useState("");
@@ -120,7 +122,8 @@ export default function CreateLesson() {
         <View className="w-full gap-4 mb-6">
           <SelectList
             setSelected={setSubject}
-            data={subjects.map((s) => ({ key: s.value, value: s.value }))}
+            // data={subjects.map((s) => ({ key: s.value, value: s.value }))}
+            data={availableSubjects.map((s) => ({ key: s, value: s }))}
             placeholder="Select Subject"
             testID="subject-select"
             {...sharedStyles}
