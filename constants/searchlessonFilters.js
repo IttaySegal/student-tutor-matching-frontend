@@ -1,13 +1,13 @@
 // Subjects with groups
 export const subjectsWithGroups = {
-  Mathematics: ["1", "2", "3"],
+  Math: ["1", "2", "3"],
   English: ["A", "B"],
   Physics: ["Advanced", "Basic"],
 };
 
 // All subjects
 export const subjects = [
-  { key: "Mathematics", value: "Mathematics" },
+  { key: "Math", value: "Math" },
   { key: "English", value: "English" },
   { key: "Physics", value: "Physics" },
   { key: "Civics", value: "Civics" },
@@ -17,8 +17,7 @@ export const subjects = [
 
 // Grades
 export const grades = [
-  { key: "7", value: "Grade 7" },
-  { key: "8", value: "Grade 8" },
-  { key: "9", value: "Grade 9" }, 
+  { key: "7", value: "7" },
+  { key: "8", value: "8" },
+  { key: "9", value: "9" },
 ];
-  

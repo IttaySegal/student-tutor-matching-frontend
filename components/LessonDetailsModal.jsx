@@ -27,6 +27,7 @@ export default function LessonDetailsModal({
   lessonLocation,
   isMyLessons = false,
   onUnregisterSuccess,
+  onRegisterSuccess,
 }) {
   const { user } = useAuth();
   const [isEditModalVisible, setIsEditModalVisible] = useState(false);
@@ -48,6 +49,7 @@ export default function LessonDetailsModal({
         message: "Register to lesson successfully!",
         type: "success",
       });
+      onRegisterSuccess?.();
       onClose();
     } catch (error) {
       showToast({
@@ -77,45 +79,6 @@ export default function LessonDetailsModal({
       });
     }
   };
-
-  // const handleSaveChanges = async (newDescription, newLocation) => {
-  //   await updateLesson(id, {
-  //     description: newDescription,
-  //     location: newLocation,
-  //   });
-  //   setIsEditModalVisible(false);
-  //   onClose();
-  // };
-  // const handleSaveChanges = async (newDescription, newLocation) => {
-  //   // Get the current lesson data
-  //   const currentLesson = {
-  //     id,
-  //     subject,
-  //     grade,
-  //     level,  // This should be passed as a prop if needed
-  //     description,
-  //     date,
-  //     time: startTime,  // Using startTime as the time
-  //     format,
-  //     location: lessonLocation,
-  //   };
-  //   console.log("=========currentLesson===========");
-  //   console.log(currentLesson);
-
-  //   // Update only the changed fields
-  //   const updatedLesson = {
-  //     ...currentLesson,
-  //     description: newDescription,
-  //     location: newLocation
-  //   };
-  //   console.log("=========updateLesson===========");
-  //   console.log(currentLesson);
-
-  //   // Send the complete lesson object
-  //   await updateLesson(id, updatedLesson);
-  //   setIsEditModalVisible(false);
-  //   onClose();
-  // };
 
   const handleSaveChanges = async (newDescription, newLocation) => {
     try {

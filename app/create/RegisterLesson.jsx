@@ -18,6 +18,7 @@ const RegisterLesson = () => {
   } = useLesson();
 
   const [isSearching, setIsSearching] = useState(false);
+  const [lastSearchFilters, setLastSearchFilters] = useState(null);
 
   const handleSearch = async ({ subject, grade, level }) => { ///TODO - i dont understand why need to pass user id
     console.log("🔍 Search button clicked!");
@@ -38,6 +39,7 @@ const RegisterLesson = () => {
     setIsSearching(true);
     try {
       await searchLessons(transformedData);
+      setLastSearchFilters(transformedData); // Store the last search filters
     } catch (error) {
       console.error("Search failed:", error);
     } finally {
@@ -48,6 +50,12 @@ const RegisterLesson = () => {
   const handleLessonPress = (lesson) => {
     setSelectedLesson(lesson);
     setModalVisible(true);
+  };
+
+  const handleRegistrationSuccess = async () => {
+    if (lastSearchFilters) {
+      await searchLessons(lastSearchFilters); // Refresh the search results
+    }
   };
 
   return (
@@ -79,6 +87,7 @@ const RegisterLesson = () => {
             setSelectedLesson(null);
           }}
           isMyLessons={false}
+          onRegisterSuccess={handleRegistrationSuccess}
           {...selectedLesson}
         />
       )}
