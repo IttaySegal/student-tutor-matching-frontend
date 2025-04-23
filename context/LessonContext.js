@@ -16,7 +16,7 @@ export const LessonProvider = ({ children }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedLesson, setSelectedLesson] = useState(null);
 
-  // Mentor 
+  // Mentor
   const [mentorLessons, setMentorLessons] = useState([]);
   const [upcomingLessons, setUpcomingLessons] = useState([]);
   const [lessonCount, setLessonCount] = useState(null);
@@ -31,7 +31,6 @@ export const LessonProvider = ({ children }) => {
   const [allLessons, setAllLessons] = useState([]);
   const [pendingReviews, setPendingReviews] = useState([]);
 
-
   // Search
   const [searchResults, setSearchResults] = useState([]);
 
@@ -44,9 +43,9 @@ export const LessonProvider = ({ children }) => {
       console.error(err);
       setError(err.message || "An error occurred");
       showToast({
-        message: 'Error',
+        message: "Error",
         subMessage: err.message || "An error occurred",
-        type: "error"
+        type: "error",
       });
     } finally {
       setLoading(false);
@@ -64,48 +63,54 @@ export const LessonProvider = ({ children }) => {
   };
 
   // ================= Mentor =================
-  const fetchMentorLessons = async () => wrap(async () => {
-    const data = await LessonAPI.getLessonsByUser();
-    setMentorLessons(data);
-  });
+  const fetchMentorLessons = async () =>
+    wrap(async () => {
+      const data = await LessonAPI.getLessonsByUser();
+      setMentorLessons(data);
+    });
 
   // const fetchUpcomingLessons = async () => wrap(async () => {
   //   const data = await LessonAPI.getUpcomingLessons();
   //   setUpcomingLessons(data);
   // });
 
-  const fetchLessonCount = async () => wrap(async () => {
-    const data = await LessonAPI.getLessonCount();
-    setLessonCount(data);
-  });
-
-  const fetchNextMentorLesson = async () => wrap(async () => {
-    const data = await LessonAPI.getNextLesson();
-    setNextMentorLesson(data);
-  });
-
-  const updateLesson = async (id, updates) => wrap(async () => {
-    await LessonAPI.updateLesson(id, updates);
-    await fetchMentorLessons(); // refresh lessons
-    showToast({
-      message: 'Lesson updated successfully!',
-      type: "success"
+  const fetchLessonCount = async () =>
+    wrap(async () => {
+      const data = await LessonAPI.getLessonCount();
+      setLessonCount(data);
     });
-  });
-  
-  const deleteLesson = async (id) => wrap(async () => {
-    await LessonAPI.deleteLesson(id);
-    setMentorLessons(prev => prev.filter(lesson => lesson.id !== id));
-    showToast({
-      message: 'Lesson deleted successfully!',
-      type: "success"
-     });
-  });
 
-  const createNewLesson = async (lessonData) => wrap(async () => {
-    const newLesson = await LessonAPI.createLesson(lessonData);
-    setMentorLessons(prev => [...prev, newLesson]);
-  });
+  const fetchNextMentorLesson = async () =>
+    wrap(async () => {
+      const data = await LessonAPI.getNextLesson();
+      setNextMentorLesson(data);
+    });
+
+  const updateLesson = async (id, newDescription, newLocation) =>
+    wrap(async () => {
+      await LessonAPI.updateLesson(id, newDescription, newLocation);
+      await fetchMentorLessons(); // refresh lessons
+      showToast({
+        message: "Lesson updated successfully!",
+        type: "success",
+      });
+    });
+
+  const deleteLesson = async (id) =>
+    wrap(async () => {
+      await LessonAPI.deleteLesson(id);
+      setMentorLessons((prev) => prev.filter((lesson) => lesson.id !== id));
+      showToast({
+        message: "Lesson deleted successfully!",
+        type: "success",
+      });
+    });
+
+  const createNewLesson = async (lessonData) =>
+    wrap(async () => {
+      const newLesson = await LessonAPI.createLesson(lessonData);
+      setMentorLessons((prev) => [...prev, newLesson]);
+    });
 
   const submitReview = async (lessonId, reviewData) =>
     wrap(async () => {
@@ -117,40 +122,44 @@ export const LessonProvider = ({ children }) => {
       await LessonAPI.fetchUnresolvedMentorReview();
     });
 
-
   // ================= Student =================
-  const fetchStudentLessons = async () => wrap(async () => {
-    const data = await LessonAPI.getStudentLessons();
-    setStudentLessons(data);
-  });
+  const fetchStudentLessons = async () =>
+    wrap(async () => {
+      const data = await LessonAPI.getStudentLessons();
+      setStudentLessons(data);
+    });
 
   // const fetchStudentNextLesson = async () => wrap(async () => {
   //   const data = await LessonAPI.getStudentNextLesson();
   //   setStudentNextLesson(data);
   // });
 
-  const fetchStudentLastLesson = async () => wrap(async () => {
-    const data = await LessonAPI.getStudentLastLesson();
-    setStudentLastLesson(data);
-  });
-
-  const registerLesson = async (lessonId) => wrap(async () => {
-    await LessonAPI.registerToLesson(lessonId);
-  });
-
-  const unregisterLesson = async (lessonId) => wrap(async () => {
-    await LessonAPI.unregisterFromLesson(lessonId);
-  });
-
-  const submitStudentReview = async (lessonId, reviewData) => wrap(async () => {
-    console.log(" Context: Submitting student review");
-    await LessonAPI.submitStudentReview(lessonId, reviewData);
-    await fetchStudentLessons();
-    showToast({
-      message: 'Review submitted successfully!',
-      type: "success"
+  const fetchStudentLastLesson = async () =>
+    wrap(async () => {
+      const data = await LessonAPI.getStudentLastLesson();
+      setStudentLastLesson(data);
     });
-  });
+
+  const registerLesson = async (lessonId) =>
+    wrap(async () => {
+      await LessonAPI.registerToLesson(lessonId);
+    });
+
+  const unregisterLesson = async (lessonId) =>
+    wrap(async () => {
+      await LessonAPI.unregisterFromLesson(lessonId);
+    });
+
+  const submitStudentReview = async (lessonId, reviewData) =>
+    wrap(async () => {
+      console.log(" Context: Submitting student review");
+      await LessonAPI.submitStudentReview(lessonId, reviewData);
+      await fetchStudentLessons();
+      showToast({
+        message: "Review submitted successfully!",
+        type: "success",
+      });
+    });
 
   const fetchStudentReview = async () =>
     wrap(async () => {
@@ -158,29 +167,34 @@ export const LessonProvider = ({ children }) => {
     });
 
   // ================= Admin =================
-  const fetchAllLessons = async () => wrap(async () => {
-    const data = await LessonAPI.getAllLessons();
-    setAllLessons(data);
-  });
+  const fetchAllLessons = async () =>
+    wrap(async () => {
+      const data = await LessonAPI.getAllLessons();
+      setAllLessons(data);
+    });
 
-  const fetchPendingReviews = async () => wrap(async () => {
-    const data = await LessonAPI.getPendingReviews(); // from service
-    setPendingReviews(data);
-  });
+  const fetchPendingReviews = async () =>
+    wrap(async () => {
+      const data = await LessonAPI.getPendingReviews(); // from service
+      setPendingReviews(data);
+    });
 
-  const approveLesson = async (lessonId) => wrap(async () => {
-    await LessonAPI.approveLesson(lessonId);
-  });
+  const approveLesson = async (lessonId) =>
+    wrap(async () => {
+      await LessonAPI.approveLesson(lessonId);
+    });
 
-  const rejectLesson = async (lessonId) => wrap(async () => {
-    await LessonAPI.rejectLesson(lessonId);
-  });
+  const rejectLesson = async (lessonId) =>
+    wrap(async () => {
+      await LessonAPI.rejectLesson(lessonId);
+    });
 
   // ================= Search =================
-  const searchLessons = async (filters) => wrap(async () => {
-    const data = await LessonAPI.searchLessons(filters);
-    setSearchResults(data);
-  });
+  const searchLessons = async (filters) =>
+    wrap(async () => {
+      const data = await LessonAPI.searchLessons(filters);
+      setSearchResults(data);
+    });
 
   const value = {
     loading,
@@ -232,9 +246,6 @@ export const LessonProvider = ({ children }) => {
   };
 
   return (
-    <LessonContext.Provider value={value}>
-      {children}
-    </LessonContext.Provider>
+    <LessonContext.Provider value={value}>{children}</LessonContext.Provider>
   );
 };
-

@@ -133,6 +133,9 @@ export const createLesson = async (lessonData) => {
 //TODO -- verify the full lesson object is pass - check is students pass in the lesson object
 export const updateLesson = async (lessonId, description, locationOrLink) => {
   try {
+    console.log("🛠 INSIDE updateLesson");
+    console.log("description:", description);
+    console.log("locationOrLink:", locationOrLink);
     await axios.patch(`${BASE_URL}/edit`, {
       lessonId,
       description,

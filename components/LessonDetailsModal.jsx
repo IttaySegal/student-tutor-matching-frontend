@@ -119,6 +119,9 @@ export default function LessonDetailsModal({
 
   const handleSaveChanges = async (newDescription, newLocation) => {
     try {
+      console.log("🔍 BEFORE updateLesson:");
+      console.log("newDescription:", newDescription);
+      console.log("newLocation:", newLocation);
       await updateLesson(id, newDescription, newLocation);
       showToast({
         message: "Lesson updated successfully!",
