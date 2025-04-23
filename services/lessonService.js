@@ -46,7 +46,7 @@ const transformToBackendFormat = (lessonData) => {
 // Backend to Frontend transformation
 const transformToFrontendFormat = (lessonData) => {
   return {
-    id: lessonData.lessonId,   
+    id: lessonData.lessonId,
     subject: lessonData.subjectName,
     grade: lessonData.grade,
     level: lessonData.level,
@@ -92,13 +92,16 @@ export const searchLessons = async (filters) => {
    Mentor Actions
 ========================= */
 
-export const getLessonsByUser = async () => { ////DONE
+export const getLessonsByUser = async () => {
+  ////DONE
   try {
     // const res = await axios.get(`${BASE_URL}/mentor/my-lessons`);
     // return res.data.map((lesson) => transformToFrontendFormat(lesson));
     // // return res.data;
     const res = await axios.get(`${BASE_URL}/tutor-upcoming-lessons`);
-    return res.data.data.lessonsWithEnrolledTutees.map(transformToFrontendFormat);
+    return res.data.data.lessonsWithEnrolledTutees.map(
+      transformToFrontendFormat
+    );
   } catch (err) {
     console.error("Error fetching mentor lessons:", err);
     throw new Error("Failed to fetch mentor lessons.");
@@ -128,23 +131,13 @@ export const createLesson = async (lessonData) => {
 };
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 //TODO -- verify the full lesson object is pass - check is students pass in the lesson object
-export const updateLesson = async (lessonId, lessonData) => {
+export const updateLesson = async (lessonId, description, locationOrLink) => {
   try {
-    // const res = await axios.put(`${BASE_URL}/update/${id}`, lessonData);
-    // return res.data;
-    console.log(lessonData);
-
-    const payload = transformToBackendFormat(lessonData);
-    console.log("=========lesson to back=====================");
-
-    console.log(payload);
-
-    const res = await axios.patch(`${BASE_URL}/edit`, { lessonId, ...payload });    
-    const update_lesson = res.data.data.lesson;
-    console.log(update_lesson);
-
-    return transformToFrontendFormat(res.data.data.lesson);
-
+    await axios.patch(`${BASE_URL}/edit`, {
+      lessonId,
+      description,
+      locationOrLink,
+    });
   } catch (err) {
     console.error("Error updating lesson:", err);
     throw new Error("Failed to update lesson.");
@@ -170,7 +163,7 @@ export const deleteLesson = async (lessonId) => {
 //     // return res.data.map((lesson) => transformToFrontendFormat(lesson));
 //     const res = await axios.get(`${BASE_URL}/tutor-upcoming-lessons`);
 //     return res.data.data.lessonsWithEnrolledTutees.map(transformToFrontendFormat);
- 
+
 //     // return res.data;
 //   } catch (err) {
 //     console.error("Error fetching upcoming lessons:", err);
@@ -213,7 +206,7 @@ export const submitMentorReview = async (lessonId, reviewData) => {
     const res = await axios.patch(`${BASE_URL}/upload-lesson-report`, {
       lessonId,
       lessonSummary: reviewData.summary,
-      tuteesPresence: reviewData.presence
+      tuteesPresence: reviewData.presence,
     });
     return transformToFrontendFormat(res.data.updatedLesson);
   } catch (err) {
@@ -222,10 +215,13 @@ export const submitMentorReview = async (lessonId, reviewData) => {
   }
 };
 
-export const fetchUnresolvedMentorReview = async () => { //DONE
+export const fetchUnresolvedMentorReview = async () => {
+  //DONE
   try {
     const res = await axios.get(`${BASE_URL}/tutor-summary-pending-lessons`);
-    return res.data.data.lessonsWithEnrolledTutees.map(transformToFrontendFormat);
+    return res.data.data.lessonsWithEnrolledTutees.map(
+      transformToFrontendFormat
+    );
     // const res = await axios.get(`${BASE_URL}/mentor/review`);
     // return res.data;
   } catch (err) {
@@ -238,13 +234,16 @@ export const fetchUnresolvedMentorReview = async () => { //DONE
   Student Actions
 ========================= */
 
-export const getStudentLessons = async () => { //DONE
+export const getStudentLessons = async () => {
+  //DONE
   try {
-  //   const res = await axios.get(`${BASE_URL}/student/my-lessons`);
-  //   // return res.data;
-  //   return res.data.data.map((lesson) => transformToFrontendFormat(lesson));
-  const res = await axios.get(`${BASE_URL}/tutee-upcoming-lessons`);
-    return res.data.data.lessonsWithEnrolledTutees.map(transformToFrontendFormat);
+    //   const res = await axios.get(`${BASE_URL}/student/my-lessons`);
+    //   // return res.data;
+    //   return res.data.data.map((lesson) => transformToFrontendFormat(lesson));
+    const res = await axios.get(`${BASE_URL}/tutee-upcoming-lessons`);
+    return res.data.data.lessonsWithEnrolledTutees.map(
+      transformToFrontendFormat
+    );
   } catch (err) {
     console.error("Error fetching student lessons:", err);
     throw new Error("Failed to fetch student lessons.");
@@ -262,7 +261,8 @@ export const getStudentLessons = async () => { //DONE
 //   }
 // };
 
-export const getStudentLastLesson = async () => { ///HANDLE OUR OUR OWN - STUPID SOLUTION!!
+export const getStudentLastLesson = async () => {
+  ///HANDLE OUR OUR OWN - STUPID SOLUTION!!
   try {
     const res = await axios.get(`${BASE_URL}/student/last`);
     // return res.data;
@@ -297,7 +297,9 @@ export const unregisterFromLesson = async (lessonId) => {
     //   {}
     // );
     // return res.data;
-    const res = await axios.delete(`${BASE_URL}/withdraw`, { data: { lessonId } });
+    const res = await axios.delete(`${BASE_URL}/withdraw`, {
+      data: { lessonId },
+    });
     return transformToFrontendFormat(res.data.data.lesson);
   } catch (err) {
     console.error("Error unregistering from lesson:", err);
@@ -305,7 +307,8 @@ export const unregisterFromLesson = async (lessonId) => {
   }
 };
 
-export const submitStudentReview = async (lessonId, reviewData) => { //WHAT???
+export const submitStudentReview = async (lessonId, reviewData) => {
+  //WHAT???
   try {
     console.log("📝 Submitting student review:", { lessonId, reviewData });
     const res = await axios.post(
@@ -322,7 +325,9 @@ export const submitStudentReview = async (lessonId, reviewData) => { //WHAT???
 export const fetchUnresolvedStudentReview = async () => {
   try {
     const res = await axios.get(`${BASE_URL}/tutee-review-pending-lessons`);
-    return res.data.data.lessonsWithEnrolledTutees.map(transformToFrontendFormat);
+    return res.data.data.lessonsWithEnrolledTutees.map(
+      transformToFrontendFormat
+    );
   } catch (err) {
     console.error("Error getting student review:", err);
     throw new Error("Failed to get student review.");

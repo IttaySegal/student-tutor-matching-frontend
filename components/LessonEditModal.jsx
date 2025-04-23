@@ -51,7 +51,7 @@ export default function LessonEditModal({
       <View className="flex-1 bg-black/50 justify-center items-center">
         <View className="bg-white rounded-2xl p-6 w-11/12 max-w-md shadow-lg">
           <CloseButton onPress={onClose} />
-          
+
           <View className="w-full items-start mt-6">
             <Text className="text-xl font-bold text-gray-800 mb-3">
               Edit Lesson - {subject} – {grade}
@@ -63,12 +63,10 @@ export default function LessonEditModal({
               <Text className="text-gray-600">
                 From {startTime} to {endTime}
               </Text>
-              <Text className="text-gray-600 mt-1">
-                Mentor: {mentor}
-              </Text>
+              <Text className="text-gray-600 mt-1">Mentor: {mentor}</Text>
             </View>
           </View>
-          
+
           <TextInputField
             label="Lesson Description"
             value={localDescription}
@@ -76,21 +74,21 @@ export default function LessonEditModal({
             placeholder="Enter lesson description"
             multiline={true}
           />
-          
+
           <TextInputField
             label="Lesson Location"
             value={localLocation}
             onChangeText={setLocalLocation}
             placeholder="Enter location or Zoom link"
           />
-          
+
           <View className="w-full items-center mt-6">
             <CustomButton
               title="Save Changes"
               handlePress={handleSave}
               containerStyles="w-4/5 mb-4"
             />
-            
+
             <CustomButton
               title="Cancel Lesson"
               handlePress={handleDelete}

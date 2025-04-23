@@ -86,35 +86,55 @@ export default function LessonDetailsModal({
   //   setIsEditModalVisible(false);
   //   onClose();
   // };
+  // const handleSaveChanges = async (newDescription, newLocation) => {
+  //   // Get the current lesson data
+  //   const currentLesson = {
+  //     id,
+  //     subject,
+  //     grade,
+  //     level,  // This should be passed as a prop if needed
+  //     description,
+  //     date,
+  //     time: startTime,  // Using startTime as the time
+  //     format,
+  //     location: lessonLocation,
+  //   };
+  //   console.log("=========currentLesson===========");
+  //   console.log(currentLesson);
+
+  //   // Update only the changed fields
+  //   const updatedLesson = {
+  //     ...currentLesson,
+  //     description: newDescription,
+  //     location: newLocation
+  //   };
+  //   console.log("=========updateLesson===========");
+  //   console.log(currentLesson);
+
+  //   // Send the complete lesson object
+  //   await updateLesson(id, updatedLesson);
+  //   setIsEditModalVisible(false);
+  //   onClose();
+  // };
+
   const handleSaveChanges = async (newDescription, newLocation) => {
-    // Get the current lesson data
-    const currentLesson = {
-      id,
-      subject,
-      grade,
-      level,  // This should be passed as a prop if needed
-      description,
-      date,
-      time: startTime,  // Using startTime as the time
-      format,
-      location: lessonLocation,
-    };
-    console.log("=========currentLesson===========");
-    console.log(currentLesson);
-  
-    // Update only the changed fields
-    const updatedLesson = {
-      ...currentLesson,
-      description: newDescription,
-      location: newLocation
-    };
-    console.log("=========updateLesson===========");
-    console.log(currentLesson);
-  
-    // Send the complete lesson object
-    await updateLesson(id, updatedLesson);
-    setIsEditModalVisible(false);
-    onClose();
+    try {
+      await updateLesson(id, newDescription, newLocation);
+      showToast({
+        message: "Lesson updated successfully!",
+        type: "success",
+      });
+
+      setIsEditModalVisible(false);
+      onClose();
+    } catch (error) {
+      console.error("Error updating lesson:", error);
+      showToast({
+        message: "Failed to update lesson.",
+        subMessage: error.message || "Something went wrong",
+        type: "error",
+      });
+    }
   };
 
   const handleDeleteLesson = async () => {
