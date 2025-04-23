@@ -40,6 +40,17 @@ export default function CreateLesson() {
 
   const groupOptions = subjectsWithGroups[subject] || [];
 
+  const resetForm = () => {
+    setSubject("");
+    setGrade("");
+    setGroup("");
+    setDate(new Date());
+    setTime(new Date());
+    setLessonDescription("");
+    setLessonType("");
+    setLessonLocation("");
+  };
+
   const handleDateChange = (event, selectedDate) => {
     setShowDatePicker(false);
     if (selectedDate) setDate(selectedDate);
@@ -84,6 +95,7 @@ export default function CreateLesson() {
         subMessage: "Your lesson has been posted successfully",
         type: "success",
       });
+      resetForm();
     } catch (err) {
       showToast({
         message: "Error creating lesson",
