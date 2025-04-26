@@ -39,17 +39,49 @@ instance.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-
 /**
- * Response Interceptor - Handle 403 (expired token)
+ * Response Interceptor - Handle various error cases
  */
 instance.interceptors.response.use(
-    (response) => response, // ✅ Return successful responses as-is
+    (response) => {
+      // Handle successful responses
+      const { data } = response;
+      
+      // If the response has a success flag and it's false
+      if (data.success === false) {
+        const errorMessage = data.message || data.error || "Operation failed";
+        console.error("❌ Operation failed:", errorMessage);
+        return Promise.reject(new Error(errorMessage));
+      }
+      
+      return response;
+    },
   
     async (error) => {
       const originalRequest = error.config;
   
-      // Prevent infinite refresh loops
+      // Handle validation errors (400)
+      if (error.response?.status === 400) {
+        const errorData = error.response.data;
+        
+        // Check if it's a validation error with field details
+        if (errorData.details?.fields) {
+          // Format field-specific errors into a single message
+          const fieldErrors = Object.entries(errorData.details.fields)
+            .map(([field, messages]) => `${field}: ${messages.join(', ')}`)
+            .join('; ');
+          
+          console.error("🔍 Validation errors:", fieldErrors);
+          return Promise.reject(new Error(fieldErrors));
+        }
+        
+        // If it's a simple error message
+        const errorMessage = errorData.error || errorData.message || "Validation error";
+        console.error("🔍 Validation error:", errorMessage);
+        return Promise.reject(new Error(errorMessage));
+      }
+  
+      // Handle token expiration (403)
       const isTokenExpired = error.response?.status === 403;
       const isTokenInvalid = error.response?.status === 401;
   
@@ -83,7 +115,12 @@ instance.interceptors.response.use(
         await logout();
       }
   
-      return Promise.reject(error); // ❌ Forward error if not handled
+      // Handle other errors
+      const errorMessage = error.response?.data?.error || 
+                          error.response?.data?.message || 
+                          "An unexpected error occurred";
+      console.error("❌ Request failed:", errorMessage);
+      return Promise.reject(new Error(errorMessage));
     }
   );
 

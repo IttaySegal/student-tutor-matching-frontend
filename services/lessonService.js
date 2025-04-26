@@ -44,7 +44,7 @@ const transformToBackendFormat = (lessonData) => {
 };
 
 // Backend to Frontend transformation
-const transformToFrontendFormat = (lessonData) => {
+export const transformToFrontendFormat = (lessonData) => {
   return {
     id: lessonData.lessonId,
     subject: lessonData.subjectName,
