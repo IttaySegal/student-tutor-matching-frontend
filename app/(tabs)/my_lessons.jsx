@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useLesson } from "@context/LessonContext";
 import LessonCard from "../../components/LessonCard";
 import LessonDetailsModal from "../../components/LessonDetailsModal";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function MyLessonSscreen() {
   const { user } = useAuth();
@@ -14,8 +15,9 @@ export default function MyLessonSscreen() {
     fetchStudentLessons,
   } = useLesson();
   const [selectedLesson, setSelectedLesson] = React.useState(null);
-  const [isDetailsModalVisible, setIsDetailsModalVisible] = React.useState(false);
-  const [refreshing, setRefreshing] = useState(false);  
+  const [isDetailsModalVisible, setIsDetailsModalVisible] =
+    React.useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const fetchLessons = async () => {
     if (user?.role === "mentor") {
@@ -29,16 +31,21 @@ export default function MyLessonSscreen() {
     }
   };
 
-  useEffect(() => {
-    fetchLessons();
-  }, []);
+  // useEffect(() => {
+  //   fetchLessons();
+  // }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchLessons();
+    }, [user])
+  );
 
-    // 🆕 Pull-to-Refresh handler
+  // 🆕 Pull-to-Refresh handler
   const handleRefresh = useCallback(async () => {
-      setRefreshing(true);
-      await fetchLessons();
-      setRefreshing(false);
-    }, [user]);
+    setRefreshing(true);
+    await fetchLessons();
+    setRefreshing(false);
+  }, [user]);
 
   const handleLessonPress = (lesson) => {
     setSelectedLesson(lesson);
@@ -53,10 +60,7 @@ export default function MyLessonSscreen() {
   };
 
   const renderLessonItem = ({ item }) => (
-    <LessonCard
-      {...item}
-      onPress={() => handleLessonPress(item)}
-    />
+    <LessonCard {...item} onPress={() => handleLessonPress(item)} />
   );
 
   const lessonList = user?.role === "mentor" ? mentorLessons : studentLessons;
@@ -71,10 +75,12 @@ export default function MyLessonSscreen() {
         renderItem={renderLessonItem}
         keyExtractor={(item) => item.id.toString()}
         ListEmptyComponent={
-          <Text className="text-white text-center mt-10">No lessons found.</Text>
+          <Text className="text-white text-center mt-10">
+            No lessons found.
+          </Text>
         }
-        refreshing={refreshing}       
-        onRefresh={handleRefresh}  
+        refreshing={refreshing}
+        onRefresh={handleRefresh}
       />
       {selectedLesson && (
         <LessonDetailsModal
