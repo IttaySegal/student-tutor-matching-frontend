@@ -27,7 +27,7 @@ export const LessonProvider = ({ children }) => {
   const [studentLessons, setStudentLessons] = useState([]);
   const [studentNextLesson, setStudentNextLesson] = useState(null);
   const [studentLastLesson, setStudentLastLesson] = useState(null);
-
+  const [pendingStudentReviews, setPendingStudentReviews] = useState([]);
   //  Admin
   const [allLessons, setAllLessons] = useState([]);
 
@@ -171,7 +171,9 @@ export const LessonProvider = ({ children }) => {
 
   const fetchStudentReview = async () =>
     wrap(async () => {
-      await LessonAPI.fetchUnresolvedStudentReview();
+      const data = await LessonAPI.fetchUnresolvedStudentReview();
+      console.log("📦 Student Pending Reviews Data:", data); // Debug
+      setPendingStudentReviews(data); // שמור לסטייט החדש
     });
 
   // ================= Admin =================
@@ -235,6 +237,7 @@ export const LessonProvider = ({ children }) => {
     registerLesson,
     unregisterLesson,
     fetchStudentReview,
+    pendingStudentReviews,
     // Admin
     allLessons,
     fetchAllLessons,
