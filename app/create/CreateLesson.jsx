@@ -37,6 +37,7 @@ export default function CreateLesson() {
   const [lessonDescription, setLessonDescription] = useState("");
   const [lessonType, setLessonType] = useState("");
   const [lessonLocation, setLessonLocation] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const groupOptions = subjectsWithGroups[subject] || [];
 
@@ -77,6 +78,7 @@ export default function CreateLesson() {
     });
 
   const handleCreateLesson = async () => {
+    setIsSubmitting(true);
     try {
       const lessonData = {
         subject,
@@ -102,6 +104,8 @@ export default function CreateLesson() {
         subMessage: err.message || "Something went wrong",
         type: "error",
       });
+    } finally {
+      setIsSubmitting(false); // סיום טעינה
     }
   };
 
@@ -273,6 +277,7 @@ export default function CreateLesson() {
         <CustomButton
           title="Create Lesson"
           handlePress={handleCreateLesson}
+          isLoading={isSubmitting}
           containerStyles="mt-4 w-full"
           disabled={!isFormValid}
           testID="create-button"
