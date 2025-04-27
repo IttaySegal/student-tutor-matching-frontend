@@ -219,7 +219,6 @@ export const submitMentorReview = async (lessonId, reviewData) => {
 };
 
 export const fetchUnresolvedMentorReview = async () => {
-  //DONE
   try {
     const res = await axios.get(`${BASE_URL}/tutor-summary-pending-lessons`);
     return res.data.data.lessonsWithEnrolledTutees.map(

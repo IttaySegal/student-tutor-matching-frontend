@@ -21,6 +21,7 @@ export const LessonProvider = ({ children }) => {
   const [upcomingLessons, setUpcomingLessons] = useState([]);
   const [lessonCount, setLessonCount] = useState(null);
   const [nextMentorLesson, setNextMentorLesson] = useState(null);
+  const [pendingReviews, setPendingReviews] = useState([]);
 
   //  Student
   const [studentLessons, setStudentLessons] = useState([]);
@@ -29,7 +30,6 @@ export const LessonProvider = ({ children }) => {
 
   //  Admin
   const [allLessons, setAllLessons] = useState([]);
-  const [pendingReviews, setPendingReviews] = useState([]);
 
   // Search
   const [searchResults, setSearchResults] = useState([]);
@@ -118,9 +118,16 @@ export const LessonProvider = ({ children }) => {
       await LessonAPI.submitMentorReview(lessonId, reviewData);
     });
 
+  // const fetchMentorReviwes = async () =>
+  //   wrap(async () => {
+  //     await LessonAPI.fetchUnresolvedMentorReview();
+  //   });
+
   const fetchMentorReviwes = async () =>
     wrap(async () => {
-      await LessonAPI.fetchUnresolvedMentorReview();
+      const data = await LessonAPI.fetchUnresolvedMentorReview(); // 👈 לקרוא
+      console.log("📦 Pending Reviews Data:", data); // ➡️ הוסף את זה
+      setPendingReviews(data); // 👈 לשמור
     });
 
   // ================= Student =================
