@@ -77,17 +77,6 @@ export const searchLessons = async (filters) => {
   }
 };
 
-// export const getLessonById = async (id) => { //not exist!!!
-//   try {
-//     const res = await axios.get(`${BASE_URL}/${id}`);
-//     // return res.data;
-//     return transformToFrontendFormat(res.data);
-//   } catch (err) {
-//     console.error("Error fetching lesson:", err);
-//     throw new Error("Failed to get lesson.");
-//   }
-// };
-
 /* =========================
    Mentor Actions
 ========================= */
@@ -218,7 +207,7 @@ export const submitMentorReview = async (lessonId, reviewData) => {
       lessonSummary: reviewData.lessonSummary,
       tuteesPresence: reviewData.tuteesPresence,
     });
-    return res.data; // אפשר לא לקרוא ל-transformToFrontendFormat במקרה הזה
+    return res.data;
   } catch (err) {
     console.error("Error submitting mentor review:", err);
     throw new Error("Failed to submit mentor review.");
@@ -316,38 +305,16 @@ export const unregisterFromLesson = async (lessonId) => {
   }
 };
 
-// export const submitStudentReview = async (reviewData) => {
-//   try {
-//     console.log("📝 Submitting student review:", reviewData);
-//     const res = await axios.patch(`${BASE_URL}/lessons/review`, reviewData);
-//     return res.data;
-//     // } catch (err) {
-//     //   console.error("Error submitting student review:", err);
-//     //   throw new Error("Failed to submit student review.");
-//     // }
-//   } catch (err) {
-//     if (err.response) {
-//       console.error("❗ Server responded with error:", err.response.data);
-//     } else if (err.request) {
-//       console.error("❗ No response received:", err.request);
-//     } else {
-//       console.error("❗ Error setting up the request:", err.message);
-//     }
-//     throw new Error("Failed to submit student review.");
-//   }
-// };
-
 export const submitStudentReview = async (reviewData) => {
   try {
     console.log("📤 LessonAPI: Submitting student review:", reviewData);
-    const { lessonId, clarity, understanding, focus, helpful } = reviewData;
 
-    const res = await axios.patch(`${BASE_URL}/lessons/review`, {
-      lessonId,
-      clarity,
-      understanding,
-      focus,
-      helpful,
+    const res = await axios.patch(`${BASE_URL}/review`, {
+      lessonId: reviewData.lessonId,
+      clarity: reviewData.clarity,
+      understanding: reviewData.understanding,
+      focus: reviewData.focus,
+      helpful: reviewData.helpful,
     });
 
     return res.data;
