@@ -352,6 +352,8 @@ export const getAllLessons = async () => {
   }
 };
 
+/////-------------------- TODO ----------------------------------------//
+// Lessons/patch_lessons_update_lesson_verdict
 export const approveLesson = async (lessonId) => {
   try {
     const res = await axios.post(`${BASE_URL}/admin/approve/${lessonId}`, {});
@@ -371,7 +373,10 @@ export const rejectLesson = async (lessonId) => {
     throw new Error("Failed to reject lesson.");
   }
 };
+/////----------------------------------------------------------------------//
 
+/////-------------------- TODO ----------------------------------------//
+// Lessons/get_lessons_verdict_pending_lessons
 export const getPendingReviews = async () => {
   try {
     const res = await axios.get(`${BASE_URL}/admin/pending-reviews`);

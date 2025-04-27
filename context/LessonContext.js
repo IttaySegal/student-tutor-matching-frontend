@@ -47,6 +47,7 @@ export const LessonProvider = ({ children }) => {
         subMessage: err.message || "An error occurred",
         type: "error",
       });
+      throw err;
     } finally {
       setLoading(false);
     }
