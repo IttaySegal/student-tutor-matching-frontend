@@ -41,6 +41,7 @@ export default function LessonDetailsModal({
     fetchMentorLessons,
   } = useLesson();
   const { showToast } = useToast();
+  console.log("🔍 Students array in modal:", students);
 
   const handleRegister = async () => {
     try {
@@ -143,7 +144,6 @@ export default function LessonDetailsModal({
           <Text>
             {format === "online" ? "Online Lesson" : "In-person Lesson"}
           </Text>
-
           <Text style={{ marginTop: 10, fontWeight: "bold" }}>
             Lesson Location:
           </Text>
@@ -193,12 +193,10 @@ export default function LessonDetailsModal({
                 : "Location will be provided soon"}
             </Text>
           )}
-
           <Text style={{ marginTop: 10, fontWeight: "bold" }}>
             Lesson Description:
           </Text>
           <Text>{description}</Text>
-
           <Text style={{ marginTop: 10, fontWeight: "bold" }}>
             Registered Students:
           </Text>
@@ -207,11 +205,10 @@ export default function LessonDetailsModal({
           ) : (
             students.map((student, i) => (
               <Text key={i}>
-                • {student.first_name} {student.last_name}
+                • {student.tuteeFullName || "Unknown Student"}
               </Text>
             ))
           )}
-
           <View className="w-full mt-8 items-center">
             {isStudent ? (
               isStudentRegistered ? (
