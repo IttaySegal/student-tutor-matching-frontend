@@ -316,17 +316,49 @@ export const unregisterFromLesson = async (lessonId) => {
   }
 };
 
-export const submitStudentReview = async (lessonId, reviewData) => {
-  //WHAT???
+// export const submitStudentReview = async (reviewData) => {
+//   try {
+//     console.log("📝 Submitting student review:", reviewData);
+//     const res = await axios.patch(`${BASE_URL}/lessons/review`, reviewData);
+//     return res.data;
+//     // } catch (err) {
+//     //   console.error("Error submitting student review:", err);
+//     //   throw new Error("Failed to submit student review.");
+//     // }
+//   } catch (err) {
+//     if (err.response) {
+//       console.error("❗ Server responded with error:", err.response.data);
+//     } else if (err.request) {
+//       console.error("❗ No response received:", err.request);
+//     } else {
+//       console.error("❗ Error setting up the request:", err.message);
+//     }
+//     throw new Error("Failed to submit student review.");
+//   }
+// };
+
+export const submitStudentReview = async (reviewData) => {
   try {
-    console.log("📝 Submitting student review:", { lessonId, reviewData });
-    const res = await axios.post(
-      `${BASE_URL}/lessons/${lessonId}/student-review`,
-      reviewData
-    );
+    console.log("📤 LessonAPI: Submitting student review:", reviewData);
+    const { lessonId, clarity, understanding, focus, helpful } = reviewData;
+
+    const res = await axios.patch(`${BASE_URL}/lessons/review`, {
+      lessonId,
+      clarity,
+      understanding,
+      focus,
+      helpful,
+    });
+
     return res.data;
   } catch (err) {
-    console.error("Error submitting student review:", err);
+    if (err.response) {
+      console.error("❗ Server responded with error:", err.response.data);
+    } else if (err.request) {
+      console.error("❗ No response received:", err.request);
+    } else {
+      console.error("❗ Error setting up the request:", err.message);
+    }
     throw new Error("Failed to submit student review.");
   }
 };

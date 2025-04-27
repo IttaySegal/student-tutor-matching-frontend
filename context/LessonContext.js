@@ -158,10 +158,20 @@ export const LessonProvider = ({ children }) => {
       await LessonAPI.unregisterFromLesson(lessonId);
     });
 
-  const submitStudentReview = async (lessonId, reviewData) =>
+  // const submitStudentReview = async (reviewData) =>
+  //   wrap(async () => {
+  //     console.log("Context: Submitting student review");
+  //     await LessonAPI.submitStudentReview(reviewData);
+  //     await fetchStudentLessons();
+  //     showToast({
+  //       message: "Review submitted successfully!",
+  //       type: "success",
+  //     });
+  //   });
+  const submitStudentReview = async (reviewData) =>
     wrap(async () => {
-      console.log(" Context: Submitting student review");
-      await LessonAPI.submitStudentReview(lessonId, reviewData);
+      console.log("📨 Context: Submitting student review", reviewData);
+      await LessonAPI.submitStudentReview(reviewData);
       await fetchStudentLessons();
       showToast({
         message: "Review submitted successfully!",

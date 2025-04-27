@@ -50,7 +50,13 @@ export default function StudentPendings() {
       selectedLesson?.id
     );
     if (selectedLesson) {
-      await submitStudentReview(selectedLesson.id, reviewData);
+      const fullReviewData = {
+        lessonId: selectedLesson.id,
+        ...reviewData,
+      };
+
+      console.log("📝 Submitting student review:", fullReviewData);
+      await submitStudentReview(fullReviewData);
       handleCloseModal();
     }
   };
