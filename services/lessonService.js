@@ -198,20 +198,27 @@ export const getLessonCount = async () => {
 // };
 
 //TODO
+// export const submitMentorReview = async (lessonId, reviewData) => {
+//   try {
+//     const res = await axios.patch(`${BASE_URL}/upload-lesson-report`, {
+//       lessonId,
+//       lessonSummary: reviewData.summary,
+//       tuteesPresence: reviewData.presence,
+//     });
+//     return transformToFrontendFormat(res.data.updatedLesson);
+//   } catch (err) {
+//     console.error("Error submitting mentor review:", err);
+//     throw new Error("Failed to submit mentor review.");
+//   }
+// };
 export const submitMentorReview = async (lessonId, reviewData) => {
   try {
-    // const res = await axios.post(
-    //   `${BASE_URL}/mentor/review/${lessonId}`,
-    //   reviewData
-    // );
-    // return res.data;
-
     const res = await axios.patch(`${BASE_URL}/upload-lesson-report`, {
       lessonId,
-      lessonSummary: reviewData.summary,
-      tuteesPresence: reviewData.presence,
+      lessonSummary: reviewData.lessonSummary,
+      tuteesPresence: reviewData.tuteesPresence,
     });
-    return transformToFrontendFormat(res.data.updatedLesson);
+    return res.data; // אפשר לא לקרוא ל-transformToFrontendFormat במקרה הזה
   } catch (err) {
     console.error("Error submitting mentor review:", err);
     throw new Error("Failed to submit mentor review.");
