@@ -361,7 +361,7 @@ export const getAllLessons = async () => {
 // Lessons/patch_lessons_update_lesson_verdict
 export const approveLesson = async (lessonId, isApproved) => {
   try {
-    const res = await axios.post(`${BASE_URL}/update-lesson-verdict`, {
+    const res = await axios.patch(`${BASE_URL}/update-lesson-verdict`, {
       lessonId,
       isApproved
     });
@@ -374,7 +374,7 @@ export const approveLesson = async (lessonId, isApproved) => {
 
 export const rejectLesson = async (lessonId, isApproved) => {
   try {
-    const res = await axios.post(`${BASE_URL}/update-lesson-verdict`, {
+    const res = await axios.patch(`${BASE_URL}/update-lesson-verdict`, {
       lessonId,
       isApproved
     });
