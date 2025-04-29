@@ -127,7 +127,7 @@ export default function ReviewCard({ review, visible, onClose, onReviewComplete 
     if (isSubmitting) return;
     setIsSubmitting("approve");
 
-    await approveLesson(review.id);
+    await approveLesson(review.id, true);
     showToast({
       message: "Lesson approved!",
       subMessage: "Your lesson is now live 🎉",
@@ -143,7 +143,7 @@ export default function ReviewCard({ review, visible, onClose, onReviewComplete 
     if (isSubmitting) return;
     setIsSubmitting("reject");
 
-    await rejectLesson(review.id);
+    await rejectLesson(review.id, false);
     showToast({
       message: "Lesson rejected",
       type: "info",

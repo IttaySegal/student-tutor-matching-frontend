@@ -189,14 +189,14 @@ export const LessonProvider = ({ children }) => {
       setPendingReviews(data);
     });
 
-  const approveLesson = async (lessonId) =>
+  const approveLesson = async (lessonId, isApproved) =>
     wrap(async () => {
-      await LessonAPI.approveLesson(lessonId);
+      await LessonAPI.approveLesson(lessonId, isApproved);
     });
 
-  const rejectLesson = async (lessonId) =>
+  const rejectLesson = async (lessonId, isApproved) =>
     wrap(async () => {
-      await LessonAPI.rejectLesson(lessonId);
+      await LessonAPI.rejectLesson(lessonId, isApproved);
     });
 
   // ================= Search =================

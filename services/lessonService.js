@@ -359,9 +359,12 @@ export const getAllLessons = async () => {
 
 /////-------------------- TODO ----------------------------------------//
 // Lessons/patch_lessons_update_lesson_verdict
-export const approveLesson = async (lessonId) => {
+export const approveLesson = async (lessonId, isApproved) => {
   try {
-    const res = await axios.post(`${BASE_URL}/admin/approve/${lessonId}`, {});
+    const res = await axios.post(`${BASE_URL}/update-lesson-verdict`, {
+      lessonId,
+      isApproved
+    });
     return res.data;
   } catch (err) {
     console.error("Error approving lesson:", err);
@@ -369,9 +372,12 @@ export const approveLesson = async (lessonId) => {
   }
 };
 
-export const rejectLesson = async (lessonId) => {
+export const rejectLesson = async (lessonId, isApproved) => {
   try {
-    const res = await axios.post(`${BASE_URL}/admin/reject/${lessonId}`, {});
+    const res = await axios.post(`${BASE_URL}/update-lesson-verdict`, {
+      lessonId,
+      isApproved
+    });
     return res.data;
   } catch (err) {
     console.error("Error rejecting lesson:", err);
@@ -384,8 +390,9 @@ export const rejectLesson = async (lessonId) => {
 // Lessons/get_lessons_verdict_pending_lessons
 export const getPendingReviews = async () => {
   try {
-    const res = await axios.get(`${BASE_URL}/admin/pending-reviews`);
-    return res.data;
+    const res = await axios.get(`${BASE_URL}/verdict-pending-lessons`);
+    // return res.data;
+    return res.data.map((lesson) => transformToFrontendFormat(lesson));
   } catch (err) {
     console.error("Error fetching pending reviews:", err);
     throw new Error("Failed to fetch pending reviews.");
