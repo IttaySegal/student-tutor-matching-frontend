@@ -1,7 +1,9 @@
-import axios from 'axios';
-import { REACT_APP_SERVER_DOMAIN } from '@env';
+import axios from "axios";
+// import { REACT_APP_SERVER_DOMAIN } from "@env";
+import { EXPO_PUBLIC_SERVER_URL } from "@env";
 
-const BASE_URL = `${REACT_APP_SERVER_DOMAIN}/auth`;
+const BASE_URL = `${EXPO_PUBLIC_SERVER_URL}/auth`;
+// const BASE_URL = `${REACT_APP_SERVER_DOMAIN}/auth`;
 
 /**
  * Handles errors from Axios requests
@@ -10,13 +12,17 @@ const BASE_URL = `${REACT_APP_SERVER_DOMAIN}/auth`;
 const handleError = (error) => {
   if (error.response) {
     // Server responded with a status code outside 2xx
-    throw new Error(error.response.data.error || 'A server error occurred. Please try again.');
+    throw new Error(
+      error.response.data.error || "A server error occurred. Please try again."
+    );
   } else if (error.request) {
     // No response from server
-    throw new Error('No response from the server. Please check your internet connection.');
+    throw new Error(
+      "No response from the server. Please check your internet connection."
+    );
   } else {
     // Error setting up the request
-    throw new Error('An unexpected error. Please try again.');
+    throw new Error("An unexpected error. Please try again.");
   }
 };
 
@@ -63,13 +69,13 @@ export async function resetPassword(email) {
     const response = await axios.post(API_URL, { email });
     return {
       success: true,
-      message: response.data.message
+      message: response.data.message,
     };
   } catch (error) {
     handleError(error);
     return {
       success: false,
-      message: error.message || "Something went wrong"
+      message: error.message || "Something went wrong",
     };
   }
 }
@@ -85,21 +91,30 @@ export async function verifyResetCode(email, resetCode) {
     };
   } catch (error) {
     handleError(error);
-    return { success: false, message: error.message || 'Failed to verify reset code' };
+    return {
+      success: false,
+      message: error.message || "Failed to verify reset code",
+    };
   }
-
 }
 export async function updatePassword(tempToken, newPassword, confirmPassword) {
   const API_URL = `${BASE_URL}/update-password`;
   try {
-    const response = await axios.patch(API_URL, { tempToken, newPassword, confirmPassword });
+    const response = await axios.patch(API_URL, {
+      tempToken,
+      newPassword,
+      confirmPassword,
+    });
     return {
       success: true,
       message: response.data.message,
     };
   } catch (error) {
     handleError(error);
-    return { success: false, message: error.message || 'Failed to update password' };
+    return {
+      success: false,
+      message: error.message || "Failed to update password",
+    };
   }
 }
 
@@ -110,7 +125,8 @@ export async function updatePassword(tempToken, newPassword, confirmPassword) {
  */
 export async function signOut(userId) {
   const API_URL = `${BASE_URL}/logout`; // Adjust endpoint if needed
-  console.log(API_URL)
+  console.log("👉 logging out with userId:", userId); // ✅ לוג חשוב
+  console.log(API_URL);
   try {
     const response = await axios.post(API_URL, { user_id: userId });
     return response;
@@ -118,3 +134,14 @@ export async function signOut(userId) {
     handleError(error);
   }
 }
+
+export async function refreshAccessToken(refreshToken) {
+  const API_URL = `${BASE_URL}/refresh`; // Make sure your backend supports this
+  try {
+    const response = await axios.post(API_URL, { refreshToken });
+    return response.data; // should return { accessToken: "..." }
+  } catch (error) {
+    handleError(error);
+  }
+}
+ 

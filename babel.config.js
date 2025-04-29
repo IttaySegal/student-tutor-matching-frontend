@@ -18,6 +18,28 @@ module.exports = function (api) {
           verbose: false, // Enable verbose logging if needed
         },
       ],
+      [
+        "module-resolver",
+        {
+          alias: {
+            "@": "./", 
+            "@app": "./app",
+            "@home": "./app/home",
+            "@review": "./app/review",
+            "@create": "./app/create",
+            "@context": "./context",
+            "@components": "./components",
+            "@services": "./services",
+            "@utils": "./app/home/utils",
+            "@mocks": "./app/mocks",
+            "@assets": "./assets",
+            "@hooks": "./hooks",
+            "@constants": "./constants",
+            "@navigation": "./navigation",
+            "@styles": "./styles"
+          },
+        },
+      ],
     ],
   };
 };
