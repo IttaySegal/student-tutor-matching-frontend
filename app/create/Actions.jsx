@@ -1,7 +1,7 @@
 export default function CreateReport() {
   return (
     <View>
-      <Text>Create Report</Text>
+      <Text>actions</Text>
     </View>
   );
 }
