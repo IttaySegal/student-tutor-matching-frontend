@@ -43,8 +43,33 @@ const transformToBackendFormat = (lessonData) => {
   };
 };
 
-// Backend to Frontend transformation
+// // Backend to Frontend transformation
+// export const transformToFrontendFormat = (lessonData) => {
+//   return {
+//     id: lessonData.lessonId,
+//     subject: lessonData.subjectName,
+//     grade: lessonData.grade,
+//     level: lessonData.level,
+//     description: lessonData.description,
+//     format: lessonData.format,
+//     lessonLocation: lessonData.locationOrLink,
+//     mentor: lessonData.tutorFullName,
+//     students: lessonData.enrolledTutees || [],
+//     ...convertFromISO(lessonData.appointedDateTime),
+//   };
+// };
+
 export const transformToFrontendFormat = (lessonData) => {
+  const students = lessonData.enrolledTutees || [];
+
+  const studentAttendance = {};
+  const studentNames = {};
+
+  students.forEach((tutee) => {
+    studentAttendance[tutee.tuteeUserId] = tutee.presence ? "Present" : "Absent";
+    studentNames[tutee.tuteeUserId] = tutee.tuteeFullName;
+  });
+
   return {
     id: lessonData.lessonId,
     subject: lessonData.subjectName,
@@ -54,10 +79,15 @@ export const transformToFrontendFormat = (lessonData) => {
     format: lessonData.format,
     lessonLocation: lessonData.locationOrLink,
     mentor: lessonData.tutorFullName,
-    students: lessonData.enrolledTutees || [],
+    students,
+    studentAttendance,
+    studentNames,
+    selectedDescriptions: [lessonData.description], // fallback
+    rating: 5, // placeholder if no rating provided
     ...convertFromISO(lessonData.appointedDateTime),
   };
 };
+
 
 /* =========================
    Search & Discovery
@@ -391,8 +421,8 @@ export const rejectLesson = async (lessonId, isApproved) => {
 export const getPendingReviews = async () => {
   try {
     const res = await axios.get(`${BASE_URL}/verdict-pending-lessons`);
-    // return res.data;
-    return res.data.map((lesson) => transformToFrontendFormat(lesson));
+    console.log("📦 Raw pending review response:", res.data.data.verdictPendingLessons.map((lesson) => transformToFrontendFormat(lesson)));
+    return res.data.data.verdictPendingLessons.map((lesson) => transformToFrontendFormat(lesson));
   } catch (err) {
     console.error("Error fetching pending reviews:", err);
     throw new Error("Failed to fetch pending reviews.");

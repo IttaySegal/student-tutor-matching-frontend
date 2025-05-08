@@ -22,7 +22,7 @@ export const getAggregateHomeData = async (accessToken) => {
 
     return data;
   } catch (error) {
-    console.error("שגיאה בעת בקשת מידע למסך הבית:", error);
+    console.error("Home Page Error", error);
     throw error;
   }
 };

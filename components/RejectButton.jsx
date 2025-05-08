@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 35,
-    backgroundColor: "#ef4444", // אדום
+    backgroundColor: "#ef4444", // red
     justifyContent: "center",
     alignItems: "center",
     shadowColor: "#000",

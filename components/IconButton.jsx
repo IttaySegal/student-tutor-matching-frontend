@@ -1,15 +1,15 @@
 import React from "react";
 import { TouchableOpacity, Text, StyleSheet, View } from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons"; // ניתן להשתמש ב-@expo/vector-icons לאייקונים
+import { FontAwesome5 } from "@expo/vector-icons";
 
 const IconButton = ({ onPress, icon, title, style, textStyle }) => (
   <TouchableOpacity
-    style={[styles.button, style]} // אפשר להוסיף סגנונות נוספים לכפתור אם צריך
+    style={[styles.button, style]}
     onPress={onPress}
   >
     <View style={styles.iconContainer}>
-      <FontAwesome5 name={icon} size={20} color="white" /> {/* האייקון */}
-      <Text style={[styles.buttonText, textStyle]}>{title}</Text> {/* הטקסט */}
+      <FontAwesome5 name={icon} size={20} color="white" />
+      <Text style={[styles.buttonText, textStyle]}>{title}</Text>
     </View>
   </TouchableOpacity>
 );
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   button: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#007BFF", // צבע רקע לכפתור
+    backgroundColor: "#007BFF",
     padding: 10,
     borderRadius: 30,
     marginRight: 10,

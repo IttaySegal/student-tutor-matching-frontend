@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useHome } from "@context/HomeContext";
 import LessonCard from "../../components/LessonCard";
-import { getGreeting } from "./utils/timeUtils";
+import { getGreeting } from "../../utils/timeUtils";
 import { useAuth } from "../../context/AuthContext";
 import LessonDetailsModal from "../../components/LessonDetailsModal";
 import { useFocusEffect } from "@react-navigation/native";

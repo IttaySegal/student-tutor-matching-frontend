@@ -5,7 +5,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 const DateSelector = ({ date, setDate }) => {
   const today = new Date();
   const nextWeek = new Date();
-  nextWeek.setDate(today.getDate() + 7); // הגבלה עד שבוע קדימה
+  nextWeek.setDate(today.getDate() + 7); // Limit to 7 days from today
 
   const onChange = (event, selectedDate) => {
     setDate(selectedDate || date);

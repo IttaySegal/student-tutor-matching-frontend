@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useHome } from "@context/HomeContext";
 import { useAuth } from "@context/AuthContext";
-import { getGreeting } from "./utils/timeUtils";
+import { getGreeting } from "../../utils/timeUtils";
 import RequestCard from "../../components/RequestCard";
 import RequestModal from "../../components/RequestModal";
 
@@ -67,7 +67,7 @@ const AdminHome = () => {
       {/* Mentor Rating */}
       <Text style={styles.sectionTitle}>Mentor Rating:</Text>
       <Text style={styles.cardText}>
-      ⭐{homeStats.mentorAvgScore}/5
+        ⭐{homeStats.mentorAvgScore}/5
       </Text>
 
       {/* Requests */}

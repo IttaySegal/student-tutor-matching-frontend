@@ -1,39 +1,3 @@
-// import React from "react";
-// import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
-
-// const RequestCard = ({ type, user, onPress }) => {
-//   return (
-//     <TouchableOpacity style={styles.card} onPress={onPress}>
-//       <View style={styles.content}>
-//         <Text style={styles.text}>• {type} from {user}</Text>
-//       </View>
-//     </TouchableOpacity>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   card: {
-//     backgroundColor: "#f9f9f9",
-//     borderRadius: 8,
-//     padding: 12,
-//     marginTop: 10,
-//     elevation: 2,
-//   },
-//   content: {
-//     flexDirection: "row",
-//     justifyContent: "flex-start",
-//     alignItems: "center",
-//   },
-//   text: {
-//     fontSize: 16,
-//     textAlign: "left",
-//     color: "#333",
-//   },
-// });
-
-// export default RequestCard;
-
-
 import React from "react";
 import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
 

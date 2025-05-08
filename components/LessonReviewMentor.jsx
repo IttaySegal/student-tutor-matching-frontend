@@ -35,32 +35,6 @@ export default function LessonReviewMentor({
     }));
   };
 
-  // const handleSubmit = async () => {
-  //   const presenceObject = {};
-  //   for (const [studentId, value] of Object.entries(studentAttendance)) {
-  //     presenceObject[studentId] = value === "Present";
-  //   }
-
-  //   const bodyToSend = {
-  //     lessonSummary,
-  //     tuteesPresence: [presenceObject], // סוגריים מרובעים סביב האובייקט
-  //   };
-
-  //   console.log(
-  //     "📦 Sending mentor review payload:",
-  //     JSON.stringify(bodyToSend, null, 2)
-  //   );
-
-  //   await submitReview(id, bodyToSend);
-
-  //   showToast({
-  //     message: "Lesson report submitted!",
-  //     type: "success",
-  //   });
-
-  //   await fetchMentorLessons();
-  //   onClose();
-  // };
 
   const handleSubmit = async () => {
     console.log("Student Attendance State:", studentAttendance);
@@ -90,7 +64,8 @@ export default function LessonReviewMentor({
     await fetchMentorLessons();
     onClose();
   };
-  //////////////////////////////////////////////
+
+
   const isFormValid = () => {
     const allStudentsMarked = students.every(
       (student) => studentAttendance[student.tuteeUserId] !== undefined
@@ -171,9 +146,8 @@ export default function LessonReviewMentor({
               <CustomButton
                 title="Submit Review"
                 handlePress={handleSubmit}
-                containerStyles={`w-4/5 ${
-                  isFormValid() ? "opacity-100" : "opacity-50"
-                }`}
+                containerStyles={`w-4/5 ${isFormValid() ? "opacity-100" : "opacity-50"
+                  }`}
                 disabled={!isFormValid()}
               />
             </View>

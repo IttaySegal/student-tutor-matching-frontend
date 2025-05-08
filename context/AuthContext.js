@@ -53,10 +53,10 @@ export const AuthProvider = ({ children }) => {
           logoutFn: logout,
         }); // Mark loading complete whether successful or not
         setLoading(false);
-      } 
+      }
     };
 
-    initAuth ();
+    initAuth();
   }, []);
 
   /**
@@ -65,17 +65,13 @@ export const AuthProvider = ({ children }) => {
    */
   const login = async (credentials) => {
     const { user, accessToken, refreshToken } = await signIn(credentials);
-
-    // Basic validation to make sure backend returned everything
     if (!user || !accessToken || !refreshToken) {
       throw new Error("Login failed: missing tokens or user info.");
     }
 
-    // Save to state
     setUser(user);
     setAccessToken(accessToken);
 
-    // Persist login info to storage for next app launch
     await AsyncStorage.setItem("user", JSON.stringify(user));
     await AsyncStorage.setItem("accessToken", accessToken);
     await AsyncStorage.setItem("refreshToken", refreshToken);
@@ -118,7 +114,7 @@ export const AuthProvider = ({ children }) => {
 
       console.log("✅ Frontend received new accessToken:", newToken?.slice(0, 10));
       console.log("✅ Frontend received new refreshToken:", newRefreshToken?.slice(0, 10));
- 
+
       if (!newToken || !newRefreshToken) throw new Error("Missing token(s)");
 
       // Update state and storage with the new access token
@@ -126,7 +122,7 @@ export const AuthProvider = ({ children }) => {
       await AsyncStorage.setItem("accessToken", newToken);
       await AsyncStorage.setItem("refreshToken", newRefreshToken);
       console.log("📦 Refresh function completed");
- 
+
     } catch (err) {
       console.error("Token refresh failed:", err.message);
       logout(); // Force logout if refresh fails (e.g., refresh token is expired or invalid)

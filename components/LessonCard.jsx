@@ -20,7 +20,6 @@ export default function LessonCard({
   onPress,
   ...props
 }) {
-  console.log("LessonCard props:", { format, ...props }); // כאן!
   const [visible, setVisible] = useState(false);
 
   const handlePress = () => {
@@ -64,7 +63,7 @@ export default function LessonCard({
           id={id}
           subject={subject}
           grade={grade}
-          level={level} 
+          level={level}
           day={day}
           startTime={startTime}
           endTime={endTime}

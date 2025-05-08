@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Modal, ScrollView, Text } from "react-native";
 import CustomButton from "./CustomButton";
 import CloseButton from "./CloseButton";
-import StarRatingQuestion from "./StarRatingQuestion"; // יבוא של הקומפוננטה החדשה
+import StarRatingQuestion from "./StarRatingQuestion";
 
 export default function LessonReviewStudent({
   visible,
@@ -86,14 +86,12 @@ export default function LessonReviewStudent({
               setValue={setHelpful}
             />
 
-            {/* כפתור שליחה */}
             <View className="w-full items-center mb-4">
               <CustomButton
                 title="Submit Review"
                 handlePress={handleSubmit}
-                containerStyles={`w-4/5 ${
-                  isFormValid() ? "opacity-100" : "opacity-50"
-                }`}
+                containerStyles={`w-4/5 ${isFormValid() ? "opacity-100" : "opacity-50"
+                  }`}
                 disabled={!isFormValid()}
               />
             </View>

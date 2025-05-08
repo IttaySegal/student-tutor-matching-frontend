@@ -23,7 +23,6 @@ const TextInputField = ({
       >
         {label}
       </Text>
-
       {/* Text input field */}
       <TextInput
         style={{

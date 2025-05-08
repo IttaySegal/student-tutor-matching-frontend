@@ -2,8 +2,7 @@
 import { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
 import icons from "../constants/icons";
-console.log(icons.eye); // הדפסת האייקון
-console.log(icons.eyeHide); // הדפסת האייקון
+
 
 const FormField = ({
   title,
@@ -28,9 +27,8 @@ const FormField = ({
 
       {/* Input container with styling */}
       <View
-        className={`w-full h-16 px-4 bg-black-100 rounded-2xl border-2 ${
-          error ? "border-red-500" : "border-black-200"
-        } flex flex-row items-center`}
+        className={`w-full h-16 px-4 bg-black-100 rounded-2xl border-2 ${error ? "border-red-500" : "border-black-200"
+          } flex flex-row items-center`}
       >
         {/* TextInput component for user input */}
         <TextInput
@@ -44,8 +42,8 @@ const FormField = ({
             title === "Email"
               ? "email-input"
               : title === "Password"
-              ? "password-input"
-              : undefined
+                ? "password-input"
+                : undefined
           }
           {...props}
           style={{ textAlign: "left" }}
