@@ -25,8 +25,3 @@ export const getAggregateHomeData = async (accessToken) => {
     throw error;
   }
 };
-
-export const fetchPieChartData = async () => {
-  const response = await axios.get(`${EXPO_PUBLIC_SERVER_URL}/lesson-grade-distribution`);
-  return response.data;
-};
