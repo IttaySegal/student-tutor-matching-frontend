@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+// components/CustomToast.jsx
+import React, { useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -6,51 +7,59 @@ import {
   StyleSheet,
   Dimensions,
   Animated,
+  Modal,                 // 👈 NEW
+  TouchableWithoutFeedback,
 } from "react-native";
 
-const { height, width } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 const CustomToast = ({ text1, text2, onHide }) => {
-  const fadeAnim = new Animated.Value(0);
+  // keep the Animated.Value stable across renders
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
+    // fade in
     Animated.timing(fadeAnim, {
       toValue: 1,
       duration: 250,
       useNativeDriver: true,
     }).start();
 
-    const timer = setTimeout(() => {
-      onHide();
-    }, 3000);
-
+    // auto‑dismiss after 3 s
+    const timer = setTimeout(onHide, 3000);
     return () => clearTimeout(timer);
-  }, []);
+  }, [fadeAnim, onHide]);
 
   return (
-    <View style={styles.overlayContainer}>
-      <Animated.View style={[styles.toastContent, { opacity: fadeAnim }]}>
-        <View style={{ flex: 1 }}>
-          <Text style={styles.toastTitle}>{text1}</Text>
-          {text2 && <Text style={styles.toastSubtitle}>{text2}</Text>}
+    <Modal transparent visible animationType="fade" onRequestClose={onHide}>
+      {/*  dismiss early by tapping outside */}
+      <TouchableWithoutFeedback onPress={onHide}>
+        <View style={styles.overlayContainer}>
+          <Animated.View style={[styles.toastContent, { opacity: fadeAnim }]}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.toastTitle}>{text1}</Text>
+              {text2 ? <Text style={styles.toastSubtitle}>{text2}</Text> : null}
+            </View>
+
+            <TouchableOpacity onPress={onHide}>
+              <Text style={styles.toastClose}>✕</Text>
+            </TouchableOpacity>
+          </Animated.View>
         </View>
-        <TouchableOpacity onPress={onHide}>
-          <Text style={styles.toastClose}>✕</Text>
-        </TouchableOpacity>
-      </Animated.View>
-    </View>
+      </TouchableWithoutFeedback>
+    </Modal>
   );
 };
 
 const styles = StyleSheet.create({
   overlayContainer: {
-    position: "absolute",
-    height,
-    width,
-    justifyContent: "center",
+    flex: 1,
+    justifyContent: "flex-start",
     alignItems: "center",
-    zIndex: 9999,
+    paddingTop: 40,          // distance from top of the screen
+    backgroundColor: "transparent",
   },
+
   toastContent: {
     backgroundColor: "#ffffff",
     borderRadius: 16,
