@@ -128,7 +128,7 @@ export default function LessonReviewMentor({
               <View className="w-full bg-white p-4 rounded-xl border border-gray-100">
                 <TextInput
                   value={lessonSummary}
-                  onChangeText={(text) => setLessonSummary(text.slice(0, 200))} // מגביל ל-200 תווים
+                  onChangeText={(text) => setLessonSummary(text.slice(0, 200))} // Limit to 200 characters
                   placeholder="Write lesson summary..."
                   multiline
                   numberOfLines={4}

@@ -1,6 +1,6 @@
 import React from "react";
 import { TouchableOpacity } from "react-native";
-import Icon from "react-native-vector-icons/AntDesign"; // או כל אייקון שתרצה
+import Icon from "react-native-vector-icons/AntDesign"; // Or any icon you want
 
 const CloseButton = ({ onPress, size = 30, color = "black", style }) => {
   return (

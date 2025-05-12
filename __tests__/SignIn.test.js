@@ -1,16 +1,16 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import { Alert } from "react-native"; // נוסיף כדי לרגל אחרי alert
+import { Alert } from "react-native"; // Added to spy on alert
 import SignIn from "../app/(auth)/sign-in";
-import { router } from "expo-router"; // חשוב כדי לבדוק את הקריאה ל-back
+import { router } from "expo-router"; // Important to check the back call
 import { act } from "react-test-renderer";
 
-// נגדיר את המשתנה פה כדי שנוכל לבדוק אותו בטסטים
+// Define the variable here so we can check it in tests
 let mockLogin;
 
-// mock אמיתי לפי הדרישות של Jest
+// Real mock according to Jest requirements
 jest.mock("../context/AuthContext", () => {
-  mockLogin = jest.fn(); // יוצרים את הפונקציה המזויפת בתוך הפונקציה
+  mockLogin = jest.fn(); // Create the mock function inside the function
 
   return {
     useAuth: () => ({
@@ -22,7 +22,7 @@ jest.mock("expo-router", () => {
   const actual = jest.requireActual("expo-router");
   return {
     ...actual,
-    Link: ({ children }) => children, // מתעלם מה-Link בזמן טסט
+    Link: ({ children }) => children, // Ignore Link during test
     router: {
       back: jest.fn(),
     },
@@ -53,7 +53,7 @@ describe("SignIn Screen", () => {
   });
 
   it("shows alert when email is invalid", () => {
-    const alertSpy = jest.spyOn(Alert, "alert").mockImplementation(() => {});
+    const alertSpy = jest.spyOn(Alert, "alert").mockImplementation(() => { });
 
     const { getByTestId, getByText } = render(<SignIn />);
 
@@ -71,17 +71,17 @@ describe("SignIn Screen", () => {
       "Please fix the errors before submitting"
     );
 
-    alertSpy.mockRestore(); // לניקוי אחרי הטסט
+    alertSpy.mockRestore(); // For cleanup after test
   });
   it("shows alert when fields are empty", () => {
-    const alertSpy = jest.spyOn(Alert, "alert").mockImplementation(() => {});
+    const alertSpy = jest.spyOn(Alert, "alert").mockImplementation(() => { });
     const { getByText } = render(<SignIn />);
     fireEvent.press(getByText(/sign in/i));
     expect(alertSpy).toHaveBeenCalledWith("Error", "Please fill in all fields");
-    alertSpy.mockRestore();
+    alertSpy.mockRestore(); // For cleanup after test
   });
   it("shows alert when login fails", async () => {
-    const alertSpy = jest.spyOn(Alert, "alert").mockImplementation(() => {});
+    const alertSpy = jest.spyOn(Alert, "alert").mockImplementation(() => { });
     mockLogin.mockRejectedValueOnce(new Error("Invalid credentials"));
 
     const { getByTestId, getByText } = render(<SignIn />);
@@ -95,7 +95,7 @@ describe("SignIn Screen", () => {
     alertSpy.mockRestore();
   });
   it("navigates back when login is successful", async () => {
-    mockLogin.mockResolvedValueOnce({ token: "123" }); // התחברות מוצלחת
+    mockLogin.mockResolvedValueOnce({ token: "123" }); // Successful login
 
     const { getByTestId, getByText } = render(<SignIn />);
 
@@ -106,7 +106,7 @@ describe("SignIn Screen", () => {
       fireEvent.press(getByText(/sign in/i));
     });
 
-    expect(mockLogin).toHaveBeenCalled(); // וידוא ש-login נקרא
-    expect(router.back).toHaveBeenCalled(); // וידוא שנעשית חזרה אחורה
+    expect(mockLogin).toHaveBeenCalled(); // Verify that login was called
+    expect(router.back).toHaveBeenCalled(); // Verify that back navigation occurred
   });
 });

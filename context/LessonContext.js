@@ -125,9 +125,9 @@ export const LessonProvider = ({ children }) => {
 
   const fetchMentorReviwes = async () =>
     wrap(async () => {
-      const data = await LessonAPI.fetchUnresolvedMentorReview(); // 👈 לקרוא
-      console.log("📦 Pending Reviews Data:", data); // ➡️ הוסף את זה
-      setPendingReviews(data); // 👈 לשמור
+      const data = await LessonAPI.fetchUnresolvedMentorReview(); // Read
+      console.log("📦 Pending Reviews Data:", data); // Add this
+      setPendingReviews(data); // Save
     });
 
   // ================= Student =================
@@ -173,7 +173,7 @@ export const LessonProvider = ({ children }) => {
     wrap(async () => {
       const data = await LessonAPI.fetchUnresolvedStudentReview();
       console.log("📦 Student Pending Reviews Data:", data); // Debug
-      setPendingStudentReviews(data); // שמור לסטייט החדש
+      setPendingStudentReviews(data); // Save to new state
     });
 
   // ================= Admin =================

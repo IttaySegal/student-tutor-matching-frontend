@@ -125,7 +125,7 @@ export async function updatePassword(tempToken, newPassword, confirmPassword) {
  */
 export async function signOut(userId) {
   const API_URL = `${BASE_URL}/logout`; // Adjust endpoint if needed
-  console.log("👉 logging out with userId:", userId); // ✅ לוג חשוב
+  console.log("👉 logging out with userId:", userId); // ✅ Important log
   console.log(API_URL);
   try {
     const response = await axios.post(API_URL, { user_id: userId });
@@ -144,4 +144,3 @@ export async function refreshAccessToken(refreshToken) {
     handleError(error);
   }
 }
- 
