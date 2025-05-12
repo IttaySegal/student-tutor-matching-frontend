@@ -31,7 +31,7 @@ export default function HomeRouter() {
     default:
       return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text>רול לא מזוהה</Text>
+          <Text>Role not found</Text>
         </View>
       );
   }
