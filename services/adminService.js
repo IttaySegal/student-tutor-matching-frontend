@@ -33,3 +33,23 @@ export const removeUser = async ({ email }) => {
     return response.data;
   };
   
+
+export const fetchMentors = async () => {
+  try {
+    const response = await axios.get("/reports/get-all-mentors-metadata");
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch mentors:", error);
+    throw error;
+  }
+};
+
+export const fetchMentorOverview = async (mentorId) => {
+  try {
+    const response = await axios.get(`/mentor-overview/${mentorId}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Failed to fetch mentor overview for ID ${mentorId}:`, error);
+    throw error;
+  }
+};
