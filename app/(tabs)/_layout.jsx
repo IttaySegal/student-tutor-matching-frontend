@@ -78,21 +78,24 @@ const TabsLayout = () => {
             ),
           }}
         />
-        <Tabs.Screen
-          name="my_lessons"
-          options={{
-            title: user?.role === 'admin' ? 'My Mentors' : 'My Lessons',
-            headerShown: false,
-            tabBarIcon: ({ color, focused }) => (
-              <TabIcon
-                icon={icons.bookmark}
-                color={color}
-                name={user?.role === 'admin' ? 'My Mentors' : 'My Lessons'}
-                focused={focused}
-              />
-            ),
-          }}
-        />
+<Tabs.Screen
+  name="my_lessons_integrator" // now this is valid
+  options={{
+    title: user?.role === 'admin' ? 'My Mentors' : 'My Lessons',
+    headerShown: false,
+    tabBarIcon: ({ color, focused }) => (
+      <TabIcon
+        icon={icons.bookmark}
+        color={color}
+        name={user?.role === 'admin' ? 'My Mentors' : 'My Lessons'}
+        focused={focused}
+      />
+    ),
+  }}
+/>
+
+
+
         <Tabs.Screen
           name="create"
           options={{
