@@ -14,9 +14,13 @@ const MentorCard = ({ fullName, email, averageScore, totalCompletedLessons, onPr
       <View className="flex-row justify-between items-center">
         <View className="flex-row items-center gap-1">
           <Icon name="star" size={18} color="#FFD700" />
-          <Text className="text-sm text-yellow-300">{averageScore.toFixed(1)} / 5</Text>
+          <Text className="text-sm text-yellow-300">
+        {typeof averageScore === "number" ? `${averageScore.toFixed(1)} / 5` : "No score"}
+        </Text>
         </View>
-        <Text className="text-sm text-gray-400">Lessons: {totalCompletedLessons}</Text>
+        <Text className="text-sm text-gray-400">
+        Lessons: {typeof totalCompletedLessons === "number" ? totalCompletedLessons : 0}
+        </Text>
       </View>
 
       {/* 

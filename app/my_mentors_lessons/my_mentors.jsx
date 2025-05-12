@@ -16,8 +16,14 @@ export default function MyMentors() {
     const loadMentors = async () => {
       try {
         const data = await fetchMentors();
-        setMentors(data);
-        setFilteredMentors(data);
+        const cleanedData = data.map((mentor) => ({
+          ...mentor,
+          fullName: mentor.fullName || "Unnamed Mentor",
+          averageScore: typeof mentor.averageScore === "number" ? mentor.averageScore : 0,
+          totalCompletedLessons: mentor.totalCompletedLessons || 0,
+        }));
+        setMentors(cleanedData);
+        setFilteredMentors(cleanedData);
       } catch (err) {
         console.error("Error fetching mentors", err);
       } finally {
@@ -32,7 +38,7 @@ export default function MyMentors() {
   useEffect(() => {
     const query = searchQuery.toLowerCase();
     const filtered = mentors.filter((mentor) =>
-      mentor.fullName.toLowerCase().includes(query)
+      (mentor.fullName || "").toLowerCase().includes(query)
     );
     setFilteredMentors(filtered);
   }, [searchQuery, mentors]);
@@ -54,9 +60,15 @@ export default function MyMentors() {
       ) : (
         <FlatList
           data={filteredMentors}
-          keyExtractor={(item) => item.mentorId}
+          keyExtractor={(item, index) => item.mentorId || index.toString()}
           renderItem={({ item }) => (
-            <MentorCard {...item} onPress={() => setSelectedMentor(item)} />
+            <MentorCard
+              fullName={item.fullName}
+              email={item.mentorEmail}
+              averageScore={item.averageScore}
+              totalCompletedLessons={item.totalCompletedLessons}
+              onPress={() => setSelectedMentor(item)}
+            />
           )}
           ListEmptyComponent={
             <Text className="text-white text-center mt-10">No mentors found.</Text>
