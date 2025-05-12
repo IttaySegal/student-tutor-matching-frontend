@@ -98,7 +98,7 @@ const AdminHome = () => {
           halfStar={<Icon name="star-half-o" size={24} color="#f1c40f" />}
           disabled={true}
         />
-        <Text style={styles.statLabel}>Mentors Average Rating</Text>
+        <Text style={styles.statLabel}>Mentors Average Rating: {homeStats.overallMentorAvgScore}</Text>
       </View>
 
       <View style={styles.statsRow}>

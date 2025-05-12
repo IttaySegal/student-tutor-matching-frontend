@@ -38,7 +38,7 @@ const TabIcon = ({ icon, color, name, focused }) => {
 
 // Main layout for the tab navigation
 const TabsLayout = () => {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading, user } = useAuth();
 
   useEffect(() => {
     if (!loading && !isAuthenticated) {
@@ -78,31 +78,34 @@ const TabsLayout = () => {
             ),
           }}
         />
-        <Tabs.Screen
-          name="my_lessons"
-          options={{
-            title: "My Lessons",
-            headerShown: false,
-            tabBarIcon: ({ color, focused }) => (
-              <TabIcon
-                icon={icons.bookmark}
-                color={color}
-                name="My Lessons"
-                focused={focused}
-              />
-            ),
-          }}
-        />
+<Tabs.Screen
+  name="my_lessons_integrator" // now this is valid
+  options={{
+    title: user?.role === 'admin' ? 'My Mentors' : 'My Lessons',
+    headerShown: false,
+    tabBarIcon: ({ color, focused }) => (
+      <TabIcon
+        icon={icons.bookmark}
+        color={color}
+        name={user?.role === 'admin' ? 'My Mentors' : 'My Lessons'}
+        focused={focused}
+      />
+    ),
+  }}
+/>
+
+
+
         <Tabs.Screen
           name="create"
           options={{
-            title: "Create",
+            title: user?.role === 'admin' ? 'Actions' : 'Create',
             headerShown: false,
             tabBarIcon: ({ color, focused }) => (
               <TabIcon
                 icon={icons.plus}
                 color={color}
-                name="Create"
+                name={user?.role === 'admin' ? 'Actions' : 'Create'}
                 focused={focused}
               />
             ),
@@ -111,18 +114,18 @@ const TabsLayout = () => {
         <Tabs.Screen
           name="pendings"
           options={{
-          title: "Pendings",
-          headerShown: false,
-          tabBarIcon: ({ color, focused }) => (
-          <TabIcon
-            icon={icons.upload} 
-            color={color} 
-            name="Pendings" 
-            focused={focused} 
-          />
-         ),
-        }}
-      />
+            title: 'Pendings',
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => (
+              <TabIcon
+                icon={icons.upload}
+                color={color}
+                name="Pendings"
+                focused={focused}
+              />
+            ),
+          }}
+        />
         <Tabs.Screen
           name="profile"
           options={{
