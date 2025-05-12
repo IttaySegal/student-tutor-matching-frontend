@@ -13,9 +13,13 @@ import {
   removeUser,
 } from "@/services/adminService";
 
+// Allowed roles constant
 const ALLOWED_ROLES = ["mentor", "student", "admin"];
 
 const AdminActions = () => {
+  // ====================
+  // State Declarations
+  // ====================
   const [isAddModalVisible, setAddModalVisible] = useState(false);
   const [isRemoveModalVisible, setRemoveModalVisible] = useState(false);
   const [isAddUserModalVisible, setAddUserModalVisible] = useState(false);
@@ -39,6 +43,9 @@ const AdminActions = () => {
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState(null);
 
+  // ====================
+  // Helper Functions
+  // ====================
   const resetForm = () => {
     setEmail("");
     setSubject("");
@@ -55,6 +62,9 @@ const AdminActions = () => {
     setRoleError("");
   };
 
+  // ====================
+  // Handlers for input changes
+  // ====================
   const handleEmailChange = (value) => {
     setEmail(value);
     setEmailError(!isEmail(value) ? "Invalid email" : "");
@@ -78,13 +88,12 @@ const AdminActions = () => {
   const handleRoleChange = (value) => {
     setRole(value);
     const lower = value.toLowerCase();
-    if (!ALLOWED_ROLES.includes(lower)) {
-      setRoleError("Role must be mentor, student, or admin");
-    } else {
-      setRoleError("");
-    }
+    setRoleError(!ALLOWED_ROLES.includes(lower) ? "Role must be mentor, student, or admin" : "");
   };
 
+  // ====================
+  // Action Handlers
+  // ====================
   const handleAddSubject = async () => {
     if (!email || !subject || emailError || subjectError) {
       setToast({
@@ -93,6 +102,7 @@ const AdminActions = () => {
       });
       return;
     }
+
     setLoading(true);
     try {
       await addSubjectToMentor({ email, subject });
@@ -117,6 +127,7 @@ const AdminActions = () => {
       });
       return;
     }
+
     setLoading(true);
     try {
       await removeSubjectFromMentor({ email, subject });
@@ -141,12 +152,12 @@ const AdminActions = () => {
       setToast({ text1: "❌ Missing input", text2: "All fields are required." });
       return;
     }
-    if (userEmailError) {
-      setToast({ text1: "❌ Invalid email", text2: "Enter a valid email." });
-      return;
-    }
-    if (roleError) {
-      setToast({ text1: "❌ Invalid role", text2: "Role must be mentor, student, or admin." });
+
+    if (userEmailError || roleError) {
+      setToast({
+        text1: userEmailError ? "❌ Invalid email" : "❌ Invalid role",
+        text2: userEmailError ? "Enter a valid email." : "Role must be mentor, student, or admin.",
+      });
       return;
     }
 
@@ -193,6 +204,7 @@ const AdminActions = () => {
       });
       return;
     }
+
     setLoading(true);
     try {
       await removeUser({ email: userToRemoveEmail });
@@ -206,25 +218,32 @@ const AdminActions = () => {
     }
   };
 
+  // ====================
+  // UI Return
+  // ====================
   return (
     <View style={{ flex: 1, padding: 20 }}>
+      {/* Action Buttons */}
       <ActionCardButton title="Add Subject to Mentor" onPress={() => setAddModalVisible(true)} />
       <ActionCardButton title="Remove Subject from Mentor" onPress={() => setRemoveModalVisible(true)} />
       <ActionCardButton title="Add New User" onPress={() => setAddUserModalVisible(true)} />
       <ActionCardButton title="Remove User" onPress={() => setRemoveUserModalVisible(true)} />
 
+      {/* Add Subject Modal */}
       <RequestModal visible={isAddModalVisible} onClose={() => setAddModalVisible(false)} showFooter={false}>
         <TextInputField label="Mentor Email" value={email} onChangeText={handleEmailChange} placeholder="mentor@example.com" error={emailError} />
         <TextInputField label="Subject" value={subject} onChangeText={handleSubjectChange} placeholder="history" error={subjectError} />
         <CustomButton title={loading ? "Adding..." : "Add Subject"} handlePress={handleAddSubject} isLoading={loading} disabled={loading} containerStyles="bg-orange-500 mt-4" textStyles="text-white" />
       </RequestModal>
 
+      {/* Remove Subject Modal */}
       <RequestModal visible={isRemoveModalVisible} onClose={() => setRemoveModalVisible(false)} showFooter={false}>
         <TextInputField label="Mentor Email" value={email} onChangeText={handleEmailChange} placeholder="mentor@example.com" error={emailError} />
         <TextInputField label="Subject" value={subject} onChangeText={handleSubjectChange} placeholder="history" error={subjectError} />
         <CustomButton title={loading ? "Removing..." : "Remove Subject"} handlePress={handleRemoveSubject} isLoading={loading} disabled={loading} containerStyles="bg-orange-500 mt-4" textStyles="text-white" />
       </RequestModal>
 
+      {/* Add User Modal */}
       <RequestModal visible={isAddUserModalVisible} onClose={() => setAddUserModalVisible(false)} showFooter={false}>
         <TextInputField label="First Name" value={firstName} onChangeText={setFirstName} placeholder="Shlomi" />
         <TextInputField label="Last Name" value={lastName} onChangeText={setLastName} placeholder="Arbitman" />
@@ -234,11 +253,13 @@ const AdminActions = () => {
         <CustomButton title={loading ? "Adding..." : "Add User"} handlePress={handleAddUser} isLoading={loading} disabled={loading} containerStyles="bg-orange-500 mt-4" textStyles="text-white" />
       </RequestModal>
 
+      {/* Remove User Modal */}
       <RequestModal visible={isRemoveUserModalVisible} onClose={() => setRemoveUserModalVisible(false)} showFooter={false}>
         <TextInputField label="User Email" value={userToRemoveEmail} onChangeText={handleUserToRemoveEmailChange} placeholder="user@example.com" error={userToRemoveEmailError} />
         <CustomButton title={loading ? "Removing..." : "Remove User"} handlePress={handleRemoveUser} isLoading={loading} disabled={loading} containerStyles="bg-orange-500 mt-4" textStyles="text-white" />
       </RequestModal>
 
+      {/* Toast Notification */}
       {toast && <CustomToast text1={toast.text1} text2={toast.text2} onHide={() => setToast(null)} />}
     </View>
   );
