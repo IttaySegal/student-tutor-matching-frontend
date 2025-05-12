@@ -1,47 +1,33 @@
 import React from "react";
 import { View, Text, TextInput } from "react-native";
 
-// Generic component for text input fields
 const TextInputField = ({
   label,
   value,
   onChangeText,
   placeholder,
-  multiline = false,
-  style,
+  error,
+  ...rest
 }) => {
   return (
-    <View style={{ marginBottom: 20, width: "100%", ...style }}>
-      {/* Label text */}
-      <Text
-        style={{
-          marginBottom: 5,
-          fontSize: 16,
-          fontWeight: "500",
-          color: "#374151",
-        }}
-      >
-        {label}
-      </Text>
-      {/* Text input field */}
+    <View style={{ marginBottom: 16 }}>
+      <Text style={{ fontSize: 16, marginBottom: 6 }}>{label}</Text>
       <TextInput
-        style={{
-          height: multiline ? 100 : 40,
-          borderColor: "#ccc",
-          borderWidth: 1,
-          borderRadius: 8,
-          textAlign: "left",
-          writingDirection: "ltr",
-          direction: "ltr",
-          padding: 10,
-          backgroundColor: "#fff",
-        }}
-        multiline={multiline}
-        numberOfLines={multiline ? 4 : 1}
-        placeholder={placeholder}
         value={value}
         onChangeText={onChangeText}
+        placeholder={placeholder}
+        style={{
+          borderWidth: 1.5,
+          borderColor: error ? "red" : "#d1d5db", // red border when error
+          borderRadius: 8,
+          padding: 12,
+          backgroundColor: "#fff",
+        }}
+        {...rest}
       />
+      {error && (
+        <Text style={{ color: "red", fontSize: 13, marginTop: 4 }}>{error}</Text>
+      )}
     </View>
   );
 };
