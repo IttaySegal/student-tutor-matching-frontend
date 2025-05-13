@@ -45,8 +45,9 @@ export default function MyMentors() {
 
   return (
     <View className="flex-1 bg-primary px-5 py-6">
-      <PageHeader title="My Mentors" />
-
+      <Text className="text-2xl font-bold text-white mb-6 text-center">
+        My Mentors
+      </Text>
       <TextInput
         placeholder="Search mentor by name"
         placeholderTextColor="#9CA3AF"
