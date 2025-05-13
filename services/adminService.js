@@ -53,3 +53,15 @@ export const fetchMentorOverview = async (mentorId) => {
     throw error;
   }
 };
+
+export const fetchMentorAverageRating = async (mentorId) => {
+  try {
+    const response = await axios.get(`/average-mentor/${mentorId}`);
+    return response.data;
+  } catch (error) {
+    console.error(" Failed to fetch average rating:", error?.response?.data || error.message);
+    throw error;
+  }
+};
+
+

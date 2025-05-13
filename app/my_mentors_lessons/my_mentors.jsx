@@ -15,13 +15,20 @@ export default function MyMentors() {
   useEffect(() => {
     const loadMentors = async () => {
       try {
-        const data = await fetchMentors();
-        const cleanedData = data.map((mentor) => ({
+        const response = await fetchMentors();
+        console.log("📦 Raw mentor response:", response);
+    
+        const mentorsArray = response || []; // ✅ Fix: response is already the array
+    
+        console.log("👥 Extracted mentor list:", mentorsArray);
+    
+        const cleanedData = mentorsArray.map((mentor) => ({
           ...mentor,
-          fullName: mentor.fullName || "Unnamed Mentor",
-          averageScore: typeof mentor.averageScore === "number" ? mentor.averageScore : 0,
-          totalCompletedLessons: mentor.totalCompletedLessons || 0,
+          fullName: mentor.mentorName || "Unnamed Mentor", // Fix naming
+          averageScore: 0,
+          totalCompletedLessons: 0,
         }));
+    
         setMentors(cleanedData);
         setFilteredMentors(cleanedData);
       } catch (err) {
@@ -29,7 +36,7 @@ export default function MyMentors() {
       } finally {
         setLoading(false);
       }
-    };
+    }; 
 
     loadMentors();
   }, []);
@@ -61,7 +68,7 @@ export default function MyMentors() {
       ) : (
         <FlatList
           data={filteredMentors}
-          keyExtractor={(item, index) => item.mentorId || index.toString()}
+          keyExtractor={(item, index) => item.mentorId?.toString() || index.toString()}
           renderItem={({ item }) => (
             <MentorCard
               fullName={item.fullName}
