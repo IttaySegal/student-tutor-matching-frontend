@@ -103,9 +103,9 @@ const AdminHome = () => {
 
       <View style={styles.statsRow}>
         <View style={styles.statBox}>
-          <Text style={styles.statValue}>{homeStats.totalCompletedLessons}</Text>
+          <Text style={styles.statValue}>{homeStats.totalApprovedLessons}</Text>
           <Text style={styles.statLabel}>
-            <Icon name="check-circle" size={12} color="#ccc" /> Total Completed Lessons</Text>
+            <Icon name="check-circle" size={12} color="#ccc" /> Total Approved Lessons</Text>
         </View>
         <View style={styles.statBox}>
           <Text style={styles.statValue}>{homeStats.averageLessonsPerMentor}</Text>
