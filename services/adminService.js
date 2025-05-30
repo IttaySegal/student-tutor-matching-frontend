@@ -46,7 +46,7 @@ export const fetchMentors = async () => {
 
 export const fetchMentorOverview = async (mentorId) => {
   try {
-    const response = await axios.get(`/mentor-overview/${mentorId}`);
+    const response = await axios.get(`/reports/mentor-overview/${mentorId}`);
     return response.data;
   } catch (error) {
     console.error(`Failed to fetch mentor overview for ID ${mentorId}:`, error);
@@ -56,7 +56,7 @@ export const fetchMentorOverview = async (mentorId) => {
 
 export const fetchMentorAverageRating = async (mentorId) => {
   try {
-    const response = await axios.get(`/average-mentor/${mentorId}`);
+    const response = await axios.get(`/reports/average-mentor/${mentorId}`);
     return response.data;
   } catch (error) {
     console.error(" Failed to fetch average rating:", error?.response?.data || error.message);

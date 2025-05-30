@@ -61,13 +61,15 @@ const MentorOverviewModal = ({ visible, onClose, mentor }) => {
         <Text className="text-base text-white mb-2">
           <Text className="font-bold">Email:</Text> {mentorEmail}
         </Text>
-
         <View className="flex-row items-center mb-2">
           <Icon name="star" size={18} color="#FFD700" />
           <Text className="text-base text-yellow-300 ml-1">
-            {averageScore?.toFixed(1) || "N/A"} / 5 average rating
+            {Number.isFinite(averageScore) && totalCompletedLessons > 0
+              ? `${averageScore.toFixed(1)} / 5 average rating`
+              : "No ratings yet"}
           </Text>
         </View>
+
 
         <Text className="text-base text-white mb-4">
           <Text className="font-bold">Completed Lessons:</Text> {totalCompletedLessons}
@@ -79,10 +81,18 @@ const MentorOverviewModal = ({ visible, onClose, mentor }) => {
 
         {!loading && ratings ? (
           <View className="mt-2">
-            <Text className="text-sm text-gray-400">Clarity: {ratings.clarity?.toFixed(1) ?? "N/A"}</Text>
-            <Text className="text-sm text-gray-400">Understanding: {ratings.understanding?.toFixed(1) ?? "N/A"}</Text>
-            <Text className="text-sm text-gray-400">Focus: {ratings.focus?.toFixed(1) ?? "N/A"}</Text>
-            <Text className="text-sm text-gray-400">Helpfulness: {ratings.helpful?.toFixed(1) ?? "N/A"}</Text>
+            <Text className="text-sm text-gray-400">
+              Clarity: {ratings?.clarity > 0 ? ratings.clarity.toFixed(1) : "N/A"}
+            </Text>
+            <Text className="text-sm text-gray-400">
+              Understanding: {ratings?.understanding > 0 ? ratings.understanding.toFixed(1) : "N/A"}
+            </Text>
+            <Text className="text-sm text-gray-400">
+              Focus: {ratings?.focus > 0 ? ratings.focus.toFixed(1) : "N/A"}
+            </Text>
+            <Text className="text-sm text-gray-400">
+              Helpfulness: {ratings?.helpful > 0 ? ratings.helpful.toFixed(1) : "N/A"}
+            </Text>
           </View>
         ) : !loading && (
           <Text className="text-sm text-gray-500 mt-2">
