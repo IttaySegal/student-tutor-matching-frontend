@@ -1,3 +1,9 @@
+import { I18nManager } from "react-native";
+
+// 🔒 Force LTR (disable RTL globally)
+I18nManager.allowRTL(false);
+I18nManager.forceRTL(false);
+
 import { useCallback } from "react";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -12,12 +18,15 @@ import { View, Text, Image, Dimensions } from "react-native";
 import { ToastProvider } from "@context/ToastContext";
 
 // Get the screen width for responsive styling
-const { width } = Dimensions.get('window');
+const { width } = Dimensions.get("window");
 
 // Component for rendering individual tab icons and labels
 const TabIcon = ({ icon, color, name, focused }) => {
   return (
-    <View className="flex items-center justify-center gap-2 top-4" style={{ minWidth: 100 }} >
+    <View
+      className="flex items-center justify-center gap-2 top-4"
+      style={{ minWidth: 100 }}
+    >
       <Image
         source={icon}
         resizeMode="contain"
@@ -26,7 +35,7 @@ const TabIcon = ({ icon, color, name, focused }) => {
         style={{ marginTop: 20 }}
       />
       <Text
-        className={`${focused ? 'font-psemibold' : 'font-pregular'} text-xm`}
+        className={`${focused ? "font-psemibold" : "font-pregular"} text-xm`}
         style={{
           color: color,
           fontSize: width > 500 ? 12 : 9,
@@ -36,8 +45,8 @@ const TabIcon = ({ icon, color, name, focused }) => {
         {name}
       </Text>
     </View>
-  )
-}
+  );
+};
 
 // Keep splash screen visible until ready
 SplashScreen.preventAutoHideAsync();
@@ -73,8 +82,12 @@ const RootLayout = () => {
   }
 
   return (
-    <ToastProvider> {/* ✅ Wrap FIRST */}
-      <GlobalProvider> {/* ⬅️ Now GlobalProvider can use useToast */}
+    <ToastProvider>
+      {" "}
+      {/* ✅ Wrap FIRST */}
+      <GlobalProvider>
+        {" "}
+        {/* ⬅️ Now GlobalProvider can use useToast */}
         <SafeAreaView className="flex-1 bg-primary" onLayout={onLayoutRootView}>
           <Slot />
         </SafeAreaView>

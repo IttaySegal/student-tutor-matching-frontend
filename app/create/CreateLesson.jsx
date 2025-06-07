@@ -27,6 +27,7 @@ export default function CreateLesson() {
   const { showToast } = useToast();
   const { user } = useAuth();
   const availableSubjects = user?.subjects || [];
+  const [resetKey, setResetKey] = useState(0);
   const [subject, setSubject] = useState("");
   const [grade, setGrade] = useState("");
   const [group, setGroup] = useState("");
@@ -50,6 +51,7 @@ export default function CreateLesson() {
     setLessonDescription("");
     setLessonType("");
     setLessonLocation("");
+    setResetKey(prev => prev + 1);
   };
 
   const handleDateChange = (event, selectedDate) => {
@@ -137,8 +139,8 @@ export default function CreateLesson() {
       <View className="px-5 py-6">
         <View className="w-full gap-4 mb-6">
           <SelectList
+            key={`subject-${resetKey}`}
             setSelected={setSubject}
-            // data={subjects.map((s) => ({ key: s.value, value: s.value }))}
             data={availableSubjects.map((s) => ({ key: s, value: s }))}
             placeholder="Select Subject"
             testID="subject-select"
@@ -146,6 +148,7 @@ export default function CreateLesson() {
           />
 
           <SelectList
+            key={`grade-${resetKey}`}
             setSelected={setGrade}
             data={grades}
             placeholder="Select Grade"
@@ -155,6 +158,7 @@ export default function CreateLesson() {
 
           {groupOptions.length > 0 ? (
             <SelectList
+              key={`group-${resetKey}`}
               setSelected={setGroup}
               data={groupOptions.map((g) => ({ key: g, value: g }))}
               placeholder="Select Group"
