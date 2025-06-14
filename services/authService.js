@@ -3,6 +3,7 @@ import axios from "axios";
 import { EXPO_PUBLIC_SERVER_URL } from "@env";
 
 const BASE_URL = `${EXPO_PUBLIC_SERVER_URL}/auth`;
+// console.log("BASE_URL:", BASE_URL); // ✅ Log to verify URL
 // const BASE_URL = `${REACT_APP_SERVER_DOMAIN}/auth`;
 
 /**
@@ -33,8 +34,12 @@ const handleError = (error) => {
  */
 export async function signIn(credentials) {
   const API_URL = `${BASE_URL}/login`; // ✅ Corrected endpoint
+  // console.log("POSTing to:", API_URL);
+  // console.log("Credentials:", credentials);
   try {
     const response = await axios.post(API_URL, credentials);
+
+
     // console.log(API_URL)
     return response.data;
   } catch (error) {

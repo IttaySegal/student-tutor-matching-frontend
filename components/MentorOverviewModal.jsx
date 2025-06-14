@@ -72,8 +72,8 @@ const MentorOverviewModal = ({ visible, onClose, mentor }) => {
         <View className="flex-row items-center mb-2">
           <Icon name="star" size={18} color="#FFD700" />
           <Text className="text-base text-yellow-300 ml-1">
-            {Number.isFinite(averageScore) && totalCompletedLessons > 0
-              ? `${averageScore.toFixed(1)} / 5 average rating`
+            {totalCompletedLessons > 0
+              ? `${averageScore} / 5 average rating`
               : "No ratings yet"}
           </Text>
         </View>

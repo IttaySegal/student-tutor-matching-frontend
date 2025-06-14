@@ -37,6 +37,7 @@ export const removeUser = async ({ email }) => {
 export const fetchMentors = async () => {
   try {
     const response = await axios.get("/reports/get-all-mentors-metadata");
+    // console.log("Fetching mentors:", response.data);
     return response.data;
   } catch (error) {
     console.error("Failed to fetch mentors:", error);

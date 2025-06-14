@@ -19,12 +19,12 @@ export default function MyMentors() {
     const loadMentors = async () => {
       try {
         const response = await fetchMentors();
-        console.log("Raw mentor response:", response);
+        // console.log("Raw mentor response:", response);
 
         // The response is expected to be an array of mentor objects
         const mentorsArray = response || []; // fallback to empty array if response is falsy
 
-        console.log("Extracted mentor list:", mentorsArray);
+        // console.log("Extracted mentor list:", mentorsArray);
 
         // Clean and normalize mentor data for consistent rendering
         const cleanedData = mentorsArray.map((mentor) => ({

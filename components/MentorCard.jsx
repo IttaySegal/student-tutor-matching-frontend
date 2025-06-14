@@ -14,8 +14,8 @@ const MentorCard = ({ fullName, email, averageScore, totalCompletedLessons, onPr
         <View className="flex-row items-center gap-1">
           <Icon name="star" size={18} color="#FFD700" />
           <Text className="text-sm text-yellow-300">
-            {Number.isFinite(averageScore) && totalCompletedLessons > 0
-              ? `${averageScore.toFixed(1)} / 5`
+            {totalCompletedLessons > 0
+              ? `${averageScore} / 5`
               : "No ratings yet"}
           </Text>
         </View>
